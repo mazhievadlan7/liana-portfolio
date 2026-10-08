@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Nexa — ИИ-агент для отдела продаж</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Geist','sans-serif'], mono: ['"Geist Mono"','monospace'] } } } }
+</script>
+<style>
+  body { background:#07070b; -webkit-font-smoothing: antialiased; }
+  .glow { position:absolute; border-radius:9999px; filter: blur(120px); opacity:.55; }
+  .card { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); }
+  .grad-text { background: linear-gradient(90deg,#fff 0%,#c4b5fd 45%,#67e8f9 100%); -webkit-background-clip:text; color:transparent; }
+  .grid-lines { background-image: linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px); background-size:64px 64px; mask-image: radial-gradient(ellipse at 50% 0%, #000 30%, transparent 70%); }
+  .ring-grad { background: linear-gradient(#0d0d14,#0d0d14) padding-box, linear-gradient(120deg,#8b5cf6,#22d3ee,#8b5cf6) border-box; border:1px solid transparent; }
+</style>
+</head>
+<body class="text-white font-sans overflow-x-hidden">
+<div class="relative">
+  <div class="absolute inset-0 grid-lines"></div>
+  <div class="glow w-[600px] h-[600px] bg-violet-600 -top-60 left-1/2 -translate-x-[70%]"></div>
+  <div class="glow w-[500px] h-[500px] bg-cyan-500 -top-40 left-1/2 translate-x-[10%]"></div>
+
+  <header class="relative max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+    <div class="flex items-center gap-2 font-semibold text-lg"><span class="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400"></span>Nexa</div>
+    <nav class="hidden md:flex gap-8 text-sm text-white/60"><a>Возможности</a><a>Интеграции</a><a>Цены</a><a>Кейсы</a></nav>
+    <div class="flex items-center gap-3"><a class="text-sm text-white/70">Войти</a><a class="px-4 py-2 rounded-full bg-white text-black text-sm font-medium">Попробовать</a></div>
+  </header>
+
+  <section class="relative max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full card text-xs text-white/70"><span class="px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 font-medium">Новое</span>Голосовой агент для входящих звонков →</div>
+    <h1 class="mt-8 text-6xl md:text-7xl font-semibold tracking-[-0.04em] leading-[1.02]"><span class="grad-text">ИИ-агент, который<br>продаёт 24/7</span></h1>
+    <p class="mt-6 text-lg text-white/55 max-w-2xl mx-auto">Отвечает клиентам в Telegram, WhatsApp и на сайте за 3 секунды, квалифицирует лиды и сам записывает их в amoCRM. Обучается на ваших документах за 10 минут.</p>
+    <div class="mt-10 flex justify-center gap-3">
+      <a class="px-6 py-3.5 rounded-full bg-white text-black font-medium">Подключить бесплатно</a>
+      <a class="px-6 py-3.5 rounded-full card font-medium">Смотреть демо ▶</a>
+    </div>
+
+    <!-- Product window -->
+    <div class="relative mt-16 mx-auto max-w-5xl rounded-2xl ring-grad p-1.5 shadow-[0_0_120px_-20px_rgba(139,92,246,.6)]">
+      <div class="rounded-xl bg-[#0d0d14] text-left overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5"><span class="w-3 h-3 rounded-full bg-white/10"></span><span class="w-3 h-3 rounded-full bg-white/10"></span><span class="w-3 h-3 rounded-full bg-white/10"></span><span class="ml-4 text-xs text-white/40 font-mono">app.nexa.ai/inbox</span></div>
+        <div class="grid grid-cols-12 min-h-[380px]">
+          <div class="col-span-3 border-r border-white/5 p-3 space-y-1 text-sm">
+            <div class="px-3 py-2.5 rounded-lg bg-white/5"><div class="flex justify-between"><b class="font-medium">Мария К.</b><span class="text-[10px] text-emerald-400">● горячий</span></div><div class="text-white/40 text-xs truncate">Можно записаться на субботу?</div></div>
+            <div class="px-3 py-2.5 rounded-lg"><div class="flex justify-between"><b class="font-medium text-white/80">ООО «Вектор»</b><span class="text-[10px] text-amber-400">● тёплый</span></div><div class="text-white/40 text-xs truncate">Пришлите КП на 40 лицензий</div></div>
+            <div class="px-3 py-2.5 rounded-lg"><div class="flex justify-between"><b class="font-medium text-white/80">Дмитрий</b><span class="text-[10px] text-white/30">● холодный</span></div><div class="text-white/40 text-xs truncate">А доставка в Казань есть?</div></div>
+            <div class="px-3 py-2.5 rounded-lg"><div class="flex justify-between"><b class="font-medium text-white/80">Ирина С.</b><span class="text-[10px] text-emerald-400">● горячий</span></div><div class="text-white/40 text-xs truncate">Оплатила, жду подтверждение</div></div>
+          </div>
+          <div class="col-span-6 p-5 space-y-4 text-sm">
+            <div class="max-w-[80%] px-4 py-3 rounded-2xl rounded-tl-sm bg-white/5">Здравствуйте! Можно записаться на субботу на окрашивание?</div>
+            <div class="max-w-[85%] ml-auto px-4 py-3 rounded-2xl rounded-tr-sm bg-gradient-to-br from-violet-600 to-indigo-600">Здравствуйте, Мария! В субботу свободно 11:00 и 15:30 у мастера Анны. Окрашивание в один тон — от 4 500 ₽, займёт около 2 часов. Какое время удобнее?</div>
+            <div class="max-w-[80%] px-4 py-3 rounded-2xl rounded-tl-sm bg-white/5">15:30 подойдёт 🙌</div>
+            <div class="max-w-[85%] ml-auto px-4 py-3 rounded-2xl rounded-tr-sm bg-gradient-to-br from-violet-600 to-indigo-600">Записала вас на субботу, 15:30 ✨ Напомню за день. Хорошего вечера!</div>
+            <div class="flex items-center gap-2 text-xs text-white/40 font-mono pt-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>агент ответил за 2.4 с · сделка создана в amoCRM</div>
+          </div>
+          <div class="col-span-3 border-l border-white/5 p-4 text-xs space-y-4">
+            <div class="text-white/40 uppercase tracking-wider">Карточка лида</div>
+            <div class="card rounded-lg p-3 space-y-2"><div class="flex justify-between"><span class="text-white/40">Услуга</span><span>Окрашивание</span></div><div class="flex justify-between"><span class="text-white/40">Бюджет</span><span>4 500 ₽</span></div><div class="flex justify-between"><span class="text-white/40">Источник</span><span>Telegram</span></div></div>
+            <div class="text-white/40 uppercase tracking-wider">Действия агента</div>
+            <div class="space-y-2 font-mono text-[11px]"><div class="text-emerald-400">✓ check_slots()</div><div class="text-emerald-400">✓ create_booking()</div><div class="text-emerald-400">✓ amocrm.create_deal()</div><div class="text-cyan-400">◷ reminder(-24h)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="max-w-6xl mx-auto px-6 py-10">
+  <p class="text-center text-sm text-white/40">Подключается к сервисам, которыми вы уже пользуетесь</p>
+  <div class="mt-6 flex flex-wrap justify-center gap-3 text-sm text-white/70">
+    <span class="px-4 py-2 rounded-full card">Telegram</span><span class="px-4 py-2 rounded-full card">WhatsApp</span><span class="px-4 py-2 rounded-full card">amoCRM</span><span class="px-4 py-2 rounded-full card">Битрикс24</span><span class="px-4 py-2 rounded-full card">YCLIENTS</span><span class="px-4 py-2 rounded-full card">Google Sheets</span><span class="px-4 py-2 rounded-full card">n8n</span>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 py-20">
+  <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-center">Один агент вместо<br><span class="text-white/40">трёх менеджеров на первой линии</span></h2>
+  <div class="mt-14 grid grid-cols-6 gap-4">
+    <div class="col-span-6 md:col-span-4 card rounded-3xl p-8 relative overflow-hidden">
+      <div class="glow w-72 h-72 bg-violet-600 -right-20 -bottom-20 opacity-40"></div>
+      <div class="relative"><div class="text-sm text-violet-300 font-mono">01 / база знаний</div><h3 class="mt-3 text-2xl font-medium">Учится на ваших документах</h3><p class="mt-2 text-white/50 max-w-md">Загрузите прайс, регламенты и FAQ — агент отвечает только по фактам и не выдумывает цены.</p>
+        <div class="mt-8 flex gap-3 font-mono text-xs"><span class="px-3 py-2 rounded-lg bg-white/5 border border-white/10">📄 прайс_2026.pdf</span><span class="px-3 py-2 rounded-lg bg-white/5 border border-white/10">📄 скрипт_продаж.docx</span><span class="px-3 py-2 rounded-lg bg-white/5 border border-white/10">🔗 сайт</span></div></div>
+    </div>
+    <div class="col-span-3 md:col-span-2 card rounded-3xl p-8">
+      <div class="text-sm text-cyan-300 font-mono">02 / скорость</div>
+      <div class="mt-6 text-6xl font-semibold tracking-tight">3 с</div>
+      <p class="mt-2 text-white/50">среднее время ответа вместо 40 минут</p>
+    </div>
+    <div class="col-span-3 md:col-span-2 card rounded-3xl p-8">
+      <div class="text-sm text-cyan-300 font-mono">03 / конверсия</div>
+      <div class="mt-6 text-6xl font-semibold tracking-tight">+38%</div>
+      <p class="mt-2 text-white/50">заявок доходят до записи или оплаты</p>
+    </div>
+    <div class="col-span-6 md:col-span-4 card rounded-3xl p-8">
+      <div class="text-sm text-violet-300 font-mono">04 / передача человеку</div>
+      <h3 class="mt-3 text-2xl font-medium">Знает, когда позвать менеджера</h3>
+      <p class="mt-2 text-white/50 max-w-lg">Сложный вопрос, жалоба или крупный заказ — агент передаёт диалог сотруднику с кратким резюме переписки.</p>
+      <div class="mt-6 flex items-center gap-3 text-sm"><span class="px-3 py-2 rounded-lg bg-white/5">🤖 Агент</span><span class="text-white/30">→</span><span class="px-3 py-2 rounded-lg bg-amber-500/15 text-amber-300">⚠ крупный заказ 40 лицензий</span><span class="text-white/30">→</span><span class="px-3 py-2 rounded-lg bg-white/5">👩‍💼 Менеджер</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 py-20">
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="card rounded-3xl p-8"><div class="text-white/50">Старт</div><div class="mt-3 text-4xl font-semibold">4 900 ₽<span class="text-base text-white/40 font-normal">/мес</span></div><p class="mt-3 text-sm text-white/50">1 канал, 1 000 диалогов</p><a class="mt-8 block text-center py-3 rounded-full card">Начать</a></div>
+    <div class="rounded-3xl p-8 ring-grad relative shadow-[0_0_80px_-20px_rgba(34,211,238,.5)]"><span class="absolute top-6 right-6 text-xs px-2.5 py-1 rounded-full bg-cyan-400/15 text-cyan-300">Популярный</span><div class="text-white/50">Бизнес</div><div class="mt-3 text-4xl font-semibold">14 900 ₽<span class="text-base text-white/40 font-normal">/мес</span></div><p class="mt-3 text-sm text-white/50">Все каналы, CRM, 10 000 диалогов</p><a class="mt-8 block text-center py-3 rounded-full bg-white text-black font-medium">Подключить</a></div>
+    <div class="card rounded-3xl p-8"><div class="text-white/50">Энтерпрайз</div><div class="mt-3 text-4xl font-semibold">Индивидуально</div><p class="mt-3 text-sm text-white/50">Свой сервер, голосовой агент, SLA</p><a class="mt-8 block text-center py-3 rounded-full card">Связаться</a></div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 pb-20">
+  <div class="relative rounded-[32px] card p-14 text-center overflow-hidden">
+    <div class="glow w-[500px] h-[300px] bg-violet-600 left-1/2 -translate-x-1/2 -bottom-40 opacity-50"></div>
+    <h2 class="relative text-5xl font-semibold tracking-[-0.03em]">Запустите агента сегодня</h2>
+    <p class="relative mt-4 text-white/50">14 дней бесплатно. Настроим под ваш бизнес за один созвон.</p>
+    <a class="relative mt-8 inline-block px-8 py-4 rounded-full bg-white text-black font-medium">Попробовать бесплатно</a>
+  </div>
+</section>
+
+<footer class="border-t border-white/5"><div class="max-w-6xl mx-auto px-6 py-8 flex justify-between text-sm text-white/40"><span>Nexa</span><span>ИИ-агенты для бизнеса</span><span>© 2026</span></div></footer>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сигма — курс «Аналитик данных» с нуля</title>
+<meta name="description" content="Онлайн-курс «Аналитик данных» с нуля за 7 месяцев: SQL, Python, Excel и BI. Наставник, карьерный центр и бесплатный пробный урок.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { sans: ['Onest', 'sans-serif'] },
+  colors: { ink: '#16112b', violet: { 50:'#f4f1ff',100:'#e9e3ff',300:'#b9a8ff',500:'#7b5cff',600:'#6541f5',700:'#5130d6' }, lime: { 300:'#d9ff6b', 400:'#c8f53a' } }
+} } }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .grid-bg { background-image: linear-gradient(rgba(123,92,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(123,92,255,.08) 1px, transparent 1px); background-size: 48px 48px; }
+  .opt { transition: all .2s; }
+  .opt:hover { border-color: #7b5cff; transform: translateY(-1px); }
+</style>
+</head>
+<body class="bg-white text-ink font-sans">
+
+<header class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-violet-100/70">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5 font-extrabold text-xl"><span class="w-9 h-9 rounded-xl bg-violet-500 text-white grid place-items-center text-lg">Σ</span>Сигма</a>
+    <nav class="hidden lg:flex gap-8 text-sm text-ink/70">
+      <a href="#program" class="hover:text-violet-600 transition">Программа</a><a href="#teachers" class="hover:text-violet-600 transition">Преподаватели</a><a href="#career" class="hover:text-violet-600 transition">Трудоустройство</a><a href="#price" class="hover:text-violet-600 transition">Стоимость</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#lesson" class="hidden sm:inline-block px-5 py-3 rounded-xl bg-ink text-white text-sm font-semibold hover:bg-violet-600 transition">Записаться</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-xl border border-violet-100 grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden border-t border-violet-100 bg-white px-5 pb-6">
+    <nav class="flex flex-col text-lg font-semibold divide-y divide-violet-100">
+      <a href="#program" class="py-3.5">Программа</a><a href="#teachers" class="py-3.5">Преподаватели</a><a href="#career" class="py-3.5">Трудоустройство</a><a href="#price" class="py-3.5">Стоимость</a><a href="#quiz" class="py-3.5">Тест: подойдёт ли профессия</a>
+    </nav>
+    <a href="#lesson" class="mt-4 block text-center py-4 rounded-2xl bg-violet-500 text-white font-bold">Получить бесплатный урок</a>
+  </div>
+</header>
+
+<section id="top" class="grid-bg">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 pt-10 sm:pt-12 pb-20 sm:pb-24 grid lg:grid-cols-2 gap-14 items-center">
+    <div>
+      <div class="flex flex-wrap gap-2 text-sm">
+        <span class="px-3.5 py-1.5 rounded-full bg-violet-100 text-violet-700 font-semibold">Старт 3 ноября</span>
+        <span class="px-3.5 py-1.5 rounded-full bg-lime-300 font-semibold">−40% до 20 октября</span>
+      </div>
+      <h1 class="mt-7 text-[40px] sm:text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">Профессия<br><span class="text-violet-500">аналитик данных</span><br>с нуля за 7 месяцев</h1>
+      <p class="mt-6 text-base sm:text-lg text-ink/70 max-w-lg">SQL, Python, Excel и BI-дашборды на реальных задачах компаний. Наставник проверяет каждую работу, а карьерный центр помогает найти первую работу.</p>
+      <div class="mt-9 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <a href="#lesson" class="text-center px-8 py-4 rounded-2xl bg-violet-500 text-white font-bold shadow-lg shadow-violet-500/30 hover:bg-violet-600 hover:-translate-y-0.5 transition">Получить бесплатный урок</a>
+        <button data-open="howModal" class="px-6 py-3 sm:py-4 font-semibold text-ink/80 flex items-center justify-center gap-2 hover:text-violet-600 transition"><span class="w-10 h-10 rounded-full border-2 border-ink/15 grid place-items-center">▶</span>Как проходит обучение</button>
+      </div>
+      <div class="mt-10 sm:mt-12 flex items-center gap-4">
+        <div class="flex -space-x-3 shrink-0">
+          <span class="w-11 h-11 rounded-full border-2 border-white bg-violet-300 grid place-items-center font-bold text-sm">АК</span>
+          <span class="w-11 h-11 rounded-full border-2 border-white bg-lime-300 grid place-items-center font-bold text-sm">МР</span>
+          <span class="w-11 h-11 rounded-full border-2 border-white bg-violet-100 grid place-items-center font-bold text-sm">ДС</span>
+          <span class="w-11 h-11 rounded-full border-2 border-white bg-ink text-white grid place-items-center font-bold text-xs">+4k</span>
+        </div>
+        <p class="text-sm text-ink/60"><b class="text-ink">4 200 выпускников</b><br>уже работают аналитиками</p>
+      </div>
+    </div>
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200&q=80&auto=format&fit=crop" class="rounded-[32px] h-[380px] sm:h-[520px] w-full object-cover" alt="Студентка занимается на ноутбуке">
+      <div class="absolute left-3 sm:-left-6 bottom-4 sm:bottom-10 bg-white rounded-2xl shadow-2xl p-4 sm:p-5 w-56 sm:w-64">
+        <div class="text-xs text-ink/50">Средняя зарплата junior</div>
+        <div class="text-2xl sm:text-3xl font-extrabold mt-1">95 000 ₽</div>
+        <div class="mt-4 flex items-end gap-1.5 h-12 sm:h-16">
+          <span class="flex-1 bg-violet-100 rounded" style="height:30%"></span><span class="flex-1 bg-violet-100 rounded" style="height:45%"></span><span class="flex-1 bg-violet-300 rounded" style="height:55%"></span><span class="flex-1 bg-violet-300 rounded" style="height:70%"></span><span class="flex-1 bg-violet-500 rounded" style="height:100%"></span>
+        </div>
+      </div>
+      <div class="absolute right-3 sm:-right-4 top-4 sm:top-8 bg-lime-300 rounded-2xl shadow-xl px-4 sm:px-5 py-3 sm:py-4 font-bold text-sm sm:text-base">🎓 Диплом о проф. переподготовке</div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="grid lg:grid-cols-3 gap-6">
+    <div data-reveal>
+      <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">Кому подойдёт курс</h2>
+      <p class="mt-4 text-ink/60">Не нужен технический бэкграунд: начнём с основ и дойдём до уверенного уровня.</p>
+    </div>
+    <div data-reveal class="p-8 rounded-3xl bg-violet-50 hover:-translate-y-1 transition">
+      <div class="text-4xl">🌱</div>
+      <h3 class="mt-5 text-xl font-bold">Новичкам</h3>
+      <p class="mt-2 text-ink/60">Освоите востребованную профессию с нуля и соберёте портфолио из 12 проектов.</p>
+    </div>
+    <div data-reveal class="p-8 rounded-3xl bg-ink text-white hover:-translate-y-1 transition">
+      <div class="text-4xl">🔁</div>
+      <h3 class="mt-5 text-xl font-bold">Тем, кто хочет сменить сферу</h3>
+      <p class="mt-2 text-white/60">Перейдёте в IT без отрыва от работы: 10–12 часов в неделю в удобное время.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section id="quiz" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 sm:pb-24">
+  <div class="rounded-[32px] border-2 border-violet-100 p-6 sm:p-10 lg:p-14 grid lg:grid-cols-5 gap-8 lg:gap-12" data-reveal>
+    <div class="lg:col-span-2">
+      <span class="px-3.5 py-1.5 rounded-full bg-lime-300 text-sm font-semibold">Тест · 1 минута</span>
+      <h2 class="mt-5 text-3xl sm:text-4xl font-extrabold leading-tight">Подойдёт ли вам профессия аналитика?</h2>
+      <p class="mt-4 text-ink/60">Ответьте на три вопроса, и мы подскажем, с какого тарифа и модуля лучше начать.</p>
+      <div class="mt-8 h-2 rounded-full bg-violet-100 overflow-hidden"><div id="qBar" class="h-full bg-violet-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
+      <div id="qStep" class="mt-2 text-sm text-ink/50">Вопрос 1 из 3</div>
+    </div>
+    <div class="lg:col-span-3" id="quizBox"></div>
+  </div>
+</section>
+
+<section id="program" class="bg-ink text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <div class="flex flex-wrap justify-between items-end gap-4">
+      <h2 class="text-3xl sm:text-4xl font-extrabold">Программа курса</h2>
+      <span class="text-white/60">6 модулей · 180 часов практики</span>
+    </div>
+    <div class="mt-10 sm:mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div data-reveal class="p-7 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-300/50 transition"><div class="text-lime-300 font-bold text-sm">Модуль 1 · 3 недели</div><h3 class="mt-3 text-xl font-bold">Excel и Google Таблицы</h3><p class="mt-3 text-sm text-white/60">Сводные таблицы, ВПР, формулы массивов, первые отчёты для бизнеса.</p></div>
+      <div data-reveal class="p-7 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-300/50 transition"><div class="text-lime-300 font-bold text-sm">Модуль 2 · 5 недель</div><h3 class="mt-3 text-xl font-bold">SQL для аналитика</h3><p class="mt-3 text-sm text-white/60">PostgreSQL, JOIN, оконные функции, оптимизация запросов.</p></div>
+      <div data-reveal class="p-7 rounded-3xl bg-violet-500"><div class="text-white font-bold text-sm">Модуль 3 · 6 недель</div><h3 class="mt-3 text-xl font-bold">Python: pandas и визуализация</h3><p class="mt-3 text-sm text-white/80">Чистка данных, анализ, графики в matplotlib и seaborn.</p></div>
+      <div data-reveal class="p-7 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-300/50 transition"><div class="text-lime-300 font-bold text-sm">Модуль 4 · 4 недели</div><h3 class="mt-3 text-xl font-bold">Статистика и A/B-тесты</h3><p class="mt-3 text-sm text-white/60">Гипотезы, p-value, доверительные интервалы на реальных экспериментах.</p></div>
+      <div data-reveal class="p-7 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-300/50 transition"><div class="text-lime-300 font-bold text-sm">Модуль 5 · 4 недели</div><h3 class="mt-3 text-xl font-bold">BI: DataLens и Power BI</h3><p class="mt-3 text-sm text-white/60">Дашборды для руководителей, метрики продукта и маркетинга.</p></div>
+      <div data-reveal class="p-7 rounded-3xl bg-lime-300 text-ink"><div class="font-bold text-sm">Модуль 6 · 6 недель</div><h3 class="mt-3 text-xl font-bold">Дипломный проект</h3><p class="mt-3 text-sm text-ink/70">Задача от компании-партнёра. Лучшие работы сразу идут на собеседование.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <h2 class="text-3xl sm:text-4xl font-extrabold text-center">Как устроено обучение</h2>
+  <div class="mt-12 sm:mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
+    <div data-reveal><div class="mx-auto w-16 h-16 rounded-2xl bg-violet-100 grid place-items-center text-2xl">🎬</div><h3 class="mt-5 font-bold">Короткие видео</h3><p class="mt-2 text-sm text-ink/60">Уроки по 10–15 минут, удобно учиться с телефона</p></div>
+    <div data-reveal><div class="mx-auto w-16 h-16 rounded-2xl bg-violet-100 grid place-items-center text-2xl">🧩</div><h3 class="mt-5 font-bold">Тренажёр</h3><p class="mt-2 text-sm text-ink/60">Пишете SQL и Python прямо в браузере</p></div>
+    <div data-reveal><div class="mx-auto w-16 h-16 rounded-2xl bg-violet-100 grid place-items-center text-2xl">💬</div><h3 class="mt-5 font-bold">Наставник</h3><p class="mt-2 text-sm text-ink/60">Разбор каждой работы в течение 24 часов</p></div>
+    <div data-reveal><div class="mx-auto w-16 h-16 rounded-2xl bg-lime-300 grid place-items-center text-2xl">💼</div><h3 class="mt-5 font-bold">Карьерный центр</h3><p class="mt-2 text-sm text-ink/60">Резюме, тестовые и подготовка к собеседованиям</p></div>
+  </div>
+</section>
+
+<!-- Teachers -->
+<section id="teachers" class="bg-violet-50">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <div class="flex flex-wrap justify-between items-end gap-4">
+      <h2 class="text-3xl sm:text-4xl font-extrabold">Преподаватели-практики</h2>
+      <p class="text-ink/60 max-w-md">Каждый работает аналитиком прямо сейчас и приносит в курс задачи из своей практики.</p>
+    </div>
+    <div class="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div data-reveal class="group bg-white rounded-3xl overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80&auto=format&fit=crop" alt="Преподаватель Алина Корнеева" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Алина Корнеева</h3><p class="text-sm text-violet-600 font-semibold mt-1">SQL и статистика</p><p class="text-sm text-ink/60 mt-3">Ведущий аналитик в крупном онлайн-ритейле, 8 лет в профессии. Отвечает за A/B-тесты.</p></div></div>
+      <div data-reveal class="group bg-white rounded-3xl overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop" alt="Преподаватель Максим Рябов" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Максим Рябов</h3><p class="text-sm text-violet-600 font-semibold mt-1">Python и pandas</p><p class="text-sm text-ink/60 mt-3">Data-аналитик в финтехе. Строит модели оттока и учит писать код, который не стыдно показать.</p></div></div>
+      <div data-reveal class="group bg-white rounded-3xl overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80&auto=format&fit=crop" alt="Преподаватель Дарья Соколова" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Дарья Соколова</h3><p class="text-sm text-violet-600 font-semibold mt-1">BI и дашборды</p><p class="text-sm text-ink/60 mt-3">Руководитель BI-направления в логистике. Сделала больше 200 дашбордов для топ-менеджмента.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Career -->
+<section id="career" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="grid lg:grid-cols-2 gap-6">
+    <img data-reveal src="https://images.unsplash.com/photo-1593698054469-2bb6fdf4b512?w=1200&q=80&auto=format&fit=crop" class="rounded-[32px] h-72 sm:h-[440px] w-full object-cover" alt="Выпускница работает с данными">
+    <div data-reveal class="rounded-[32px] bg-violet-50 p-7 sm:p-10 flex flex-col justify-between gap-6">
+      <div class="text-violet-500 text-6xl leading-none">“</div>
+      <p class="text-xl sm:text-2xl font-semibold leading-snug">Пришла из бухгалтерии без единой строчки кода. Через 8 месяцев получила оффер в маркетплейс, дипломный проект показывала прямо на собеседовании.</p>
+      <div class="flex items-center gap-4"><span class="w-12 h-12 rounded-full bg-violet-300 grid place-items-center font-bold">ЕВ</span><div><b>Екатерина В.</b><div class="text-sm text-ink/60">Продуктовый аналитик</div></div></div>
+    </div>
+  </div>
+  <div class="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div data-reveal class="rounded-3xl border border-violet-100 p-6"><div class="text-3xl sm:text-4xl font-extrabold text-violet-500">87%</div><p class="text-sm text-ink/60 mt-2">выпускников нашли работу за 6 месяцев</p></div>
+    <div data-reveal class="rounded-3xl border border-violet-100 p-6"><div class="text-3xl sm:text-4xl font-extrabold">140+</div><p class="text-sm text-ink/60 mt-2">компаний-партнёров берут стажёров</p></div>
+    <div data-reveal class="rounded-3xl border border-violet-100 p-6"><div class="text-3xl sm:text-4xl font-extrabold">3–4</div><p class="text-sm text-ink/60 mt-2">собеседования в среднем до оффера</p></div>
+    <div data-reveal class="rounded-3xl bg-lime-300 p-6"><div class="text-3xl sm:text-4xl font-extrabold">100%</div><p class="text-sm text-ink/70 mt-2">возврат денег, если не найдёте работу</p></div>
+  </div>
+</section>
+
+<section id="price" class="grid-bg border-t border-violet-100">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-center">Стоимость обучения</h2>
+    <p class="text-center text-ink/60 mt-3">Рассрочка без переплат на 24 месяца · налоговый вычет 13%</p>
+    <div class="mt-12 sm:mt-14 grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div data-reveal class="bg-white rounded-3xl p-7 sm:p-9 border border-violet-100">
+        <h3 class="text-xl font-bold">Самостоятельный</h3>
+        <p class="text-sm text-ink/60 mt-2">Все уроки, тренажёр, сообщество</p>
+        <div class="mt-8 flex items-baseline gap-3"><span class="text-4xl font-extrabold">3 900 ₽</span><span class="text-ink/50">/мес</span></div>
+        <ul class="mt-8 space-y-3 text-sm"><li>✓ 6 модулей и тренажёр</li><li>✓ Чат с однокурсниками</li><li class="text-ink/40">— Проверка наставником</li><li class="text-ink/40">— Карьерный центр</li></ul>
+        <a href="#lesson" data-plan="Самостоятельный" class="mt-9 block text-center py-4 rounded-2xl border-2 border-ink font-bold hover:bg-ink hover:text-white transition">Выбрать</a>
+      </div>
+      <div data-reveal class="bg-ink text-white rounded-3xl p-7 sm:p-9 relative">
+        <span class="absolute top-6 right-6 px-3 py-1 rounded-full bg-lime-300 text-ink text-xs font-bold">Выбирают 82%</span>
+        <h3 class="text-xl font-bold">С наставником</h3>
+        <p class="text-sm text-white/60 mt-2 pr-16 sm:pr-0">Полное сопровождение до трудоустройства</p>
+        <div class="mt-8 flex flex-wrap items-baseline gap-x-3"><span class="text-4xl font-extrabold">5 400 ₽</span><span class="text-white/50">/мес</span><span class="text-white/40 line-through text-sm">9 000 ₽</span></div>
+        <ul class="mt-8 space-y-3 text-sm"><li>✓ 6 модулей и тренажёр</li><li>✓ Проверка работ за 24 часа</li><li>✓ Карьерный центр</li><li>✓ Гарантия трудоустройства</li></ul>
+        <a href="#lesson" data-plan="С наставником" class="mt-9 block text-center py-4 rounded-2xl bg-violet-500 font-bold hover:bg-violet-600 transition">Записаться со скидкой</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lesson" class="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-24">
+  <div data-reveal class="rounded-[32px] sm:rounded-[40px] bg-violet-500 text-white p-7 sm:p-10 md:p-16 grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+    <div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">Начните с бесплатного урока</h2>
+      <p class="mt-4 text-white/80">Разберём, чем занимается аналитик, и решим первую задачу на SQL. Доступ придёт на почту сразу.</p>
+      <p id="planNote" class="mt-4 text-lime-300 font-semibold hidden"></p>
+    </div>
+    <form data-demo class="bg-white rounded-3xl p-5 sm:p-6 space-y-3">
+      <input required name="name" autocomplete="name" class="w-full px-5 py-4 rounded-xl bg-violet-50 text-ink outline-none focus:ring-2 focus:ring-violet-300" placeholder="Имя">
+      <input required type="email" name="email" autocomplete="email" class="w-full px-5 py-4 rounded-xl bg-violet-50 text-ink outline-none focus:ring-2 focus:ring-violet-300" placeholder="Email">
+      <button class="w-full py-4 rounded-xl bg-ink text-white font-bold hover:bg-violet-700 transition">Получить урок</button>
+      <p data-msg class="text-sm text-violet-700 text-center" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-violet-100 pb-12 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-10 flex flex-col md:flex-row flex-wrap justify-between gap-3 text-sm text-ink/50">
+    <span class="font-extrabold text-ink">Σ Сигма</span><span>Онлайн-школа аналитики данных</span><a href="mailto:hello@example.ru" class="hover:text-violet-600">hello@example.ru</a><span>© 2026</span>
+  </div>
+</footer>
+
+<!-- How modal -->
+<div id="howModal" data-modal class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-ink/70 backdrop-blur-sm sm:p-6">
+  <div class="bg-white w-full sm:max-w-2xl rounded-t-3xl sm:rounded-3xl p-6 sm:p-10 max-h-[92vh] overflow-y-auto relative">
+    <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-violet-50 grid place-items-center text-xl">×</button>
+    <h3 class="text-2xl sm:text-3xl font-extrabold pr-10">Как проходит обычная неделя</h3>
+    <ol class="mt-6 space-y-4">
+      <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-xl bg-violet-500 text-white grid place-items-center font-bold">Пн</span><div><b>Новая тема</b><p class="text-sm text-ink/60">3–4 видео по 10–15 минут и конспект. Смотрите, когда удобно.</p></div></li>
+      <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-xl bg-violet-500 text-white grid place-items-center font-bold">Ср</span><div><b>Практика в тренажёре</b><p class="text-sm text-ink/60">20–30 задач с автопроверкой и подсказками.</p></div></li>
+      <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-xl bg-violet-500 text-white grid place-items-center font-bold">Чт</span><div><b>Живой вебинар</b><p class="text-sm text-ink/60">В 19:00 по Москве разбираем вопросы, запись остаётся.</p></div></li>
+      <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-xl bg-lime-300 grid place-items-center font-bold">Вс</span><div><b>Домашний проект</b><p class="text-sm text-ink/60">Сдаёте работу, наставник отвечает в течение 24 часов.</p></div></li>
+    </ol>
+    <a href="#lesson" data-close class="mt-8 block text-center py-4 rounded-2xl bg-violet-500 text-white font-bold hover:bg-violet-600 transition">Попробовать бесплатно</a>
+  </div>
+</div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  // Квиз
+  const Q = [
+    { q: 'Что вам больше нравится в работе?', a: [['Находить закономерности в цифрах', 2], ['Общаться с людьми и договариваться', 0], ['Придумывать и рисовать', 1]] },
+    { q: 'Сколько времени готовы учиться в неделю?', a: [['До 5 часов', 0], ['8–12 часов', 2], ['15 часов и больше', 2]] },
+    { q: 'Есть ли опыт с Excel или таблицами?', a: [['Нет, только начинаю', 1], ['Делаю простые формулы', 2], ['Уверенно: сводные, ВПР', 2]] }
+  ];
+  let step = 0, score = 0;
+  const box = document.getElementById('quizBox'), bar = document.getElementById('qBar'), stepEl = document.getElementById('qStep');
+  function render() {
+    if (step < Q.length) {
+      bar.style.width = (step / Q.length * 100) + '%';
+      stepEl.textContent = `Вопрос ${step + 1} из ${Q.length}`;
+      box.innerHTML = `<h3 class="text-xl sm:text-2xl font-bold">${Q[step].q}</h3><div class="mt-6 grid gap-3">` +
+        Q[step].a.map(([t, s]) => `<button data-s="${s}" class="opt text-left px-5 py-4 rounded-2xl border-2 border-violet-100 font-semibold bg-white">${t}</button>`).join('') + '</div>';
+    } else {
+      bar.style.width = '100%'; stepEl.textContent = 'Готово!';
+      const good = score >= 5;
+      box.innerHTML = `<div class="rounded-3xl ${good ? 'bg-lime-300' : 'bg-violet-50'} p-6 sm:p-8">
+        <div class="text-4xl">${good ? '🎯' : '🌱'}</div>
+        <h3 class="mt-3 text-2xl font-extrabold">${good ? 'Вам точно стоит попробовать!' : 'Начните с бесплатного урока'}</h3>
+        <p class="mt-3 text-ink/70">${good ? 'У вас аналитический склад ума и есть время на практику. Рекомендуем тариф «С наставником»: он быстрее приведёт к первому офферу.' : 'Профессия может подойти, но сначала проверьте себя на простой задаче. Бесплатный урок займёт 40 минут.'}</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3"><a href="#lesson" class="text-center px-6 py-3.5 rounded-xl bg-ink text-white font-bold hover:bg-violet-600 transition">Получить бесплатный урок</a><button id="qAgain" class="px-6 py-3.5 rounded-xl border-2 border-ink/15 font-bold hover:border-ink transition">Пройти заново</button></div></div>`;
+      document.getElementById('qAgain').onclick = () => { step = 0; score = 0; render(); };
+    }
+  }
+  box.addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; score += +b.dataset.s; step++; render(); });
+  render();
+
+  // Выбор тарифа
+  document.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => {
+    const n = document.getElementById('planNote'); n.textContent = 'Вы выбрали тариф «' + a.dataset.plan + '». Скидка 40% закрепится за вами после урока.'; n.classList.remove('hidden');
+  }));
+</script>
+</body>
+</html>

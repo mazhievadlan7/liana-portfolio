@@ -1,0 +1,8 @@
+BRIEF.md
+build.sh
+.claude/
+**/full.png
+**/mobile.png
+**/cover.png
+**/_*.html
+.DS_Store

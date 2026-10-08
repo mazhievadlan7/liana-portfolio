@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Гараж 77 — автосервис</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{display:['Unbounded','sans-serif'],sans:['Inter','sans-serif']},colors:{fire:'#ff6a1a',steel:{800:'#1c1f24',900:'#131518'}}}}}</script>
+<style>body{-webkit-font-smoothing:antialiased}</style>
+</head>
+<body class="bg-steel-900 text-white font-sans">
+<header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+  <div class="font-display text-xl">ГАРАЖ<span class="text-fire">77</span></div>
+  <nav class="hidden lg:flex gap-9 text-sm text-white/65"><a>Услуги</a><a>Цены</a><a>Гарантия</a><a>Контакты</a></nav>
+  <a class="px-5 py-3 rounded-xl bg-fire font-semibold text-sm">Записаться онлайн</a>
+</header>
+<section class="max-w-7xl mx-auto px-6 pt-8 pb-20 grid lg:grid-cols-2 gap-10 items-center">
+  <div>
+    <span class="px-3 py-1.5 rounded-lg bg-white/10 text-sm">🔧 Работаем с 8:00 до 22:00 без выходных</span>
+    <h1 class="font-display text-5xl md:text-6xl leading-[1.08] mt-6">Ремонт авто<br>с гарантией<br><span class="text-fire">до 1 года</span></h1>
+    <p class="mt-6 text-lg text-white/60 max-w-lg">Диагностика, ТО, ремонт двигателя и ходовой. Согласуем каждую работу до начала и присылаем фото и видео замены деталей в мессенджер.</p>
+    <div class="mt-9 flex gap-3"><a class="px-7 py-4 rounded-xl bg-fire font-bold">Рассчитать ремонт</a><a class="px-7 py-4 rounded-xl bg-white/10 font-bold">Прайс-лист</a></div>
+  </div>
+  <div class="grid grid-cols-5 grid-rows-2 gap-4 h-[480px]">
+    <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=900&q=80&auto=format&fit=crop" class="col-span-3 row-span-2 h-full w-full object-cover rounded-3xl" alt="">
+    <img src="https://images.unsplash.com/photo-1645445522156-9ac06bc7a767?w=600&q=80&auto=format&fit=crop" class="col-span-2 h-full w-full object-cover rounded-3xl" alt="">
+    <div class="col-span-2 rounded-3xl bg-fire p-6 flex flex-col justify-between"><span class="font-display text-4xl">−20%</span><span class="text-sm font-medium">на первое ТО при записи через сайт</span></div>
+  </div>
+</section>
+<section class="bg-steel-800">
+  <div class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="font-display text-4xl">Популярные услуги</h2>
+    <div class="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Компьютерная диагностика</b><p class="text-sm text-white/50 mt-1">30 минут</p></div><span class="font-display text-fire">1 200 ₽</span></div>
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Замена масла и фильтра</b><p class="text-sm text-white/50 mt-1">40 минут</p></div><span class="font-display text-fire">900 ₽</span></div>
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Шиномонтаж R16</b><p class="text-sm text-white/50 mt-1">4 колеса, балансировка</p></div><span class="font-display text-fire">2 400 ₽</span></div>
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Замена тормозных колодок</b><p class="text-sm text-white/50 mt-1">одна ось</p></div><span class="font-display text-fire">1 500 ₽</span></div>
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Развал-схождение</b><p class="text-sm text-white/50 mt-1">3D-стенд</p></div><span class="font-display text-fire">2 000 ₽</span></div>
+      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Заправка кондиционера</b><p class="text-sm text-white/50 mt-1">с проверкой на утечки</p></div><span class="font-display text-fire">2 500 ₽</span></div>
+    </div>
+  </div>
+</section>
+<section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-4 gap-6">
+  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">📸</div><b class="block mt-4">Фотоотчёт</b><p class="text-sm text-white/55 mt-2">Видите старые и новые детали</p></div>
+  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">🧾</div><b class="block mt-4">Цена до работ</b><p class="text-sm text-white/55 mt-2">Без доп. работ без согласования</p></div>
+  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">🛡️</div><b class="block mt-4">Гарантия 1 год</b><p class="text-sm text-white/55 mt-2">На работы и наши запчасти</p></div>
+  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">☕</div><b class="block mt-4">Зона ожидания</b><p class="text-sm text-white/55 mt-2">Кофе, Wi-Fi и вид на подъёмник</p></div>
+</section>
+<section class="max-w-7xl mx-auto px-6 pb-20">
+  <div class="rounded-[32px] bg-fire p-12 grid lg:grid-cols-2 gap-8 items-center">
+    <h2 class="font-display text-4xl leading-tight">Запишитесь на удобное время</h2>
+    <div class="grid sm:grid-cols-2 gap-3"><input class="px-5 py-4 rounded-xl text-steel-900" placeholder="Марка и модель"><input class="px-5 py-4 rounded-xl text-steel-900" placeholder="Телефон"><button class="sm:col-span-2 py-4 rounded-xl bg-steel-900 font-bold">Записаться</button></div>
+  </div>
+</section>
+<footer class="border-t border-white/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-white/45"><span class="font-display text-white">ГАРАЖ<span class="text-fire">77</span></span><span>Автосервис полного цикла</span><span>© 2026</span></div></footer>
+</body>
+</html>

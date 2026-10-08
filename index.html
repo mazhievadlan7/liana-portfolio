@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лиана: сайты, Telegram-боты и ИИ-агенты</title>
+<meta name="description" content="Портфолио Лианы. Лендинги, сайты на Tilda и HTML, Telegram-боты, Mini App и ИИ-агенты. 20 живых демо-проектов, которые можно открыть.">
+<meta property="og:title" content="Лиана: сайты, боты и ИИ-агенты">
+<meta property="og:description" content="20 живых демо-проектов: лендинги, Tilda, Telegram Mini App, ИИ-агенты.">
+<meta property="og:image" content="og.jpg">
+<meta name="theme-color" content="#08080c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%2308080c'/><circle cx='32' cy='32' r='14' fill='%23c8ff3e'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080c;--fg:#f4f4f6;--mute:#9b9ba8;--line:rgba(255,255,255,.09);--card:#101017;--acc:#c8ff3e;--vio:#8b6cff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.display{font-family:Unbounded,sans-serif;letter-spacing:-.02em}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+@media(max-width:640px){.wrap{padding:0 16px}}
+
+/* header */
+header{position:fixed;inset:0 0 auto;z-index:50;transition:background .3s,backdrop-filter .3s}
+header.solid{background:rgba(8,8,12,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-family:Unbounded;font-weight:700;font-size:18px;display:flex;align-items:center;gap:10px}
+.logo i{width:12px;height:12px;border-radius:50%;background:var(--acc);box-shadow:0 0 18px var(--acc)}
+.links{display:flex;gap:32px;font-size:14px;color:var(--mute)}
+.links a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;font-size:14px;transition:transform .25s,background .25s,color .25s;cursor:pointer;border:0}
+.btn:hover{transform:translateY(-2px)}
+.btn-acc{background:var(--acc);color:#0b0b0f}
+.btn-ghost{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg)}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--fg);font-size:20px}
+@media(max-width:860px){.links,.nav .btn{display:none}.burger{display:block}}
+.mnav{position:fixed;inset:72px 0 auto;z-index:49;background:rgba(8,8,12,.97);border-bottom:1px solid var(--line);padding:16px 16px 24px;display:none;flex-direction:column;gap:6px}
+.mnav.open{display:flex}
+.mnav a{padding:14px 8px;font-size:18px;border-bottom:1px solid var(--line)}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+#scene{position:absolute;inset:0;width:100%;height:100%}
+.hero-fallback{position:absolute;inset:0;background:radial-gradient(50% 50% at 70% 45%,rgba(139,108,255,.45),transparent 70%),radial-gradient(30% 30% at 60% 60%,rgba(200,255,62,.25),transparent 70%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-top:96px;padding-bottom:64px;pointer-events:none}
+.hero .wrap *{pointer-events:auto}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-size:13px;color:#d6d6de;backdrop-filter:blur(8px)}
+.pill b{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+h1{font-size:clamp(36px,6vw,88px);line-height:1;font-weight:500;margin:28px 0 28px;max-width:12.5ch}
+@media(max-width:900px){.hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,8,12,.1) 0%,rgba(8,8,12,.75) 45%,rgba(8,8,12,.9) 100%);pointer-events:none}}
+h1 em{font-style:normal;color:var(--acc)}
+.lead{font-size:clamp(16px,1.5vw,20px);color:#c3c3cc;max-width:540px;line-height:1.6}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.hero-stats{display:flex;gap:40px;margin-top:64px;flex-wrap:wrap}
+.hero-stats div{font-size:13px;color:var(--mute)}
+.hero-stats b{display:block;font-family:Unbounded;font-size:30px;color:var(--fg);font-weight:500;margin-bottom:4px}
+@media(max-width:640px){.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:44px}.hero-stats b{font-size:20px}.hero-stats div{font-size:12px}.scroll-hint{display:none}}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;font-size:12px;color:var(--mute);letter-spacing:.2em;text-transform:uppercase}
+
+/* marquee */
+.marquee{border-block:1px solid var(--line);overflow:hidden;padding:22px 0;background:#0b0b10}
+.track{display:flex;gap:48px;width:max-content;animation:mq 38s linear infinite;font-family:Unbounded;font-size:clamp(18px,2.4vw,30px);white-space:nowrap}
+.track span{display:flex;align-items:center;gap:48px;color:#d9d9e0}
+.track span::after{content:"✦";color:var(--acc);font-size:.7em}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* sections */
+section.block{padding:120px 0}
+@media(max-width:640px){section.block{padding:80px 0}}
+.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-bottom:18px}
+h2{font-size:clamp(32px,4.6vw,64px);line-height:1.04;font-weight:500;max-width:16ch}
+.sub{color:var(--mute);max-width:560px;line-height:1.65;margin-top:18px;font-size:17px}
+
+/* works */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:40px 0 32px}
+.chip{padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:#cfcfd8;font:600 14px Manrope;cursor:pointer;transition:.2s}
+.chip:hover{border-color:#ffffff40}
+.chip.on{background:var(--fg);color:#0b0b0f;border-color:var(--fg)}
+.chip small{opacity:.55;margin-left:4px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+@media(max-width:760px){.grid{grid-template-columns:1fr;gap:18px}}
+.work{position:relative;border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .3s;display:block}
+.work:hover{transform:translateY(-6px);border-color:#ffffff30}
+.work .shot{aspect-ratio:16/10;overflow:hidden;position:relative;background:#15151d}
+.work .shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.work:hover .shot img{transform:scale(1.045)}
+.work .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,12,.55))}
+.work .open{position:absolute;top:16px;right:16px;z-index:2;padding:9px 14px;border-radius:999px;background:rgba(8,8,12,.7);backdrop-filter:blur(8px);font-size:13px;font-weight:700;opacity:0;transform:translateY(-6px);transition:.3s}
+.work:hover .open{opacity:1;transform:none}
+@media(hover:none){.work .open{opacity:1;transform:none}}
+.work .meta{padding:20px 22px 22px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.work h3{font-family:Unbounded;font-weight:500;font-size:19px;margin-bottom:6px}
+.work p{color:var(--mute);font-size:14px;line-height:1.5}
+.work .tag{flex:none;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:#cfcfd8;white-space:nowrap}
+.work .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.note{margin-top:28px;font-size:14px;color:var(--mute);border:1px dashed var(--line);border-radius:16px;padding:16px 18px;line-height:1.6}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+@media(max-width:960px){.svc{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.svc{grid-template-columns:1fr}}
+.s{border:1px solid var(--line);border-radius:24px;padding:28px;background:linear-gradient(180deg,rgba(255,255,255,.035),transparent);display:flex;flex-direction:column;gap:14px;min-height:260px;transition:border-color .3s}
+.s:hover{border-color:#ffffff30}
+.s .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(200,255,62,.1);color:var(--acc);font-size:22px}
+.s h3{font-family:Unbounded;font-weight:500;font-size:20px}
+.s p{color:var(--mute);font-size:15px;line-height:1.6;flex:1}
+.s .price{font-weight:700;font-size:16px}
+.s .price span{color:var(--mute);font-weight:500;font-size:14px}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px;counter-reset:st}
+@media(max-width:960px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+.step{padding:28px;border-top:1px solid var(--line);position:relative}
+.step::before{counter-increment:st;content:"0" counter(st);font-family:Unbounded;font-size:44px;color:transparent;-webkit-text-stroke:1px #ffffff40;display:block;margin-bottom:18px}
+.step h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.step p{color:var(--mute);font-size:15px;line-height:1.6}
+
+/* faq */
+.faq{margin-top:48px;border-top:1px solid var(--line)}
+.q{border-bottom:1px solid var(--line)}
+.q button{width:100%;text-align:left;background:none;border:0;color:var(--fg);font:600 18px Manrope;padding:24px 40px 24px 0;position:relative;cursor:pointer}
+.q button::after{content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:26px;color:var(--acc);transition:transform .3s}
+.q.open button::after{transform:translateY(-50%) rotate(45deg)}
+.q .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s}
+.q.open .a{grid-template-rows:1fr}
+.q .a>div{overflow:hidden;color:var(--mute);line-height:1.7;font-size:16px}
+.q.open .a>div{padding-bottom:24px}
+
+/* contact */
+.contact{border-radius:32px;padding:clamp(32px,6vw,80px);background:radial-gradient(60% 80% at 100% 0%,rgba(139,108,255,.35),transparent 60%),radial-gradient(50% 70% at 0% 100%,rgba(200,255,62,.18),transparent 60%),#0f0f16;border:1px solid var(--line);position:relative;overflow:hidden}
+.contact h2{max-width:14ch}
+.contact .hero-cta{margin-top:40px}
+footer{padding:40px 0 56px;color:var(--mute);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(40px)}
+.no-js .rv,.rv.in{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.track{animation:none}}
+.cursor{position:fixed;left:0;top:0;width:10px;height:10px;border-radius:50%;background:var(--acc);pointer-events:none;z-index:100;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+.cursor.big{width:64px;height:64px}
+@media(hover:none){.cursor{display:none}}
+</style>
+</head>
+<body class="no-js">
+<script>document.body.classList.remove('no-js')</script>
+<div class="cursor" id="cursor"></div>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#top" class="logo"><i></i>Лиана</a>
+    <nav class="links"><a href="#works">Работы</a><a href="#services">Услуги</a><a href="#process">Как работаю</a><a href="#faq">Вопросы</a></nav>
+    <a href="#contact" class="btn btn-acc">Обсудить проект</a>
+    <button class="burger" id="burger" aria-label="Меню">☰</button>
+  </div>
+</header>
+<nav class="mnav" id="mnav"><a href="#works">Работы</a><a href="#services">Услуги</a><a href="#process">Как работаю</a><a href="#faq">Вопросы</a><a href="#contact">Связаться</a></nav>
+
+<section class="hero" id="top">
+  <div class="hero-fallback" id="fallback"></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="pill"><b></b>Беру новые проекты</span>
+    <h1 class="display">Сайты, боты и&nbsp;<em>ИИ-агенты</em>, которые приводят заявки</h1>
+    <p class="lead">Делаю лендинги на Tilda и HTML, Telegram-боты и Mini App, подключаю ИИ к заявкам и CRM. Ниже живые демо-проекты: их можно открыть и потыкать с телефона.</p>
+    <div class="hero-cta">
+      <a href="#works" class="btn btn-acc">Смотреть работы ↓</a>
+      <a href="#contact" class="btn btn-ghost">Написать мне</a>
+    </div>
+    <div class="hero-stats">
+      <div><b id="cnt">20</b>живых демо-сайтов</div>
+      <div><b>1–5 дней</b>срок на лендинг</div>
+      <div><b>100%</b>адаптив под телефон</div>
+    </div>
+  </div>
+  <div class="scroll-hint">листайте</div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section class="block" id="works">
+  <div class="wrap">
+    <div class="kicker rv">Работы</div>
+    <h2 class="display rv">Откройте любой проект и посмотрите вживую</h2>
+    <p class="sub rv">Каждая карточка ведёт на рабочий сайт: меню, калькуляторы, формы и корзины работают. Лучше всего смотреть с телефона.</p>
+    <div class="filters rv" id="filters"></div>
+    <div class="grid" id="grid"></div>
+    <p class="note rv">Все проекты на этой странице сделаны как демо: бренды выдуманные, заявки из форм никуда не уходят. Их задача показать, как будет выглядеть и работать ваш сайт.</p>
+  </div>
+</section>
+
+<section class="block" id="services" style="background:#0b0b10;border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker rv">Услуги</div>
+    <h2 class="display rv">Что могу сделать для вашего бизнеса</h2>
+    <div class="svc">
+      <div class="s rv"><div class="ic">◎</div><h3>Лендинг под ключ</h3><p>Структура, дизайн, адаптив, формы заявок, Метрика и подключение домена. На Tilda или на чистом HTML.</p><div class="price">от 3 500 ₽ <span>· 2–5 дней</span></div></div>
+      <div class="s rv"><div class="ic">✎</div><h3>Правки на Tilda</h3><p>Поправить блоки, мобильную версию, Zero Block, вставки кода, формы и оплату. Быстро и аккуратно.</p><div class="price">от 500 ₽ <span>· от 1 часа</span></div></div>
+      <div class="s rv"><div class="ic">▣</div><h3>Многостраничный сайт</h3><p>Сайт компании с услугами, портфолио, ценами и контактами. Понятная навигация и быстрая загрузка.</p><div class="price">по ТЗ <span>· расчёт за день</span></div></div>
+      <div class="s rv"><div class="ic">➤</div><h3>Telegram-бот</h3><p>Запись, заявки, оплата, рассылки, выгрузка в Google Таблицы или CRM. Пишу на Python.</p><div class="price">по ТЗ <span>· расчёт за день</span></div></div>
+      <div class="s rv"><div class="ic">◫</div><h3>Telegram Mini App</h3><p>Каталог, корзина и запись прямо внутри Telegram, без установки приложения.</p><div class="price">от 25 000 ₽</div></div>
+      <div class="s rv"><div class="ic">✦</div><h3>ИИ-агент</h3><p>Отвечает клиентам по вашей базе знаний, квалифицирует заявки и передаёт их менеджеру.</p><div class="price">от 18 000 ₽</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="process">
+  <div class="wrap">
+    <div class="kicker rv">Как работаю</div>
+    <h2 class="display rv">Прозрачно, по шагам, без сюрпризов</h2>
+    <div class="steps">
+      <div class="step rv"><h3>Разбор задачи</h3><p>Задаю вопросы, смотрю примеры, которые вам нравятся, и называю срок и цену.</p></div>
+      <div class="step rv"><h3>Структура и дизайн</h3><p>Показываю первый экран и структуру, согласуем стиль до вёрстки.</p></div>
+      <div class="step rv"><h3>Разработка</h3><p>Собираю сайт или бота, присылаю ссылку на черновик, чтобы вы видели процесс.</p></div>
+      <div class="step rv"><h3>Запуск</h3><p>Вношу правки, подключаю домен, формы и аналитику, передаю доступы.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="kicker rv">Вопросы</div>
+    <h2 class="display rv">Частые вопросы</h2>
+    <div class="faq" id="faqList">
+      <div class="q rv"><button>Это реальные клиенты?</button><div class="a"><div>Нет, это демо-проекты. Я сделала их, чтобы вы могли заранее увидеть уровень дизайна и то, как всё работает на телефоне. Ваш проект будет сделан под ваш бренд и ваши тексты.</div></div></div>
+      <div class="q rv"><button>Сколько стоит и как считается цена?</button><div class="a"><div>Зависит от объёма. Лендинг начинается от 3 500 ₽, правки на Tilda от 500 ₽. Пришлите задачу или пример, и я назову точную цену и срок до начала работы.</div></div></div>
+      <div class="q rv"><button>Можно сделать на Tilda, а не на коде?</button><div class="a"><div>Да. Работаю и с Tilda (стандартные блоки, Zero Block, вставки кода), и с HTML, и с WordPress. Подскажу, что удобнее под вашу задачу.</div></div></div>
+      <div class="q rv"><button>Что если нужно что-то поменять после сдачи?</button><div class="a"><div>Правки по согласованному ТЗ входят в работу. Дальнейшую поддержку и доработки тоже беру, договоримся об удобном формате.</div></div></div>
+      <div class="q rv"><button>Как происходит оплата?</button><div class="a"><div>Можно через Kwork с защитой сделки или напрямую. Для небольших задач оплата после результата.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="contact rv">
+      <div class="kicker">Связаться</div>
+      <h2 class="display">Расскажите о задаче, отвечу в течение часа</h2>
+      <p class="sub">Напишите в Telegram или закажите через Kwork. Можно просто прислать ссылку на сайт, который нравится, и описать задачу своими словами.</p>
+      <div class="hero-cta">
+        <a id="tgLink" href="https://kwork.ru/user/liana8970" target="_blank" rel="noopener" class="btn btn-acc">Написать в Telegram</a>
+        <a href="https://kwork.ru/user/liana8970" target="_blank" rel="noopener" class="btn btn-ghost">Мой профиль на Kwork ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© 2026 Лиана · сайты, боты, ИИ-агенты</span><a href="#top">Наверх ↑</a></div></footer>
+
+<script src="ready.js"></script>
+<script>
+// ---------- данные ----------
+const TG = 'Liana_8970';
+if (TG) document.getElementById('tgLink').href = 'https://t.me/' + TG;
+
+const CATS = {land:'Лендинги', biz:'Сайты компаний', event:'Мероприятия', shop:'Магазины', tg:'Telegram и ИИ'};
+const ALL_WORKS = [
+  ['wedding','Свадебное агентство','Галерея свадеб с фильтром, пакеты, заявка с датой','event','#c9a27c'],
+  ['ai-agent','ИИ-агент для продаж','Лендинг SaaS: тарифы, демо-чат, FAQ','tg','#8b6cff'],
+  ['calories','Нутрициолог','Калькулятор калорий и БЖУ, продажа планов питания','land','#5bd18b'],
+  ['coffee-app','Mini App кофейни','Меню и корзина внутри Telegram','tg','#d08b4d'],
+  ['realestate','Элитная недвижимость','Каталог с фильтром и ипотечный калькулятор','biz','#c8a96a'],
+  ['invitation','Онлайн-приглашение','Таймер до события, музыка, RSVP','event','#e6a5b4'],
+  ['domgran','Строительство домов','Калькулятор стоимости дома','biz','#e2a33a'],
+  ['outdoor','Наружная реклама','Калькулятор вывески, адресная программа','biz','#ff5a36'],
+  ['lumiere','Салон красоты','Онлайн-запись с выбором услуги и времени','land','#c79b8b'],
+  ['shop','Бренд для маркетплейсов','Витрина товаров, варианты, корзина','shop','#ff7aa8'],
+  ['psychologist','Психолог','Тест, запись на сессию, FAQ','land','#a7b59a'],
+  ['cleaning','Клининг','Калькулятор уборки, слайдер до/после','biz','#2fb8ff'],
+  ['travel','Авторские туры','Каталог туров, программа по дням','biz','#2fa39a'],
+  ['kids','Детский центр','Расписание, фильтр по возрасту, запись','biz','#ffb020'],
+  ['sigma-school','Онлайн-школа','Курсы, программа, тарифы','land','#6d7cff'],
+  ['dental','Стоматология','Услуги, врачи, запись','biz','#36c2c9'],
+  ['fitness','Фитнес-клуб','Абонементы и расписание','land','#d4ff3a'],
+  ['law','Юридическая фирма','Практики, кейсы, консультация','biz','#b89b5e'],
+  ['autoservice','Автосервис','Прайс и онлайн-запись','biz','#ff6a1a'],
+  ['food','Доставка еды','Меню с фильтром и корзина','shop','#ff4d4d'],
+];
+
+// показываем только готовые работы (список собирает build.sh)
+const WORKS = window.READY ? ALL_WORKS.filter(w => READY.includes(w[0])) : ALL_WORKS;
+
+// marquee
+const words = ['Лендинги','Tilda','Telegram-боты','Mini App','ИИ-агенты','Адаптив','Zero Block','Интеграции с CRM'];
+document.getElementById('track').innerHTML = [...words,...words,...words,...words].map(w=>`<span>${w}</span>`).join('');
+
+// works grid
+const grid = document.getElementById('grid'), filters = document.getElementById('filters');
+function render(cat){
+  const list = WORKS.filter(w => cat==='all' || w[3]===cat);
+  grid.innerHTML = list.map(([slug,t,d,c,col]) => `
+    <a class="work rv" href="work/${slug}/" target="_blank" rel="noopener" data-cursor>
+      <div class="shot"><img src="work/${slug}/thumb.jpg" alt="${t}: демо-сайт" loading="lazy" width="1200" height="750"></div>
+      <span class="open">Открыть сайт ↗</span>
+      <div class="meta"><div><h3><span class="dot" style="background:${col}"></span>${t}</h3><p>${d}</p></div><span class="tag">${CATS[c]}</span></div>
+    </a>`).join('');
+  observe();
+}
+const counts = WORKS.reduce((a,w)=>(a[w[3]]=(a[w[3]]||0)+1,a),{});
+filters.innerHTML = `<button class="chip on" data-c="all">Все<small>${WORKS.length}</small></button>` +
+  Object.entries(CATS).filter(([k])=>counts[k]).map(([k,v])=>`<button class="chip" data-c="${k}">${v}<small>${counts[k]||0}</small></button>`).join('');
+filters.addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return;
+  filters.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on', x===b));
+  render(b.dataset.c);
+});
+document.getElementById('cnt').textContent = WORKS.length;
+
+// reveal
+let io;
+function observe(){
+  io = io || new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el));
+}
+render('all');
+
+// faq
+document.getElementById('faqList').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return; b.parentElement.classList.toggle('open');
+});
+
+// header + burger
+const hdr = document.getElementById('hdr'), mnav = document.getElementById('mnav');
+addEventListener('scroll', () => hdr.classList.toggle('solid', scrollY > 40), {passive:true});
+document.getElementById('burger').onclick = () => mnav.classList.toggle('open');
+mnav.addEventListener('click', e => { if(e.target.tagName==='A') mnav.classList.remove('open'); });
+
+// cursor
+const cur = document.getElementById('cursor');
+addEventListener('pointermove', e => { cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px'; });
+document.addEventListener('pointerover', e => cur.classList.toggle('big', !!e.target.closest('[data-cursor],.btn')));
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const canvas = document.getElementById('scene');
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true}); }
+catch(e) { canvas.remove(); throw e; }
+document.getElementById('fallback').style.opacity = .35;
+
+const mobile = matchMedia('(max-width: 760px)').matches;
+renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
+camera.position.z = 6;
+
+// --- переливающаяся «капля» с шумом в вершинном шейдере ---
+const noise = `
+vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;}
+vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);}vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;}
+float snoise(vec3 v){const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;
+i=mod289(i);vec4 p=permute(permute(permute(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+float n_=.142857142857;vec3 ns=n_*D.wyz-D.xzx;vec4 j=p-49.*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.*x_);
+vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.-abs(x)-abs(y);vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+vec4 s0=floor(b0)*2.+1.;vec4 s1=floor(b1)*2.+1.;vec4 sh=-step(h,vec4(0.));vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m=m*m;return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}`;
+
+const uniforms = { uTime:{value:0}, uAmp:{value:.32}, uMouse:{value:new THREE.Vector2()} };
+const blob = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1.45, mobile ? 48 : 96),
+  new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: noise + `
+      uniform float uTime; uniform float uAmp; uniform vec2 uMouse;
+      varying vec3 vN; varying vec3 vV; varying float vD;
+      void main(){
+        float d = snoise(normal*1.25 + vec3(uTime*.22, uTime*.17, uMouse.x*.6)) * uAmp
+                + snoise(normal*3.2 + uTime*.35) * .06;
+        vD = d;
+        vec3 p = position + normal * d;
+        vec4 mv = modelViewMatrix * vec4(p,1.);
+        vN = normalize(normalMatrix * normal); vV = -mv.xyz;
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying vec3 vN; varying vec3 vV; varying float vD; uniform float uTime;
+      void main(){
+        vec3 n = normalize(vN); vec3 v = normalize(vV);
+        float f = pow(1. - max(dot(n,v),0.), 2.2);
+        vec3 a = vec3(.06,.05,.12);
+        vec3 vio = vec3(.55,.42,1.);
+        vec3 lime = vec3(.78,1.,.24);
+        vec3 cyan = vec3(.25,.85,1.);
+        float t = .5 + .5*sin(vD*7. + uTime*.6 + n.y*2.);
+        vec3 iri = mix(vio, cyan, t);
+        iri = mix(iri, lime, smoothstep(.55,.95,f) * .65);
+        vec3 col = mix(a, iri, .25 + f*.95);
+        col += pow(max(dot(n, normalize(vec3(.4,.8,.6))),0.), 24.) * .55;
+        gl_FragColor = vec4(col, 1.);
+      }`
+  })
+);
+scene.add(blob);
+
+// частицы-«пыль» вокруг
+const N = mobile ? 500 : 1400, pos = new Float32Array(N*3);
+for(let i=0;i<N;i++){ const r = 2.4 + Math.random()*3.5, t = Math.random()*Math.PI*2, p = Math.acos(2*Math.random()-1);
+  pos.set([r*Math.sin(p)*Math.cos(t), r*Math.sin(p)*Math.sin(t)*.7, r*Math.cos(p)*.6 - 1], i*3); }
+const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pos,3));
+const dust = new THREE.Points(pg, new THREE.PointsMaterial({size:.018, color:0xd9d4ff, transparent:true, opacity:.7, depthWrite:false}));
+scene.add(dust);
+
+// кольцо-орбита
+const ring = new THREE.Mesh(new THREE.TorusGeometry(2.25,.006,8,200), new THREE.MeshBasicMaterial({color:0xc8ff3e, transparent:true, opacity:.55}));
+ring.rotation.x = 1.25; scene.add(ring);
+
+function size(){
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+  // на широком экране капля справа, на узком сверху и дальше
+  const wide = w > 900;
+  blob.position.set(wide ? 2.2 : 0, wide ? -.05 : 1.45, 0);
+  dust.position.copy(blob.position); ring.position.copy(blob.position);
+  blob.scale.setScalar(wide ? .74 : .62); ring.scale.setScalar(wide ? .74 : .62); dust.scale.setScalar(wide ? 1 : .8);
+}
+addEventListener('resize', size); size();
+
+const mouse = new THREE.Vector2(), target = new THREE.Vector2();
+addEventListener('pointermove', e => target.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight*2-1)));
+
+let visible = true;
+new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(canvas);
+const clock = new THREE.Clock();
+(function loop(){
+  requestAnimationFrame(loop);
+  if(!visible) return;
+  const t = clock.getElapsedTime(), s = Math.min(scrollY / innerHeight, 1);
+  mouse.lerp(target, .05);
+  uniforms.uTime.value = t; uniforms.uMouse.value.copy(mouse);
+  uniforms.uAmp.value = .32 + s*.35;
+  blob.rotation.y = t*.12 + mouse.x*.4; blob.rotation.x = mouse.y*.3 + s*.6;
+  ring.rotation.z = t*.15; ring.rotation.y = mouse.x*.25;
+  dust.rotation.y = t*.03 + mouse.x*.1;
+  camera.position.z = 6 + s*1.6;
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>

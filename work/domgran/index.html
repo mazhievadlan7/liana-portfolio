@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Домгрань — строительство домов под ключ</title>
+<meta name="description" content="Строим загородные дома из газобетона, клеёного бруса и каркаса под ключ за 120 дней. Фиксированная цена в договоре, онлайн-калькулятор стоимости.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Manrope', 'sans-serif'], display: ['Unbounded', 'sans-serif'] },
+      colors: {
+        forest: { 900: '#14261d', 800: '#1d3529', 700: '#27493a', 500: '#3f7a5f' },
+        sand: { 50: '#faf7f1', 100: '#f3ede1', 200: '#e7dcc6', 400: '#c9a36b', 500: '#b8894a' }
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .hero-shade { background: linear-gradient(90deg, rgba(20,38,29,.92) 0%, rgba(20,38,29,.7) 50%, rgba(20,38,29,.2) 100%); }
+  @media (max-width: 1023px) { .hero-shade { background: linear-gradient(180deg, rgba(20,38,29,.85) 0%, rgba(20,38,29,.75) 60%, rgba(20,38,29,.9) 100%); } }
+  input[type=range] { accent-color: #c9a36b; height: 28px; }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] .faq-ico { transform: rotate(45deg); }
+  .faq-ico { transition: transform .25s; }
+</style>
+</head>
+<body class="bg-sand-50 text-forest-900 font-sans">
+
+<!-- Header -->
+<header class="absolute inset-x-0 top-0 z-30">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-5 sm:py-6 flex items-center justify-between text-white">
+    <a href="#top" class="flex items-center gap-3">
+      <span class="w-10 h-10 rounded-xl bg-sand-400 grid place-items-center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14261d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+      </span>
+      <span class="font-display text-lg tracking-wide">ДОМГРАНЬ</span>
+    </a>
+    <nav class="hidden lg:flex gap-9 text-sm text-white/80">
+      <a href="#projects" class="hover:text-white transition">Проекты</a>
+      <a href="#calc" class="hover:text-white transition">Калькулятор</a>
+      <a href="#steps" class="hover:text-white transition">Как строим</a>
+      <a href="#faq" class="hover:text-white transition">Вопросы</a>
+    </nav>
+    <div class="flex items-center gap-3 sm:gap-5">
+      <a href="tel:+79000000000" class="hidden md:inline text-sm text-white/80 hover:text-white">+7 (900) 000-00-00</a>
+      <a href="#lead" class="hidden sm:inline-block px-5 py-3 rounded-full bg-white text-forest-900 text-sm font-semibold hover:bg-sand-100 transition">Получить смету</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-xl bg-white/10 border border-white/20 grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden mx-4 rounded-3xl bg-forest-900/95 backdrop-blur border border-white/10 p-6 text-white shadow-2xl">
+    <nav class="flex flex-col text-lg font-semibold divide-y divide-white/10">
+      <a href="#projects" class="py-3">Проекты</a>
+      <a href="#calc" class="py-3">Калькулятор</a>
+      <a href="#steps" class="py-3">Как строим</a>
+      <a href="#faq" class="py-3">Вопросы</a>
+    </nav>
+    <a href="#lead" class="mt-5 block text-center py-4 rounded-2xl bg-sand-400 text-forest-900 font-bold">Получить смету</a>
+    <a href="tel:+79000000000" class="mt-3 block text-center text-white/70 text-sm">+7 (900) 000-00-00</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section id="top" class="relative lg:min-h-[760px] flex items-center overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=2000&q=80&auto=format&fit=crop" alt="Современный загородный дом с панорамными окнами" class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 hero-shade"></div>
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-6 pt-28 sm:pt-32 pb-16 lg:pb-20 grid lg:grid-cols-12 gap-10 items-center w-full">
+    <div class="lg:col-span-7 text-white">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur text-sm text-sand-200 border border-white/15">
+        <span class="w-2 h-2 rounded-full bg-sand-400"></span> Фиксируем цену в договоре
+      </span>
+      <h1 class="font-display text-[34px] leading-[1.12] sm:text-5xl md:text-6xl md:leading-[1.08] mt-6">Дом для жизни<br>под ключ за 120 дней</h1>
+      <p class="mt-6 text-base sm:text-lg text-white/80 max-w-xl">Проектируем и строим загородные дома из газобетона и клеёного бруса. Одна смета, один договор, одна команда: от фундамента до чистовой отделки.</p>
+      <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+        <a href="#calc" class="text-center px-8 py-4 rounded-full bg-sand-400 text-forest-900 font-bold hover:bg-sand-500 hover:text-white transition">Рассчитать стоимость</a>
+        <a href="#projects" class="text-center px-8 py-4 rounded-full border border-white/30 font-semibold hover:bg-white/10 transition">Смотреть проекты</a>
+      </div>
+      <div class="mt-12 grid grid-cols-3 gap-4 sm:gap-6 max-w-xl">
+        <div><div class="font-display text-2xl sm:text-3xl text-sand-200">312</div><div class="text-xs sm:text-sm text-white/60 mt-1">домов сдано</div></div>
+        <div><div class="font-display text-2xl sm:text-3xl text-sand-200">10 лет</div><div class="text-xs sm:text-sm text-white/60 mt-1">гарантия на коробку</div></div>
+        <div><div class="font-display text-2xl sm:text-3xl text-sand-200">0 ₽</div><div class="text-xs sm:text-sm text-white/60 mt-1">доплат после договора</div></div>
+      </div>
+    </div>
+    <div class="lg:col-span-5">
+      <form data-demo class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="text-xs uppercase tracking-widest text-sand-500 font-bold">Бесплатно</div>
+        <h3 class="font-display text-xl sm:text-2xl mt-2">Смета на ваш дом за 1 день</h3>
+        <p class="text-sm text-forest-700/70 mt-2">Пришлём подробный расчёт по материалам и работам, без звонков менеджеров «для уточнения».</p>
+        <div class="mt-6 space-y-3">
+          <input required name="name" autocomplete="name" class="w-full px-5 py-4 rounded-2xl bg-sand-50 border border-sand-200 outline-none focus:border-sand-400" placeholder="Ваше имя">
+          <input required type="tel" name="phone" autocomplete="tel" class="w-full px-5 py-4 rounded-2xl bg-sand-50 border border-sand-200 outline-none focus:border-sand-400" placeholder="Телефон">
+          <select required name="area" class="w-full px-5 py-4 rounded-2xl bg-sand-50 border border-sand-200 text-forest-700 outline-none focus:border-sand-400">
+            <option value="">Площадь дома</option>
+            <option>до 100 м²</option>
+            <option selected>100–150 м²</option>
+            <option>150–200 м²</option>
+            <option>больше 200 м²</option>
+          </select>
+          <button class="w-full py-4 rounded-2xl bg-forest-800 text-white font-bold hover:bg-forest-700 transition">Получить смету</button>
+        </div>
+        <p data-msg class="text-sm text-forest-500 mt-3" role="status"></p>
+        <p class="text-xs text-forest-700/50 mt-1">Нажимая кнопку, вы соглашаетесь с политикой обработки данных</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Trust -->
+<section class="border-b border-sand-200 bg-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-sm">
+    <div class="flex items-center gap-3"><span class="w-10 h-10 shrink-0 rounded-full bg-sand-100 grid place-items-center">🏦</span><span>Аккредитация в&nbsp;6&nbsp;банках,<br><b>ипотека от 6%</b></span></div>
+    <div class="flex items-center gap-3"><span class="w-10 h-10 shrink-0 rounded-full bg-sand-100 grid place-items-center">📷</span><span>Онлайн-камеры<br><b>на каждом объекте</b></span></div>
+    <div class="flex items-center gap-3"><span class="w-10 h-10 shrink-0 rounded-full bg-sand-100 grid place-items-center">📄</span><span>Оплата поэтапно,<br><b>по факту работ</b></span></div>
+    <div class="flex items-center gap-3"><span class="w-10 h-10 shrink-0 rounded-full bg-sand-100 grid place-items-center">🧱</span><span>Собственное<br><b>производство бруса</b></span></div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+    <div>
+      <div class="text-sm font-bold uppercase tracking-widest text-sand-500">Каталог</div>
+      <h2 class="font-display text-3xl sm:text-4xl mt-3">Популярные проекты</h2>
+    </div>
+    <div class="flex flex-wrap gap-2 text-sm" id="projFilter">
+      <button data-f="all" class="px-5 py-2.5 rounded-full bg-forest-800 text-white transition">Все</button>
+      <button data-f="gas" class="px-5 py-2.5 rounded-full bg-white border border-sand-200 hover:border-sand-400 transition">Газобетон</button>
+      <button data-f="wood" class="px-5 py-2.5 rounded-full bg-white border border-sand-200 hover:border-sand-400 transition">Клеёный брус</button>
+      <button data-f="barn" class="px-5 py-2.5 rounded-full bg-white border border-sand-200 hover:border-sand-400 transition">Барнхаус</button>
+    </div>
+  </div>
+  <div class="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="projGrid"></div>
+</section>
+
+<!-- Calculator -->
+<section id="calc" class="bg-forest-900 text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <div data-reveal>
+      <div class="text-sm font-bold uppercase tracking-widest text-sand-400">Калькулятор</div>
+      <h2 class="font-display text-3xl sm:text-4xl mt-3 leading-tight">Сколько стоит ваш дом? Узнайте за&nbsp;30&nbsp;секунд</h2>
+      <p class="mt-5 text-white/70 max-w-md">Ориентировочная цена с фундаментом, кровлей, окнами и инженерией. Точную смету пришлём после выезда инженера, это бесплатно.</p>
+      <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1100&q=80&auto=format&fit=crop" class="mt-10 rounded-3xl h-56 sm:h-64 w-full object-cover hidden sm:block" alt="Светлая гостиная в построенном доме">
+    </div>
+    <div class="bg-forest-800 rounded-3xl p-6 sm:p-10 border border-white/10" data-reveal>
+      <label for="area" class="flex justify-between text-sm text-white/70"><span>Площадь дома</span><b class="text-white" id="areaOut">140 м²</b></label>
+      <input id="area" type="range" min="60" max="300" step="2" value="140" class="w-full mt-3">
+      <div class="flex justify-between text-xs text-white/40"><span>60 м²</span><span>300 м²</span></div>
+      <div class="mt-7 text-sm text-white/70">Материал стен</div>
+      <div class="mt-3 grid grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm" id="mat">
+        <button data-k="54" data-days="0" class="py-3 rounded-xl">Газобетон</button>
+        <button data-k="62" data-days="-10" class="py-3 rounded-xl">Клеёный брус</button>
+        <button data-k="46" data-days="-25" class="py-3 rounded-xl">Каркас</button>
+      </div>
+      <div class="mt-7 text-sm text-white/70">Отделка</div>
+      <div class="mt-3 grid grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm" id="fin">
+        <button data-k="0" class="py-3 rounded-xl">Коробка</button>
+        <button data-k="9" class="py-3 rounded-xl">Предчистовая</button>
+        <button data-k="19" class="py-3 rounded-xl">Под ключ</button>
+      </div>
+      <div class="mt-7 text-sm text-white/70">Дополнительно</div>
+      <div class="mt-3 grid sm:grid-cols-2 gap-2 text-sm" id="extras">
+        <label class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-sand-400/60"><input type="checkbox" value="650000" class="accent-[#c9a36b] w-4 h-4">Терраса 30 м² <span class="ml-auto text-white/50">+650 тыс.</span></label>
+        <label class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-sand-400/60"><input type="checkbox" value="420000" class="accent-[#c9a36b] w-4 h-4">Тёплый пол <span class="ml-auto text-white/50">+420 тыс.</span></label>
+      </div>
+      <div class="mt-8 pt-7 border-t border-white/10 flex items-end justify-between gap-4">
+        <div><div class="text-sm text-white/60">Ориентировочно</div><div class="font-display text-3xl sm:text-4xl text-sand-200" id="price">8,9 млн ₽</div><div class="text-xs text-white/50 mt-1" id="perm">≈ 63 000 ₽ за м²</div></div>
+        <div class="text-right text-sm text-white/60">Срок<br><b class="text-white text-lg" id="term">110 дней</b></div>
+      </div>
+      <a href="#lead" id="calcCta" class="mt-7 block text-center py-4 rounded-2xl bg-sand-400 text-forest-900 font-bold hover:bg-sand-200 transition">Получить точную смету</a>
+    </div>
+  </div>
+</section>
+
+<!-- Steps -->
+<section id="steps" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="text-sm font-bold uppercase tracking-widest text-sand-500">Прозрачный процесс</div>
+  <h2 class="font-display text-3xl sm:text-4xl mt-3">Как мы строим</h2>
+  <div class="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+    <div data-reveal class="p-7 sm:p-8 rounded-3xl bg-white border border-sand-200 hover:-translate-y-1 hover:shadow-lg transition">
+      <div class="font-display text-5xl text-sand-400">01</div>
+      <h3 class="font-bold text-lg mt-6">Проект и смета</h3>
+      <p class="text-sm text-forest-700/70 mt-3">Выезжаем на участок, делаем геологию и адаптируем проект. Цена фиксируется в договоре.</p>
+    </div>
+    <div data-reveal class="p-7 sm:p-8 rounded-3xl bg-white border border-sand-200 hover:-translate-y-1 hover:shadow-lg transition">
+      <div class="font-display text-5xl text-sand-400">02</div>
+      <h3 class="font-bold text-lg mt-6">Фундамент и коробка</h3>
+      <p class="text-sm text-forest-700/70 mt-3">Своя бригада, технадзор на каждом этапе. Фотоотчёт в Telegram каждый день.</p>
+    </div>
+    <div data-reveal class="p-7 sm:p-8 rounded-3xl bg-white border border-sand-200 hover:-translate-y-1 hover:shadow-lg transition">
+      <div class="font-display text-5xl text-sand-400">03</div>
+      <h3 class="font-bold text-lg mt-6">Кровля и инженерия</h3>
+      <p class="text-sm text-forest-700/70 mt-3">Окна, электрика, отопление, водоснабжение. Все скрытые работы снимаем на видео.</p>
+    </div>
+    <div data-reveal class="p-7 sm:p-8 rounded-3xl bg-forest-800 text-white hover:-translate-y-1 hover:shadow-lg transition">
+      <div class="font-display text-5xl text-sand-400">04</div>
+      <h3 class="font-bold text-lg mt-6">Отделка и ключи</h3>
+      <p class="text-sm text-white/70 mt-3">Сдаём дом по акту с независимым экспертом. Гарантия 10 лет на конструктив.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 sm:pb-24">
+  <div class="grid md:grid-cols-3 gap-5 sm:gap-6">
+    <img data-reveal src="https://images.unsplash.com/photo-1693639767415-27ff64ce4da2?w=900&q=80&auto=format&fit=crop" class="rounded-3xl h-64 sm:h-80 w-full object-cover" alt="Дом на этапе строительства">
+    <div data-reveal class="rounded-3xl bg-sand-100 p-8 sm:p-10 flex flex-col justify-between gap-8">
+      <div class="text-6xl font-display text-forest-800">4,9</div>
+      <div>
+        <div class="text-sand-500 text-xl">★★★★★</div>
+        <p class="mt-3 text-forest-700/80">Средняя оценка по 280 отзывам на картах и в отзовиках</p>
+      </div>
+    </div>
+    <img data-reveal src="https://images.unsplash.com/photo-1676802037786-3697d60497ae?w=900&q=80&auto=format&fit=crop" class="rounded-3xl h-64 sm:h-80 w-full object-cover" alt="Готовый дом после сдачи">
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="bg-white border-y border-sand-200">
+  <div class="max-w-4xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <h2 class="font-display text-3xl sm:text-4xl text-center">Частые вопросы</h2>
+    <div class="mt-10 sm:mt-12 divide-y divide-sand-200" data-reveal>
+      <details class="py-6" open><summary class="font-bold text-base sm:text-lg cursor-pointer list-none flex justify-between gap-4">Может ли цена вырасти во время стройки?<span class="faq-ico text-sand-500 text-2xl leading-none">+</span></summary><p class="mt-4 text-forest-700/70">Нет. Стоимость фиксируется в договоре. Если цены на материалы вырастут, это наш риск, а не ваш.</p></details>
+      <details class="py-6"><summary class="font-bold text-base sm:text-lg cursor-pointer list-none flex justify-between gap-4">Строите ли вы в ипотеку?<span class="faq-ico text-sand-500 text-2xl leading-none">+</span></summary><p class="mt-4 text-forest-700/70">Да, мы аккредитованы в шести банках. Помогаем собрать документы, ставка по семейной ипотеке от 6%. Банк перечисляет деньги поэтапно по актам, поэтому платите вы только за сделанное.</p></details>
+      <details class="py-6"><summary class="font-bold text-base sm:text-lg cursor-pointer list-none flex justify-between gap-4">Можно ли изменить типовой проект?<span class="faq-ico text-sand-500 text-2xl leading-none">+</span></summary><p class="mt-4 text-forest-700/70">Конечно. Перенести стены, добавить второй свет, кабинет или сауну можно бесплатно на этапе проекта. Архитектор пересчитает смету за 2 рабочих дня.</p></details>
+      <details class="py-6"><summary class="font-bold text-base sm:text-lg cursor-pointer list-none flex justify-between gap-4">Как я смогу контролировать стройку?<span class="faq-ico text-sand-500 text-2xl leading-none">+</span></summary><p class="mt-4 text-forest-700/70">На объекте стоит онлайн-камера, ссылку получаете в день старта. Прораб каждый вечер присылает фотоотчёт в Telegram, а скрытые работы принимает технадзор вместе с вами.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Lead -->
+<section id="lead" class="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-24">
+  <div class="relative rounded-[32px] sm:rounded-[40px] overflow-hidden" data-reveal>
+    <img src="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=2000&q=80&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover" alt="Готовый дом вечером">
+    <div class="absolute inset-0 bg-forest-900/80"></div>
+    <div class="relative p-7 sm:p-10 md:p-16 grid lg:grid-cols-2 gap-8 lg:gap-10 items-center text-white">
+      <div>
+        <h2 class="font-display text-2xl sm:text-4xl leading-tight">Приезжайте на экскурсию в&nbsp;готовый дом</h2>
+        <p class="mt-5 text-white/75 max-w-md">Покажем дом, который мы сдали в этом месяце, и честно ответим на все вопросы, в том числе на неудобные.</p>
+        <p id="leadCalc" class="mt-4 text-sand-200 text-sm hidden"></p>
+      </div>
+      <form data-demo>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input required type="tel" name="phone" class="flex-1 min-w-0 px-6 py-4 rounded-full bg-white/10 border border-white/20 placeholder-white/50 outline-none focus:border-sand-400" placeholder="+7 (___) ___-__-__">
+          <button class="px-8 py-4 rounded-full bg-sand-400 text-forest-900 font-bold hover:bg-sand-200 transition">Записаться</button>
+        </div>
+        <p data-msg class="text-sm text-sand-200 mt-3 px-2" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-forest-900 text-white/60 text-sm pb-14 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-10 flex flex-col md:flex-row flex-wrap justify-between gap-4">
+    <span class="font-display text-white">ДОМГРАНЬ</span>
+    <span>Строительство загородных домов · Москва и область</span>
+    <span><a href="tel:+79000000000" class="hover:text-white">+7 (900) 000-00-00</a> · <a href="mailto:hello@example.ru" class="hover:text-white">hello@example.ru</a></span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<!-- Project modal -->
+<div id="projModal" data-modal class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-forest-900/70 backdrop-blur-sm p-0 sm:p-6">
+  <div class="bg-white w-full sm:max-w-3xl rounded-t-3xl sm:rounded-3xl overflow-hidden max-h-[92vh] overflow-y-auto">
+    <div class="relative">
+      <img id="pmImg" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&q=80&auto=format&fit=crop" alt="" class="w-full h-56 sm:h-72 object-cover">
+      <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 grid place-items-center text-xl">×</button>
+    </div>
+    <div class="p-6 sm:p-8">
+      <div class="flex flex-wrap justify-between items-start gap-4">
+        <h3 id="pmTitle" class="font-display text-2xl"></h3>
+        <div class="text-right"><div class="text-xs text-forest-700/60">под ключ от</div><div id="pmPrice" class="font-display text-2xl"></div></div>
+      </div>
+      <p id="pmText" class="mt-4 text-forest-700/80"></p>
+      <ul id="pmSpecs" class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm"></ul>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="#calc" data-close-go class="flex-1 text-center py-4 rounded-2xl bg-forest-800 text-white font-bold hover:bg-forest-700 transition">Рассчитать с этим проектом</a>
+        <a href="#lead" data-close-go class="flex-1 text-center py-4 rounded-2xl bg-sand-100 font-bold hover:bg-sand-200 transition">Записаться на экскурсию</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  // Каталог проектов с фильтром
+  const projects = [
+    { id: 'sosn', t: '«Сосновый» 146 м²', cat: 'gas', mat: 'Газобетон', floors: '2 этажа', beds: '4 спальни', price: '7,9 млн ₽', area: 146, mk: 54, tag: 'Хит продаж', img: 'photo-1580587771525-78b9dba3b914', text: 'Классический двухэтажный дом для семьи с детьми: кухня-гостиная 42 м² с выходом на террасу, четыре спальни на втором этаже и котельная с отдельным входом.', days: '125 дней' },
+    { id: 'barn', t: '«Барн» 98 м²', cat: 'barn', mat: 'Каркас', floors: '1 этаж', beds: '3 спальни', price: '5,2 млн ₽', area: 98, mk: 46, tag: 'Новинка', tagDark: true, img: 'photo-1627141234469-24711efb373c', text: 'Одноэтажный барнхаус с высоким потолком 4,2 м в гостиной и панорамными окнами в пол. Хорошо встаёт на узкий участок от 6 соток.', days: '90 дней' },
+    { id: 'ter', t: '«Терраса» 184 м²', cat: 'wood', mat: 'Клеёный брус', floors: '2 этажа', beds: '5 спален', price: '11,4 млн ₽', area: 184, mk: 62, img: 'photo-1613977257363-707ba9348227', text: 'Дом из клеёного бруса 200 мм без усадки: можно заезжать сразу после отделки. Терраса 36 м² вдоль фасада, второй свет в гостиной.', days: '140 дней' },
+    { id: 'nord', t: '«Норд» 128 м²', cat: 'wood', mat: 'Клеёный брус', floors: '1,5 этажа', beds: '3 спальни', price: '8,6 млн ₽', area: 128, mk: 62, img: 'photo-1568605114967-8130f3a36994', text: 'Уютный дом с мансардой и крутой кровлей. На первом этаже гостиная с камином и гостевая спальня, на мансарде две спальни и гардеробная.', days: '115 дней' },
+    { id: 'kvartal', t: '«Квартал» 210 м²', cat: 'gas', mat: 'Газобетон', floors: '2 этажа', beds: '5 спален', price: '12,8 млн ₽', area: 210, mk: 54, tag: 'Для большой семьи', img: 'photo-1600585154340-be6161a56a0c', text: 'Современный дом с плоской кровлей и гаражом на одну машину. Мастер-спальня с собственной ванной и гардеробной, кабинет на первом этаже.', days: '150 дней' },
+    { id: 'mini', t: '«Лесной барн» 72 м²', cat: 'barn', mat: 'Каркас', floors: '1 этаж', beds: '2 спальни', price: '3,9 млн ₽', area: 72, mk: 46, img: 'photo-1570129477492-45c003edd2be', text: 'Компактный дом для пары или как гостевой дом на участке. Утеплён на 200 мм, подходит для круглогодичного проживания.', days: '75 дней' }
+  ];
+  const grid = document.getElementById('projGrid');
+  const imgUrl = (id, w) => `https://images.unsplash.com/${id}?w=${w}&q=80&auto=format&fit=crop`;
+  grid.innerHTML = projects.map(p => `
+    <article data-cat="${p.cat}" class="group bg-white rounded-3xl overflow-hidden border border-sand-200 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+      <div class="relative h-56 sm:h-64 overflow-hidden">
+        <img src="${imgUrl(p.img, 900)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Проект дома ${p.t}">
+        ${p.tag ? `<span class="absolute top-4 left-4 px-3 py-1.5 rounded-full ${p.tagDark ? 'bg-forest-800 text-white' : 'bg-white'} text-xs font-bold">${p.tag}</span>` : ''}
+      </div>
+      <div class="p-6 sm:p-7">
+        <h3 class="font-display text-xl">${p.t}</h3>
+        <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-forest-700/70"><span>${p.floors}</span><span>${p.beds}</span><span>${p.mat}</span></div>
+        <div class="mt-6 flex items-end justify-between gap-3">
+          <div><div class="text-xs text-forest-700/60">под ключ от</div><div class="font-display text-2xl">${p.price}</div></div>
+          <button data-proj="${p.id}" class="px-5 py-3 rounded-full bg-sand-100 text-sm font-semibold group-hover:bg-sand-400 transition">Подробнее</button>
+        </div>
+      </div>
+    </article>`).join('');
+
+  const filterBtns = document.querySelectorAll('#projFilter button');
+  filterBtns.forEach(b => b.addEventListener('click', () => {
+    filterBtns.forEach(x => x.className = 'px-5 py-2.5 rounded-full bg-white border border-sand-200 hover:border-sand-400 transition');
+    b.className = 'px-5 py-2.5 rounded-full bg-forest-800 text-white transition';
+    grid.querySelectorAll('article').forEach(a => a.classList.toggle('hidden', b.dataset.f !== 'all' && a.dataset.cat !== b.dataset.f));
+  }));
+
+  let current = null;
+  grid.addEventListener('click', e => {
+    const btn = e.target.closest('[data-proj]'); if (!btn) return;
+    const p = projects.find(x => x.id === btn.dataset.proj); current = p;
+    document.getElementById('pmImg').src = imgUrl(p.img, 1200);
+    document.getElementById('pmImg').alt = 'Проект ' + p.t;
+    document.getElementById('pmTitle').textContent = p.t;
+    document.getElementById('pmPrice').textContent = p.price;
+    document.getElementById('pmText').textContent = p.text;
+    document.getElementById('pmSpecs').innerHTML = [p.floors, p.beds, p.mat, 'Срок ' + p.days].map(s => `<li class="px-4 py-3 rounded-xl bg-sand-50 border border-sand-200 text-center">${s}</li>`).join('');
+    openModal('projModal');
+  });
+  document.querySelectorAll('[data-close-go]').forEach(a => a.addEventListener('click', () => {
+    const m = document.getElementById('projModal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.classList.remove('modal-open');
+    if (current && a.getAttribute('href') === '#calc') {
+      area.value = current.area;
+      const mb = [...document.querySelectorAll('#mat button')].find(x => +x.dataset.k === current.mk);
+      if (mb) mb.click(); else calc();
+    }
+  }));
+
+  // Калькулятор
+  const area = document.getElementById('area'), out = document.getElementById('areaOut');
+  const ON = 'py-3 rounded-xl bg-sand-400 text-forest-900 font-bold transition', OFF = 'py-3 rounded-xl bg-white/5 border border-white/10 hover:border-sand-400/60 transition';
+  let mat = 54, matDays = 0, fin = 9;
+  function pick(groupId, initial, setter) {
+    const btns = document.querySelectorAll('#' + groupId + ' button');
+    btns.forEach(b => {
+      b.className = +b.dataset.k === initial ? ON : OFF;
+      b.onclick = () => { btns.forEach(x => x.className = OFF); b.className = ON; setter(b); calc(); };
+    });
+  }
+  const fmt = n => Math.round(n).toLocaleString('ru-RU');
+  function calc() {
+    const a = +area.value; out.textContent = a + ' м²';
+    let p = a * (mat + fin) * 1000;
+    document.querySelectorAll('#extras input:checked').forEach(c => p += +c.value);
+    document.getElementById('price').textContent = (p / 1e6).toFixed(1).replace('.', ',') + ' млн ₽';
+    document.getElementById('perm').textContent = '≈ ' + fmt(Math.round(p / a / 100) * 100) + ' ₽ за м²';
+    const days = Math.round(60 + a * 0.25 + fin * 1.5 + matDays);
+    document.getElementById('term').textContent = days + ' дней';
+    const lc = document.getElementById('leadCalc');
+    lc.textContent = `Ваш расчёт: ${a} м², ${document.querySelector('#mat .bg-sand-400').textContent.toLowerCase()}, ${document.querySelector('#fin .bg-sand-400').textContent.toLowerCase()}, около ${document.getElementById('price').textContent}. Инженер уточнит смету на экскурсии.`;
+  }
+  pick('mat', 54, b => { mat = +b.dataset.k; matDays = +b.dataset.days; });
+  pick('fin', 9, b => fin = +b.dataset.k);
+  area.oninput = calc;
+  document.querySelectorAll('#extras input').forEach(c => c.onchange = calc);
+  document.getElementById('calcCta').addEventListener('click', () => document.getElementById('leadCalc').classList.remove('hidden'));
+  calc();
+</script>
+</body>
+</html>

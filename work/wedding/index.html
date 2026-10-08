@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maison Aurelle — свадебное агентство премиум-класса</title>
+<meta name="description" content="Maison Aurelle организует свадьбы под ключ в Подмосковье, Италии и Грузии: концепция, декор, площадка, координация дня. 240+ свадеб за 11 лет.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { serif: ['"Cormorant Garamond"','serif'], sans: ['Manrope','sans-serif'] },
+  colors: { ivory:'#F8F4EE', sand:'#EFE7DC', ink:'#2B2522', rose:'#A9746E', roseDark:'#8E5B55', taupe:'#8B7D72' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#F8F4EE; color:#2B2522; -webkit-font-smoothing:antialiased; }
+  .rv { opacity:0; transform:translateY(28px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity:1; transform:none; }
+  .rv.now { transition:none; }
+  .arch { border-radius: 999px 999px 18px 18px; }
+  .chip { border:1px solid rgba(43,37,34,.18); transition:all .25s; }
+  .chip:hover { border-color:#A9746E; color:#8E5B55; }
+  .chip.on { background:#2B2522; color:#F8F4EE; border-color:#2B2522; }
+  .g-item img { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .g-item:hover img { transform: scale(1.05); }
+  .g-item .cap { opacity:0; transform:translateY(8px); transition:all .4s; }
+  .g-item:hover .cap { opacity:1; transform:none; }
+  @media (hover:none){ .g-item .cap { opacity:1; transform:none; } }
+  .line { background-image:linear-gradient(90deg, rgba(43,37,34,.15), rgba(43,37,34,.15)); background-size:100% 1px; background-repeat:no-repeat; background-position:center; }
+  .field { width:100%; background:transparent; border:0; border-bottom:1px solid rgba(43,37,34,.25); padding:.85rem 0; outline:none; transition:border-color .2s; font-size:15px; }
+  .field:focus { border-color:#A9746E; }
+  .field.err { border-color:#c0392b; }
+  .lb { opacity:0; pointer-events:none; transition:opacity .35s; }
+  .lb.open { opacity:1; pointer-events:auto; }
+  .rev { display:none; }
+  .rev.on { display:block; animation:fadeIn .7s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
+  .menu { transform:translateY(-100%); transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+  .menu.open { transform:none; }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<!-- Header -->
+<header id="top" class="fixed top-0 inset-x-0 z-40 transition-all duration-300" data-header>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
+    <a href="#top" class="flex flex-col leading-none">
+      <span class="font-serif text-[28px] tracking-wide">Maison Aurelle</span>
+      <span class="text-[10px] tracking-[.35em] uppercase text-taupe mt-1">wedding atelier</span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-9 text-[13px] tracking-wide text-ink/70">
+      <a href="#about" class="hover:text-rose transition">О нас</a>
+      <a href="#portfolio" class="hover:text-rose transition">Свадьбы</a>
+      <a href="#packages" class="hover:text-rose transition">Пакеты</a>
+      <a href="#process" class="hover:text-rose transition">Как мы работаем</a>
+      <a href="#reviews" class="hover:text-rose transition">Отзывы</a>
+      <a href="#contact" class="hover:text-rose transition">Контакты</a>
+    </nav>
+    <a href="#contact" class="hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ink text-ivory text-[13px] tracking-wide hover:bg-roseDark transition">Обсудить свадьбу</a>
+    <button class="lg:hidden w-11 h-11 -mr-2 flex flex-col items-center justify-center gap-1.5" aria-label="Открыть меню" data-burger>
+      <span class="w-6 h-px bg-ink"></span><span class="w-6 h-px bg-ink"></span><span class="w-4 h-px bg-ink ml-2"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="menu fixed inset-0 z-50 bg-ivory flex flex-col lg:hidden" data-menu>
+  <div class="px-5 h-20 flex items-center justify-between">
+    <span class="font-serif text-[28px]">Maison Aurelle</span>
+    <button class="w-11 h-11 -mr-2 text-3xl font-light" aria-label="Закрыть меню" data-close>&times;</button>
+  </div>
+  <nav class="flex-1 flex flex-col justify-center px-8 gap-5 font-serif text-4xl">
+    <a href="#about">О нас</a><a href="#portfolio">Свадьбы</a><a href="#packages">Пакеты</a><a href="#process">Как мы работаем</a><a href="#reviews">Отзывы</a><a href="#contact" class="italic text-rose">Обсудить свадьбу</a>
+  </nav>
+  <div class="px-8 pb-24 text-sm text-taupe">+7 (900) 000-00-00 · hello@example.ru</div>
+</div>
+
+<!-- Hero -->
+<section class="relative pt-28 md:pt-32 pb-16 md:pb-24">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+    <div class="lg:col-span-6 rv">
+      <div class="flex items-center gap-3 text-[11px] tracking-[.3em] uppercase text-taupe"><span class="w-10 h-px bg-rose"></span>Москва · Италия · Грузия</div>
+      <h1 class="font-serif font-normal text-[46px] leading-[1.02] sm:text-6xl md:text-7xl xl:text-[88px] mt-6 tracking-[-0.01em]">Свадьба, в&nbsp;которой каждая деталь <em class="text-rose">о&nbsp;вас</em></h1>
+      <p class="mt-7 text-[16px] md:text-[17px] leading-relaxed text-ink/70 max-w-xl">Придумываем концепцию, находим площадку, собираем команду и ведём весь день так, чтобы вы просто были вместе. Без суеты, без наценок на подрядчиков, с одним координатором на связи.</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="#contact" class="px-8 py-4 rounded-full bg-ink text-ivory text-sm tracking-wide hover:bg-roseDark transition">Записаться на встречу</a>
+        <a href="#portfolio" class="px-8 py-4 rounded-full border border-ink/25 text-sm tracking-wide hover:border-rose hover:text-roseDark transition">Смотреть свадьбы</a>
+      </div>
+      <div class="mt-14 grid grid-cols-3 max-w-lg gap-6 border-t border-ink/10 pt-8">
+        <div><div class="font-serif text-4xl md:text-5xl">240+</div><div class="text-xs text-taupe mt-1 leading-snug">свадеб с 2015 года</div></div>
+        <div><div class="font-serif text-4xl md:text-5xl">9</div><div class="text-xs text-taupe mt-1 leading-snug">стран для выездных церемоний</div></div>
+        <div><div class="font-serif text-4xl md:text-5xl">4,98</div><div class="text-xs text-taupe mt-1 leading-snug">средняя оценка пар</div></div>
+      </div>
+    </div>
+    <div class="lg:col-span-6 relative rv" style="transition-delay:.15s">
+      <div class="relative mx-auto w-[86%] sm:w-[70%] lg:w-[78%] ml-auto">
+        <img class="arch w-full h-[460px] sm:h-[560px] lg:h-[640px] object-cover" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=1200&q=80&auto=format&fit=crop" alt="Жених и невеста на берегу моря в фате">
+        <img class="absolute -left-12 sm:-left-24 bottom-16 w-36 h-36 sm:w-48 sm:h-48 rounded-full object-cover border-[6px] border-ivory shadow-xl" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1200&q=80&auto=format&fit=crop" alt="Обручальные кольца на пионах">
+        <div class="absolute -right-2 sm:-right-6 top-10 bg-ivory/95 backdrop-blur px-5 py-4 rounded-2xl shadow-lg max-w-[200px]">
+          <div class="text-[10px] tracking-[.25em] uppercase text-taupe">Свободные даты</div>
+          <div class="font-serif text-xl mt-1 leading-tight">май и сентябрь 2027</div>
+          <div class="text-xs text-rose mt-1">осталось 4 даты</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Strip -->
+<div class="border-y border-ink/10 py-6 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 flex flex-wrap justify-center md:justify-between gap-x-10 gap-y-3 font-serif italic text-xl md:text-2xl text-ink/45">
+    <span>Wedding Awards 2025</span><span>Лучшая выездная свадьба</span><span>Bride Journal</span><span>Villa Serena, Тоскана</span><span>Усадьба «Ясные пруды»</span>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about" class="py-24 md:py-32 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-5 rv">
+      <div class="relative">
+        <img class="w-full h-[420px] md:h-[560px] object-cover rounded-[18px]" src="https://images.unsplash.com/photo-1494955870715-979ca4f13bf0?w=1200&q=80&auto=format&fit=crop" alt="Невеста с букетом из пионовидных роз">
+        <div class="absolute -bottom-6 right-4 md:-right-8 bg-rose text-ivory px-6 py-5 rounded-2xl max-w-[230px]">
+          <div class="font-serif text-3xl">11 лет</div>
+          <div class="text-xs opacity-85 mt-1 leading-snug">работаем одной командой из 14 человек, без субподряда</div>
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-6 lg:col-start-7 rv">
+      <div class="text-[11px] tracking-[.3em] uppercase text-taupe">О нас</div>
+      <h2 class="font-serif text-4xl md:text-6xl leading-[1.05] mt-4">Мы делаем свадьбы, на&nbsp;которых <em class="text-rose">не&nbsp;видно работы</em></h2>
+      <p class="mt-6 text-ink/70 leading-relaxed">Каждая пара для нас начинается с разговора: как вы познакомились, что любите, от чего устаёте. Из этого рождается концепция, а не из каталога декора. Мы берём не больше трёх свадеб в месяц, поэтому у вас всегда есть время с основателем агентства.</p>
+      <div class="mt-10 grid sm:grid-cols-3 gap-8">
+        <div><div class="font-serif text-2xl italic text-rose">01</div><div class="font-medium mt-2">Прозрачная смета</div><p class="text-sm text-ink/60 mt-2 leading-relaxed">Счета подрядчиков видите напрямую, без скрытых комиссий.</p></div>
+        <div><div class="font-serif text-2xl italic text-rose">02</div><div class="font-medium mt-2">Один координатор</div><p class="text-sm text-ink/60 mt-2 leading-relaxed">Отвечает в течение часа, с 9 до 22, все месяцы подготовки.</p></div>
+        <div><div class="font-serif text-2xl italic text-rose">03</div><div class="font-medium mt-2">План Б всегда</div><p class="text-sm text-ink/60 mt-2 leading-relaxed">Шатёр на случай дождя и запасной подрядчик на каждую позицию.</p></div>
+      </div>
+      <div class="mt-12 flex items-center gap-4">
+        <img class="w-14 h-14 rounded-full object-cover" src="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=1200&q=80&auto=format&fit=crop" alt="Букет невесты крупным планом">
+        <div><div class="font-serif text-xl italic">Алиса Орлова</div><div class="text-xs text-taupe">основатель Maison Aurelle</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="portfolio" class="py-24 md:py-32 bg-sand/60 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 rv">
+      <div>
+        <div class="text-[11px] tracking-[.3em] uppercase text-taupe">Портфолио</div>
+        <h2 class="font-serif text-4xl md:text-6xl leading-[1.05] mt-4">Свадьбы, которые<br class="hidden md:block"> мы <em class="text-rose">создали</em></h2>
+      </div>
+      <p class="text-ink/60 max-w-sm text-sm leading-relaxed">Выберите стиль или локацию. Нажмите на фото, чтобы открыть его крупно.</p>
+    </div>
+
+    <div class="mt-10 space-y-4 rv">
+      <div class="flex flex-wrap items-center gap-2" data-filter="style">
+        <span class="text-xs uppercase tracking-[.2em] text-taupe w-full sm:w-24">Стиль</span>
+        <button class="chip on px-4 py-2 rounded-full text-sm" data-v="all">Все</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Классика">Классика</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Бохо">Бохо</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Минимализм">Минимализм</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Европейская">Европейская</button>
+      </div>
+      <div class="flex flex-wrap items-center gap-2" data-filter="loc">
+        <span class="text-xs uppercase tracking-[.2em] text-taupe w-full sm:w-24">Локация</span>
+        <button class="chip on px-4 py-2 rounded-full text-sm" data-v="all">Все</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Подмосковье">Подмосковье</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Италия">Италия</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Грузия">Грузия</button>
+        <button class="chip px-4 py-2 rounded-full text-sm" data-v="Сочи">Сочи</button>
+      </div>
+    </div>
+
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 grid-flow-row-dense" data-grid></div>
+    <div class="hidden mt-10 text-center py-16 border border-dashed border-ink/20 rounded-2xl" data-empty>
+      <div class="font-serif text-3xl italic">Такой свадьбы у нас пока не было</div>
+      <p class="text-sm text-ink/60 mt-2">Возможно, ваша станет первой. <a href="#contact" class="text-rose underline underline-offset-4">Расскажите о ней</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Packages -->
+<section id="packages" class="py-24 md:py-32 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto rv">
+      <div class="text-[11px] tracking-[.3em] uppercase text-taupe">Пакеты услуг</div>
+      <h2 class="font-serif text-4xl md:text-6xl leading-[1.05] mt-4">Столько участия, <em class="text-rose">сколько нужно вам</em></h2>
+      <p class="mt-5 text-ink/60 text-sm leading-relaxed">Стоимость работы агентства. Площадку, кейтеринг и декор вы оплачиваете подрядчикам напрямую по нашей смете.</p>
+    </div>
+    <div class="mt-14 grid md:grid-cols-3 gap-5">
+      <div class="rv rounded-[22px] border border-ink/12 p-8 md:p-10 flex flex-col bg-white/40 hover:-translate-y-1 transition duration-500">
+        <div class="font-serif text-3xl">Координация дня</div>
+        <p class="text-sm text-ink/60 mt-2">Всё уже готово, нужно, чтобы день прошёл идеально.</p>
+        <div class="mt-8 font-serif text-5xl">190 000 ₽</div>
+        <div class="text-xs text-taupe mt-1">до 80 гостей</div>
+        <ul class="mt-8 space-y-3 text-sm text-ink/75 flex-1">
+          <li class="flex gap-3"><span class="text-rose">—</span>Подключаемся за 6 недель до даты</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Тайминг дня поминутно</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Брифинг всех подрядчиков</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>2 координатора на площадке, 14 часов</li>
+        </ul>
+        <a href="#contact" data-pack="Координация дня" class="mt-10 text-center px-6 py-4 rounded-full border border-ink/25 text-sm hover:bg-ink hover:text-ivory transition">Выбрать пакет</a>
+      </div>
+      <div class="rv rounded-[22px] bg-ink text-ivory p-8 md:p-10 flex flex-col relative md:-translate-y-4 shadow-2xl" style="transition-delay:.1s">
+        <div class="self-start mb-4 text-[10px] tracking-[.25em] uppercase bg-rose px-3 py-1.5 rounded-full">выбирают 7 из 10</div>
+        <div class="font-serif text-3xl">Полная организация</div>
+        <p class="text-sm text-ivory/60 mt-2">От первой идеи до последнего танца.</p>
+        <div class="mt-8 font-serif text-5xl">от 690 000 ₽</div>
+        <div class="text-xs text-ivory/50 mt-1">до 120 гостей, Москва и область</div>
+        <ul class="mt-8 space-y-3 text-sm text-ivory/80 flex-1">
+          <li class="flex gap-3"><span class="text-rose">—</span>Концепция, мудборд и 3D-визуализация зала</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Подбор площадки: 5–7 вариантов с выездом</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Декор и флористика нашей студии</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Личный кабинет с бюджетом и задачами</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Команда из 4 координаторов в день свадьбы</li>
+        </ul>
+        <a href="#contact" data-pack="Полная организация" class="mt-10 text-center px-6 py-4 rounded-full bg-ivory text-ink text-sm hover:bg-rose hover:text-ivory transition">Выбрать пакет</a>
+      </div>
+      <div class="rv rounded-[22px] border border-ink/12 p-8 md:p-10 flex flex-col bg-white/40 hover:-translate-y-1 transition duration-500" style="transition-delay:.2s">
+        <div class="font-serif text-3xl">Destination</div>
+        <p class="text-sm text-ink/60 mt-2">Свадьба в Италии, Грузии, Франции или на море.</p>
+        <div class="mt-8 font-serif text-5xl">от 1,4 млн ₽</div>
+        <div class="text-xs text-taupe mt-1">до 60 гостей, 2–3 дня программы</div>
+        <ul class="mt-8 space-y-3 text-sm text-ink/75 flex-1">
+          <li class="flex gap-3"><span class="text-rose">—</span>Регистрация и документы в стране</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Перелёты, отели и трансферы гостей</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Welcome-ужин и бранч на следующий день</li>
+          <li class="flex gap-3"><span class="text-rose">—</span>Выезд команды заранее на 3 дня</li>
+        </ul>
+        <a href="#contact" data-pack="Destination" class="mt-10 text-center px-6 py-4 rounded-full border border-ink/25 text-sm hover:bg-ink hover:text-ivory transition">Выбрать пакет</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process" class="py-24 md:py-32 bg-ink text-ivory scroll-mt-16 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-4 rv">
+        <div class="text-[11px] tracking-[.3em] uppercase text-ivory/50">Как мы работаем</div>
+        <h2 class="font-serif text-4xl md:text-6xl leading-[1.05] mt-4">Пять шагов до <em class="text-rose">«да»</em></h2>
+        <p class="mt-6 text-ivory/60 text-sm leading-relaxed">В среднем подготовка занимает 6–9 месяцев. Срочные свадьбы берём от 8 недель, если дата свободна.</p>
+        <img class="mt-10 w-full h-64 object-cover rounded-[18px] opacity-90" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80&auto=format&fit=crop" alt="Сервировка свадебного стола с цветами">
+      </div>
+      <ol class="lg:col-span-7 lg:col-start-6 divide-y divide-ivory/10">
+        <li class="rv py-8 grid grid-cols-[70px_1fr] md:grid-cols-[110px_1fr_150px] gap-4 items-baseline">
+          <span class="font-serif italic text-4xl md:text-5xl text-rose">01</span>
+          <div><div class="font-serif text-2xl md:text-3xl">Знакомство</div><p class="text-sm text-ivory/60 mt-2 leading-relaxed">Встреча на 90 минут в нашей студии или онлайн. Говорим о вас, бюджете и ощущениях, которые хочется прожить.</p></div>
+          <span class="col-start-2 md:col-start-3 text-xs text-ivory/40 uppercase tracking-[.2em]">бесплатно</span>
+        </li>
+        <li class="rv py-8 grid grid-cols-[70px_1fr] md:grid-cols-[110px_1fr_150px] gap-4 items-baseline">
+          <span class="font-serif italic text-4xl md:text-5xl text-rose">02</span>
+          <div><div class="font-serif text-2xl md:text-3xl">Концепция и смета</div><p class="text-sm text-ivory/60 mt-2 leading-relaxed">Мудборд, палитра, 3D-визуализация и подробная смета по каждой статье с двумя вариантами бюджета.</p></div>
+          <span class="col-start-2 md:col-start-3 text-xs text-ivory/40 uppercase tracking-[.2em]">2 недели</span>
+        </li>
+        <li class="rv py-8 grid grid-cols-[70px_1fr] md:grid-cols-[110px_1fr_150px] gap-4 items-baseline">
+          <span class="font-serif italic text-4xl md:text-5xl text-rose">03</span>
+          <div><div class="font-serif text-2xl md:text-3xl">Площадка и команда</div><p class="text-sm text-ivory/60 mt-2 leading-relaxed">Показываем 5–7 площадок, проводим дегустации, знакомим с фотографом, ведущим и музыкантами.</p></div>
+          <span class="col-start-2 md:col-start-3 text-xs text-ivory/40 uppercase tracking-[.2em]">1–2 месяца</span>
+        </li>
+        <li class="rv py-8 grid grid-cols-[70px_1fr] md:grid-cols-[110px_1fr_150px] gap-4 items-baseline">
+          <span class="font-serif italic text-4xl md:text-5xl text-rose">04</span>
+          <div><div class="font-serif text-2xl md:text-3xl">Подготовка</div><p class="text-sm text-ivory/60 mt-2 leading-relaxed">Личный кабинет с задачами и бюджетом, отчёт каждую пятницу, репетиция церемонии за неделю.</p></div>
+          <span class="col-start-2 md:col-start-3 text-xs text-ivory/40 uppercase tracking-[.2em]">до даты</span>
+        </li>
+        <li class="rv py-8 grid grid-cols-[70px_1fr] md:grid-cols-[110px_1fr_150px] gap-4 items-baseline">
+          <span class="font-serif italic text-4xl md:text-5xl text-rose">05</span>
+          <div><div class="font-serif text-2xl md:text-3xl">Ваш день</div><p class="text-sm text-ivory/60 mt-2 leading-relaxed">Команда приезжает в 7 утра. Ваш телефон в этот день можно отдать подружке: все вопросы решаем мы.</p></div>
+          <span class="col-start-2 md:col-start-3 text-xs text-ivory/40 uppercase tracking-[.2em]">14–16 часов</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-24 md:py-32 scroll-mt-16">
+  <div class="max-w-5xl mx-auto px-5 md:px-8 text-center">
+    <div class="text-[11px] tracking-[.3em] uppercase text-taupe rv">Отзывы</div>
+    <div class="relative mt-10 min-h-[340px] md:min-h-[300px]" data-reviews>
+      <div class="rev on">
+        <div class="font-serif text-7xl text-rose leading-none h-10">“</div>
+        <blockquote class="font-serif text-2xl md:text-4xl leading-snug italic">Мы прилетели в Тоскану за два дня до свадьбы и ни разу не открыли чат с вопросами. Алиса знала, что мама боится высоты, и пересадила её на террасе, хотя мы об этом даже не говорили.</blockquote>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <img class="w-14 h-14 rounded-full object-cover" src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&q=80&auto=format&fit=crop" alt="Цветочная арка на свадьбе Алины и Глеба">
+          <div class="text-left"><div class="font-medium">Алина и Глеб</div><div class="text-xs text-taupe">Villa Serena, Италия · июнь 2025</div></div>
+        </div>
+      </div>
+      <div class="rev">
+        <div class="font-serif text-7xl text-rose leading-none h-10">“</div>
+        <blockquote class="font-serif text-2xl md:text-4xl leading-snug italic">Бюджет был жёсткий, и нам честно сказали, где можно сэкономить без потери вида. В итоге уложились в 1,9 млн на 90 гостей, а гости до сих пор спрашивают контакты флориста.</blockquote>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <img class="w-14 h-14 rounded-full object-cover" src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1200&q=80&auto=format&fit=crop" alt="Пара у озера осенью">
+          <div class="text-left"><div class="font-medium">Ева и Роман</div><div class="text-xs text-taupe">Подмосковье · сентябрь 2025</div></div>
+        </div>
+      </div>
+      <div class="rev">
+        <div class="font-serif text-7xl text-rose leading-none h-10">“</div>
+        <blockquote class="font-serif text-2xl md:text-4xl leading-snug italic">В день свадьбы пошёл ливень. Через двадцать минут церемония уже стояла под прозрачным шатром с теми же цветами. Мы узнали о плане Б только из фотографий.</blockquote>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <img class="w-14 h-14 rounded-full object-cover" src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=1200&q=80&auto=format&fit=crop" alt="Пара в горах Грузии">
+          <div class="text-left"><div class="font-medium">Софья и Лев</div><div class="text-xs text-taupe">Кахетия, Грузия · май 2025</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-10 flex items-center justify-center gap-6">
+      <button class="w-12 h-12 rounded-full border border-ink/20 hover:border-rose hover:text-rose transition" aria-label="Предыдущий отзыв" data-prev>←</button>
+      <div class="flex gap-2" data-dots></div>
+      <button class="w-12 h-12 rounded-full border border-ink/20 hover:border-rose hover:text-rose transition" aria-label="Следующий отзыв" data-next>→</button>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="pb-24 md:pb-32 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="grid lg:grid-cols-12 rounded-[28px] overflow-hidden bg-sand">
+      <div class="lg:col-span-5 relative min-h-[280px] md:min-h-[360px]">
+        <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80&auto=format&fit=crop" alt="Руки жениха и невесты с обручальными кольцами">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
+        <div class="absolute bottom-0 p-8 md:p-10 text-ivory">
+          <div class="font-serif text-3xl md:text-4xl leading-tight">Первая встреча<br>бесплатно и ни к чему не обязывает</div>
+          <div class="mt-6 text-sm space-y-1 text-ivory/80">
+            <div>+7 (900) 000-00-00</div><div>hello@example.ru</div><div>Москва, Малая Никитская, студия 3</div>
+          </div>
+        </div>
+      </div>
+      <form class="lg:col-span-7 p-7 md:p-14" novalidate data-form>
+        <div class="text-[11px] tracking-[.3em] uppercase text-taupe">Заявка</div>
+        <h2 class="font-serif text-4xl md:text-5xl leading-[1.05] mt-3">Расскажите о своей свадьбе</h2>
+        <div class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-2">
+          <label class="block"><span class="text-xs text-taupe">Ваше имя *</span><input class="field" name="name" placeholder="Анастасия"></label>
+          <label class="block"><span class="text-xs text-taupe">Телефон *</span><input class="field" name="phone" type="tel" placeholder="+7 (___) ___-__-__"></label>
+          <label class="block"><span class="text-xs text-taupe">Дата свадьбы *</span><input class="field" name="date" type="date"></label>
+          <label class="block"><span class="text-xs text-taupe">Количество гостей</span>
+            <select class="field" name="guests"><option>до 40</option><option selected>40–80</option><option>80–120</option><option>больше 120</option></select></label>
+          <label class="block"><span class="text-xs text-taupe">Пакет</span>
+            <select class="field" name="pack" data-pack-select><option>Ещё не решили</option><option>Координация дня</option><option>Полная организация</option><option>Destination</option></select></label>
+          <label class="block"><span class="text-xs text-taupe">Ориентир по бюджету</span>
+            <select class="field" name="budget"><option>до 1,5 млн ₽</option><option selected>1,5–3 млн ₽</option><option>3–5 млн ₽</option><option>от 5 млн ₽</option></select></label>
+          <label class="block sm:col-span-2"><span class="text-xs text-taupe">О чём мечтаете</span><textarea class="field resize-none" rows="2" name="msg" placeholder="Например: камерная свадьба на 50 гостей у воды, много света и белых цветов"></textarea></label>
+        </div>
+        <label class="mt-5 flex items-center gap-3 text-sm text-ink/70 cursor-pointer"><input type="checkbox" class="accent-[#A9746E] w-4 h-4" data-nodate> Дата пока не выбрана, поможете определиться</label>
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-5">
+          <button class="px-10 py-4 rounded-full bg-ink text-ivory text-sm tracking-wide hover:bg-roseDark transition">Отправить заявку</button>
+          <span class="text-xs text-taupe">Перезвоним в течение 2 часов в рабочее время</span>
+        </div>
+        <p class="hidden mt-6 text-sm text-red-700" data-err>Пожалуйста, заполните имя, телефон и дату свадьбы.</p>
+        <div class="hidden mt-6 p-5 rounded-2xl bg-ivory border border-rose/30 text-sm" data-ok><span class="font-serif text-2xl italic text-rose block mb-1">Спасибо!</span>Это демо-версия сайта, заявка никуда не отправляется.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-ink/10">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-10 pb-20 md:pb-10 flex flex-col md:flex-row justify-between gap-6 text-sm text-taupe">
+    <div class="font-serif text-2xl text-ink">Maison Aurelle</div>
+    <div class="flex flex-wrap gap-6"><a href="#portfolio" class="hover:text-rose">Свадьбы</a><a href="#packages" class="hover:text-rose">Пакеты</a><a href="#contact" class="hover:text-rose">Контакты</a><a href="#top" class="hover:text-rose">Наверх ↑</a></div>
+    <div>© 2026 Maison Aurelle. Бренд вымышлен.</div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb fixed inset-0 z-[60] bg-ink/95 flex items-center justify-center" data-lb role="dialog" aria-modal="true" aria-label="Просмотр фотографии">
+  <button class="absolute top-4 right-4 md:top-6 md:right-8 w-12 h-12 text-ivory text-4xl font-light z-10" aria-label="Закрыть" data-lb-close>&times;</button>
+  <button class="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-ivory/30 text-ivory hover:bg-ivory hover:text-ink transition z-10" aria-label="Предыдущее фото" data-lb-prev>←</button>
+  <button class="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-ivory/30 text-ivory hover:bg-ivory hover:text-ink transition z-10" aria-label="Следующее фото" data-lb-next>→</button>
+  <figure class="px-4 md:px-24 max-w-6xl w-full">
+    <img class="w-full max-h-[72vh] object-contain rounded-lg" alt="" data-lb-img>
+    <figcaption class="mt-5 flex flex-wrap items-baseline justify-between gap-3 text-ivory">
+      <span class="font-serif text-2xl md:text-3xl italic" data-lb-title></span>
+      <span class="text-xs tracking-[.2em] uppercase text-ivory/60" data-lb-meta></span>
+    </figcaption>
+  </figure>
+</div>
+
+<a href="../../" class="fixed left-3 bottom-3 z-[70] px-3 py-1.5 rounded-full bg-ink/70 text-ivory/90 text-[11px] md:text-xs backdrop-blur hover:bg-ink transition">Демо-проект · портфолио Лианы</a>
+
+<script>
+const U = id => `https://images.unsplash.com/photo-${id}?w=1200&q=80&auto=format&fit=crop`;
+const W = [
+  {id:'1606216794074-735e91aa2c92', t:'Ксения и Тимур', loc:'Сочи', st:'Бохо', d:'Отель на побережье · 70 гостей', a:'Жених и невеста смеются под пальмами', tall:true},
+  {id:'1511285560929-80b456fea0bc', t:'Полина и Артём', loc:'Подмосковье', st:'Классика', d:'Загородный клуб · 140 гостей', a:'Пара у бассейна с воздушными шарами и гостями'},
+  {id:'1523438885200-e635ba2c371e', t:'Дарья и Марк', loc:'Италия', st:'Классика', d:'Вилла на озере Комо · 45 гостей', a:'Беседка с колоннами, украшенная цветами', tall:true},
+  {id:'1460978812857-470ed1c77af0', t:'Вера и Илья', loc:'Грузия', st:'Минимализм', d:'Тбилиси · 30 гостей', a:'Чёрно-белое фото поцелуя под фатой', tall:true},
+  {id:'1469371670807-013ccf25f16a', t:'Алина и Глеб', loc:'Италия', st:'Европейская', d:'Villa Serena, Тоскана · 60 гостей', a:'Проход к арке с композициями из роз'},
+  {id:'1532712938310-34cb3982ef74', t:'Софья и Лев', loc:'Грузия', st:'Бохо', d:'Кахетия · 25 гостей', a:'Пара идёт по холмам на закате'},
+  {id:'1583939003579-730e3918a45a', t:'Мария и Денис', loc:'Подмосковье', st:'Европейская', d:'Усадьба «Ясные пруды» · 110 гостей', a:'Поцелуй молодожёнов среди гостей с лепестками', tall:true},
+  {id:'1591604466107-ec97de577aff', t:'Ева и Роман', loc:'Подмосковье', st:'Классика', d:'Берег озера · 90 гостей', a:'Пара у осеннего озера'},
+  {id:'1537633552985-df8429e8048b', t:'Ирина и Максим', loc:'Сочи', st:'Минимализм', d:'Галечный пляж · 20 гостей', a:'Невеста в длинной фате на берегу моря', tall:true},
+  {id:'1546032996-6dfacbacbf3f', t:'Ульяна и Кирилл', loc:'Подмосковье', st:'Бохо', d:'Поле у шатра · 50 гостей', a:'Пара обнимается в поле, фата развевается', tall:true},
+  {id:'1519225421980-715cb0215aed', t:'Арина и Олег', loc:'Италия', st:'Европейская', d:'Апулия, масседа · 80 гостей', a:'Длинный банкетный стол с голубыми акцентами'},
+  {id:'1510076857177-7470076d4098', t:'Лиза и Никита', loc:'Подмосковье', st:'Минимализм', d:'Лофт-амбар · 100 гостей', a:'Банкетный зал с тканевыми драпировками и гирляндами'},
+];
+const grid = document.querySelector('[data-grid]'), empty = document.querySelector('[data-empty]');
+const f = {style:'all', loc:'all'}; let list = [];
+function render(){
+  list = W.filter(w => (f.style==='all'||w.st===f.style) && (f.loc==='all'||w.loc===f.loc));
+  grid.innerHTML = list.map((w,i)=>`
+    <button class="g-item group relative overflow-hidden rounded-[14px] md:rounded-[18px] text-left ${w.tall&&list.length>3?'row-span-2':''}" data-i="${i}" style="animation:fadeIn .6s ease ${i*.05}s both">
+      <img class="w-full ${w.tall&&list.length>3?'h-full min-h-[300px] md:min-h-[560px]':'h-[150px] sm:h-[220px] md:h-[270px]'} object-cover" src="${U(w.id)}" alt="${w.a}" loading="lazy">
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"></div>
+      <div class="cap absolute bottom-0 p-3 md:p-5 text-ivory">
+        <div class="font-serif text-lg md:text-2xl italic leading-tight">${w.t}</div>
+        <div class="text-[10px] md:text-[11px] tracking-[.15em] uppercase opacity-80 mt-1">${w.loc} · ${w.st}</div>
+      </div>
+    </button>`).join('');
+  empty.classList.toggle('hidden', list.length>0);
+  grid.classList.toggle('hidden', list.length===0);
+}
+document.querySelectorAll('[data-filter]').forEach(g=>{
+  g.addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    g.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    f[g.dataset.filter] = b.dataset.v; render();
+  });
+});
+render();
+
+// Lightbox
+const lb = document.querySelector('[data-lb]'), lbImg = lb.querySelector('[data-lb-img]');
+let cur = 0;
+function show(i){ cur = (i+list.length)%list.length; const w = list[cur];
+  lbImg.src = U(w.id); lbImg.alt = w.a;
+  lb.querySelector('[data-lb-title]').textContent = w.t;
+  lb.querySelector('[data-lb-meta]').textContent = `${w.d} · ${cur+1} / ${list.length}`; }
+grid.addEventListener('click', e=>{ const b=e.target.closest('[data-i]'); if(!b) return; show(+b.dataset.i); lb.classList.add('open'); document.body.style.overflow='hidden'; });
+const closeLb = ()=>{ lb.classList.remove('open'); document.body.style.overflow=''; };
+lb.querySelector('[data-lb-close]').onclick = closeLb;
+lb.querySelector('[data-lb-prev]').onclick = ()=>show(cur-1);
+lb.querySelector('[data-lb-next]').onclick = ()=>show(cur+1);
+lb.addEventListener('click', e=>{ if(e.target===lb) closeLb(); });
+document.addEventListener('keydown', e=>{ if(!lb.classList.contains('open')) return;
+  if(e.key==='Escape') closeLb(); if(e.key==='ArrowLeft') show(cur-1); if(e.key==='ArrowRight') show(cur+1); });
+
+// Reviews carousel
+const revs = [...document.querySelectorAll('.rev')], dots = document.querySelector('[data-dots]'); let ri = 0, timer;
+dots.innerHTML = revs.map((_,i)=>`<button class="w-2.5 h-2.5 rounded-full bg-ink/20 transition" aria-label="Отзыв ${i+1}" data-d="${i}"></button>`).join('');
+function rev(i){ ri=(i+revs.length)%revs.length; revs.forEach((r,k)=>r.classList.toggle('on',k===ri));
+  dots.querySelectorAll('button').forEach((d,k)=>{ d.style.background = k===ri?'#A9746E':''; d.style.width = k===ri?'28px':''; });
+  clearInterval(timer); timer=setInterval(()=>rev(ri+1), 8000); }
+dots.onclick = e=>{ const d=e.target.closest('[data-d]'); if(d) rev(+d.dataset.d); };
+document.querySelector('[data-prev]').onclick=()=>rev(ri-1);
+document.querySelector('[data-next]').onclick=()=>rev(ri+1);
+rev(0);
+
+// Package -> form
+document.querySelectorAll('[data-pack]').forEach(a=>a.addEventListener('click',()=>{ document.querySelector('[data-pack-select]').value = a.dataset.pack; }));
+
+// Form
+const form = document.querySelector('[data-form]'), date = form.date;
+date.min = new Date().toISOString().slice(0,10);
+form.querySelector('[data-nodate]').addEventListener('change', e=>{ date.disabled = e.target.checked; date.classList.toggle('opacity-40', e.target.checked); date.classList.remove('err'); });
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  const bad = [];
+  if(form.name.value.trim().length<2) bad.push(form.name);
+  if(form.phone.value.replace(/\D/g,'').length<10) bad.push(form.phone);
+  if(!date.disabled && !date.value) bad.push(date);
+  [form.name, form.phone, date].forEach(x=>x.classList.toggle('err', bad.includes(x)));
+  form.querySelector('[data-err]').classList.toggle('hidden', !bad.length);
+  if(bad.length) return;
+  form.querySelector('[data-ok]').classList.remove('hidden');
+  form.reset(); date.disabled=false; date.classList.remove('opacity-40');
+});
+
+// Menu
+const menu = document.querySelector('[data-menu]');
+document.querySelector('[data-burger]').onclick = ()=>menu.classList.add('open');
+menu.querySelector('[data-close]').onclick = ()=>menu.classList.remove('open');
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+// Header bg
+const hd = document.querySelector('[data-header]');
+const onS = ()=>{ const s = scrollY>30; hd.classList.toggle('bg-ivory/90',s); hd.classList.toggle('backdrop-blur',s); hd.classList.toggle('shadow-sm',s); };
+addEventListener('scroll', onS, {passive:true}); onS();
+
+// Reveal
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} }), {threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>{
+    // всё, что видно сразу при загрузке, показываем без анимации
+    if(el.getBoundingClientRect().top < innerHeight){ el.classList.add('in','now'); } else io.observe(el);
+  });
+} else document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));
+</script>
+</body>
+</html>

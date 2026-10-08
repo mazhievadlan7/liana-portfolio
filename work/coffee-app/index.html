@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Telegram Mini App — кофейня «Зерно»</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'] },
+  colors: { tg: '#2aabee', coffee: { 50:'#fbf6f1', 100:'#f2e6da', 500:'#a0673d', 700:'#6b3f22', 900:'#2a1a10' } } } } }
+</script>
+<style>
+  body { -webkit-font-smoothing: antialiased; }
+  .phone { width: 340px; height: 700px; border-radius: 48px; background: #111; padding: 12px; box-shadow: 0 40px 80px -20px rgba(42,26,16,.45); }
+  .screen { width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #fff; position: relative; }
+  .notch { position:absolute; top:10px; left:50%; transform:translateX(-50%); width:110px; height:28px; background:#111; border-radius:20px; z-index:5; }
+</style>
+</head>
+<body class="bg-coffee-50 font-sans text-coffee-900">
+<div class="max-w-[1440px] mx-auto px-20 py-16">
+  <div class="flex items-end justify-between">
+    <div>
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-sm font-semibold"><span class="w-5 h-5 rounded-full bg-tg grid place-items-center text-white text-[10px]">➤</span>Telegram Mini App</div>
+      <h1 class="text-6xl font-extrabold mt-6 tracking-tight">Кофейня «Зерно»</h1>
+      <p class="mt-4 text-lg text-coffee-700/80 max-w-xl">Предзаказ кофе внутри Telegram: меню, корзина, оплата и программа лояльности — без установки приложения.</p>
+    </div>
+    <div class="grid grid-cols-3 gap-8 text-center">
+      <div><div class="text-4xl font-extrabold">3</div><div class="text-sm text-coffee-700/70 mt-1">клика до заказа</div></div>
+      <div><div class="text-4xl font-extrabold">ЮKassa</div><div class="text-sm text-coffee-700/70 mt-1">оплата в приложении</div></div>
+      <div><div class="text-4xl font-extrabold">Бонусы</div><div class="text-sm text-coffee-700/70 mt-1">кешбэк 7%</div></div>
+    </div>
+  </div>
+
+  <div class="mt-16 flex justify-between items-start">
+    <!-- Screen 1: menu -->
+    <div class="phone"><div class="screen bg-coffee-50">
+      <div class="notch"></div>
+      <div class="pt-14 px-5">
+        <div class="flex justify-between items-center"><div><div class="text-xs text-coffee-700/60">Доброе утро, Алексей</div><div class="font-bold text-lg">Что будете пить?</div></div><span class="w-10 h-10 rounded-full bg-coffee-100 grid place-items-center">☕</span></div>
+        <div class="mt-4 rounded-2xl bg-coffee-900 text-white p-4 flex justify-between items-center"><div><div class="text-xs text-white/60">Ваши бонусы</div><div class="text-2xl font-bold">340 ₽</div></div><div class="flex gap-1">●●●●○</div></div>
+        <div class="mt-4 flex gap-2 text-sm"><span class="px-4 py-2 rounded-full bg-coffee-700 text-white">Кофе</span><span class="px-4 py-2 rounded-full bg-white">Чай</span><span class="px-4 py-2 rounded-full bg-white">Десерты</span></div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Капучино</div><div class="flex justify-between items-center px-1 mt-1"><b>220 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
+          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Айс латте</div><div class="flex justify-between items-center px-1 mt-1"><b>260 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
+          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Флэт уайт</div><div class="flex justify-between items-center px-1 mt-1"><b>240 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
+          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Американо</div><div class="flex justify-between items-center px-1 mt-1"><b>180 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
+        </div>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 p-4"><div class="rounded-2xl bg-tg text-white py-4 text-center font-semibold">Корзина · 2 позиции · 460 ₽</div></div>
+    </div></div>
+
+    <!-- Screen 2: product -->
+    <div class="phone mt-16"><div class="screen">
+      <div class="notch"></div>
+      <img class="h-72 w-full object-cover" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=700&q=80&auto=format&fit=crop">
+      <div class="px-5 -mt-6 relative bg-white rounded-t-3xl pt-6">
+        <div class="flex justify-between"><h2 class="text-2xl font-bold">Капучино</h2><b class="text-xl">220 ₽</b></div>
+        <p class="text-sm text-coffee-700/70 mt-1">Двойной эспрессо и молочная пена</p>
+        <div class="mt-5 text-sm font-semibold">Объём</div>
+        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-coffee-50">250 мл</span><span class="py-2.5 rounded-xl bg-coffee-700 text-white">350 мл</span><span class="py-2.5 rounded-xl bg-coffee-50">450 мл</span></div>
+        <div class="mt-4 text-sm font-semibold">Молоко</div>
+        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-coffee-700 text-white">Обычное</span><span class="py-2.5 rounded-xl bg-coffee-50">Овсяное</span><span class="py-2.5 rounded-xl bg-coffee-50">Миндальное</span></div>
+        <div class="mt-4 text-sm font-semibold">Сироп</div>
+        <div class="mt-2 flex gap-2 text-sm"><span class="px-3 py-2 rounded-xl bg-coffee-50">Карамель</span><span class="px-3 py-2 rounded-xl bg-coffee-50">Ваниль</span><span class="px-3 py-2 rounded-xl bg-coffee-50">Орех</span></div>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 p-4 flex gap-3 items-center"><div class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-coffee-50 font-bold">− 1 +</div><div class="flex-1 rounded-2xl bg-tg text-white py-4 text-center font-semibold">Добавить · 250 ₽</div></div>
+    </div></div>
+
+    <!-- Screen 3: checkout -->
+    <div class="phone"><div class="screen bg-coffee-50">
+      <div class="notch"></div>
+      <div class="pt-14 px-5">
+        <div class="font-bold text-lg">Оформление</div>
+        <div class="mt-4 bg-white rounded-2xl p-4 space-y-3 text-sm">
+          <div class="flex justify-between"><span>Капучино 350 мл</span><b>250 ₽</b></div>
+          <div class="flex justify-between"><span>Айс латте</span><b>260 ₽</b></div>
+          <div class="flex justify-between text-green-700"><span>Списать бонусы</span><b>−100 ₽</b></div>
+          <div class="pt-3 border-t flex justify-between text-base"><b>Итого</b><b>410 ₽</b></div>
+        </div>
+        <div class="mt-4 text-sm font-semibold">Когда забрать</div>
+        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-white">Сейчас</span><span class="py-2.5 rounded-xl bg-coffee-700 text-white">Через 15 мин</span><span class="py-2.5 rounded-xl bg-white">К 9:30</span></div>
+        <div class="mt-4 text-sm font-semibold">Точка</div>
+        <div class="mt-2 bg-white rounded-2xl p-4 text-sm flex justify-between"><span>📍 ул. Пятницкая, 12</span><span class="text-coffee-700/60">350 м</span></div>
+        <div class="mt-4 bg-white rounded-2xl p-4 text-sm flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-green-100 grid place-items-center">✓</span><div><b>Заказ №248 готовится</b><div class="text-coffee-700/60 text-xs">Пришлём сообщение в чат, когда будет готов</div></div></div>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 p-4"><div class="rounded-2xl bg-tg text-white py-4 text-center font-semibold">Оплатить 410 ₽</div></div>
+    </div></div>
+  </div>
+
+  <div class="mt-16 grid grid-cols-4 gap-6 text-sm">
+    <div class="bg-white rounded-2xl p-6"><b>Frontend</b><p class="text-coffee-700/70 mt-1">React, Tailwind, Telegram WebApp SDK</p></div>
+    <div class="bg-white rounded-2xl p-6"><b>Backend</b><p class="text-coffee-700/70 mt-1">Python, FastAPI, PostgreSQL</p></div>
+    <div class="bg-white rounded-2xl p-6"><b>Оплата</b><p class="text-coffee-700/70 mt-1">ЮKassa, чек 54-ФЗ</p></div>
+    <div class="bg-white rounded-2xl p-6"><b>Бот</b><p class="text-coffee-700/70 mt-1">aiogram 3: уведомления о статусе заказа</p></div>
+  </div>
+</div>
+</body>
+</html>

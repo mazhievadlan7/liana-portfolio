@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Белая линия — стоматология</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Manrope','sans-serif']},colors:{teal:{50:'#effcfa',100:'#d6f5f0',400:'#2fc4b2',500:'#14a897',700:'#0d6f65',900:'#0b3b37'}}}}}</script>
+<style>body{-webkit-font-smoothing:antialiased}</style>
+</head>
+<body class="bg-white text-teal-900 font-sans">
+<header class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+  <div class="flex items-center gap-3 font-extrabold text-xl"><span class="w-10 h-10 rounded-2xl bg-teal-500 grid place-items-center text-white">◡</span>Белая линия</div>
+  <nav class="hidden lg:flex gap-9 text-sm text-teal-900/70"><a>Услуги</a><a>Врачи</a><a>Цены</a><a>Отзывы</a><a>Контакты</a></nav>
+  <div class="flex items-center gap-5"><span class="text-sm font-semibold">+7 (900) 000-00-00</span><a class="px-5 py-3 rounded-full bg-teal-500 text-white text-sm font-semibold">Записаться</a></div>
+</header>
+
+<section class="max-w-7xl mx-auto px-6 pt-6 pb-20 grid lg:grid-cols-2 gap-12 items-center">
+  <div>
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-700 text-sm font-semibold">✓ Лечение без боли под микроскопом</span>
+    <h1 class="mt-6 text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">Улыбка, которой<br>хочется делиться</h1>
+    <p class="mt-6 text-lg text-teal-900/65 max-w-lg">Лечим, восстанавливаем и отбеливаем зубы в одной клинике. План лечения и смета до начала работы — без сюрпризов в чеке.</p>
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a class="px-7 py-4 rounded-full bg-teal-500 text-white font-bold shadow-lg shadow-teal-500/30">Бесплатная консультация</a>
+      <a class="px-7 py-4 rounded-full border-2 border-teal-100 font-bold">Цены на услуги</a>
+    </div>
+    <div class="mt-12 grid grid-cols-3 gap-6 max-w-md">
+      <div><div class="text-3xl font-extrabold">15 лет</div><div class="text-sm text-teal-900/55">работаем в городе</div></div>
+      <div><div class="text-3xl font-extrabold">4,9★</div><div class="text-sm text-teal-900/55">на Яндекс Картах</div></div>
+      <div><div class="text-3xl font-extrabold">0 ₽</div><div class="text-sm text-teal-900/55">консультация</div></div>
+    </div>
+  </div>
+  <div class="relative">
+    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop" class="rounded-[40px] h-[520px] w-full object-cover" alt="">
+    <div class="absolute -left-8 bottom-12 bg-white rounded-3xl shadow-2xl p-5 w-72">
+      <div class="text-sm text-teal-900/55">Ближайшая запись</div>
+      <div class="mt-1 font-bold text-lg">Сегодня, 17:30</div>
+      <div class="mt-3 flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-teal-100 grid place-items-center font-bold text-teal-700">АМ</span><div class="text-sm"><b>Анна Миронова</b><br><span class="text-teal-900/55">терапевт, 12 лет опыта</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-teal-50">
+  <div class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-4xl font-extrabold">Направления</h2>
+    <div class="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">🦷</div><h3 class="mt-4 font-bold text-lg">Лечение кариеса</h3><p class="mt-2 text-sm text-teal-900/60">Пломба за один визит, светоотверждаемые материалы</p><p class="mt-5 font-extrabold text-teal-700">от 3 500 ₽</p></div>
+      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">✨</div><h3 class="mt-4 font-bold text-lg">Отбеливание</h3><p class="mt-2 text-sm text-teal-900/60">Система ZOOM 4, до 8 тонов за 1,5 часа</p><p class="mt-5 font-extrabold text-teal-700">от 19 000 ₽</p></div>
+      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">🔩</div><h3 class="mt-4 font-bold text-lg">Имплантация</h3><p class="mt-2 text-sm text-teal-900/60">Импланты с пожизненной гарантией производителя</p><p class="mt-5 font-extrabold text-teal-700">от 32 000 ₽</p></div>
+      <div class="bg-teal-500 text-white rounded-3xl p-7"><div class="text-3xl">😁</div><h3 class="mt-4 font-bold text-lg">Элайнеры</h3><p class="mt-2 text-sm text-white/80">Ровные зубы без брекетов, 3D-план лечения</p><p class="mt-5 font-extrabold">от 120 000 ₽</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+  <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=1100&q=80&auto=format&fit=crop" class="rounded-[40px] h-[420px] w-full object-cover" alt="">
+  <div>
+    <h2 class="text-4xl font-extrabold leading-tight">Как проходит первый визит</h2>
+    <div class="mt-8 space-y-5">
+      <div class="flex gap-5"><span class="w-11 h-11 shrink-0 rounded-full bg-teal-500 text-white grid place-items-center font-bold">1</span><div><b>Осмотр и 3D-снимок</b><p class="text-sm text-teal-900/60 mt-1">Видим все зубы и корни, ничего не пропускаем</p></div></div>
+      <div class="flex gap-5"><span class="w-11 h-11 shrink-0 rounded-full bg-teal-500 text-white grid place-items-center font-bold">2</span><div><b>План лечения в двух вариантах</b><p class="text-sm text-teal-900/60 mt-1">Оптимальный и бюджетный, с точной стоимостью</p></div></div>
+      <div class="flex gap-5"><span class="w-11 h-11 shrink-0 rounded-full bg-teal-500 text-white grid place-items-center font-bold">3</span><div><b>Лечение в удобное время</b><p class="text-sm text-teal-900/60 mt-1">Работаем без выходных с 8:00 до 22:00</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 pb-20">
+  <div class="rounded-[40px] bg-teal-900 text-white p-12 grid lg:grid-cols-2 gap-10 items-center">
+    <div><h2 class="text-4xl font-extrabold">Запишитесь на бесплатную консультацию</h2><p class="mt-4 text-white/70">Перезвоним в течение 10 минут и подберём удобное время.</p></div>
+    <div class="flex flex-col sm:flex-row gap-3"><input class="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 placeholder-white/50" placeholder="Ваш телефон"><button class="px-8 py-4 rounded-full bg-teal-400 text-teal-900 font-bold">Записаться</button></div>
+  </div>
+</section>
+<footer class="border-t border-teal-100"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-teal-900/50"><b class="text-teal-900">Белая линия</b><span>Стоматологическая клиника · Лицензия № ЛО-00-00-000000</span><span>© 2026</span></div></footer>
+</body>
+</html>

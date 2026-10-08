@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumière — студия красоты, онлайн-запись</title>
+<meta name="description" content="Студия красоты Lumière: маникюр, уход за лицом, волосы, брови и ресницы. Онлайн-запись с выбором услуги, мастера и времени, подарочные сертификаты.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { serif: ['"Cormorant Garamond"', 'serif'], sans: ['Inter', 'sans-serif'] },
+  colors: { cream: '#f7f1ea', blush: { 100:'#f3e3dc', 200:'#e8cbbf', 400:'#c98f7a', 600:'#9c5b47' }, cocoa: '#2b1e19' }
+} } }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .chip { transition: all .2s; }
+  .day:disabled { color: rgba(43,30,25,.25); cursor: not-allowed; }
+</style>
+</head>
+<body class="bg-cream text-cocoa font-sans">
+
+<header class="sticky top-0 z-40 bg-cream/90 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-5 sm:py-6 flex items-center justify-between">
+    <a href="#top" class="font-serif text-3xl tracking-wide">Lumière</a>
+    <nav class="hidden lg:flex gap-10 text-sm uppercase tracking-[.18em] text-cocoa/70">
+      <a href="#services" class="hover:text-blush-600 transition">Услуги</a><a href="#masters" class="hover:text-blush-600 transition">Мастера</a><a href="#prices" class="hover:text-blush-600 transition">Цены</a><a href="#contacts" class="hover:text-blush-600 transition">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#booking" class="hidden sm:inline-block px-6 py-3 rounded-full border border-cocoa text-sm uppercase tracking-[.15em] hover:bg-cocoa hover:text-cream transition">Записаться</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-full border border-cocoa/30 grid place-items-center">
+        <svg data-ico="open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+        <svg data-ico="close" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden px-5 pb-7 bg-cream border-b border-blush-200">
+    <nav class="flex flex-col font-serif text-3xl gap-2">
+      <a href="#services" class="py-1.5">Услуги</a><a href="#masters" class="py-1.5">Мастера</a><a href="#prices" class="py-1.5">Цены</a><a href="#contacts" class="py-1.5">Контакты</a>
+    </nav>
+    <a href="#booking" class="mt-5 block text-center py-4 rounded-full bg-cocoa text-cream text-sm uppercase tracking-[.15em]">Онлайн-запись</a>
+  </div>
+</header>
+
+<section id="top" class="max-w-7xl mx-auto px-5 sm:px-6 pt-4 sm:pt-6 pb-20 sm:pb-24 grid lg:grid-cols-12 gap-10 items-end">
+  <div class="lg:col-span-6 lg:pb-6">
+    <p class="uppercase tracking-[.25em] text-xs text-blush-600">Студия красоты · Москва, Патриаршие</p>
+    <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] mt-6">Время,<br>которое вы<br><i class="text-blush-400">дарите себе</i></h1>
+    <p class="mt-8 text-cocoa/70 max-w-md leading-relaxed">Маникюр, уход за лицом, укладки и макияж в спокойной атмосфере. Мы бережём ваше время: никакого ожидания и запись онлайн за минуту.</p>
+    <div class="mt-10 flex flex-wrap items-center gap-6">
+      <a href="#booking" class="px-9 py-4 rounded-full bg-cocoa text-cream text-sm uppercase tracking-[.15em] hover:bg-blush-600 transition">Выбрать услугу</a>
+      <div class="text-sm"><span class="text-blush-400">★★★★★</span><br><span class="text-cocoa/60">5,0 · 640 отзывов</span></div>
+    </div>
+  </div>
+  <div class="lg:col-span-6 grid grid-cols-5 gap-3 sm:gap-4">
+    <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=900&q=80&auto=format&fit=crop" class="col-span-3 h-[340px] sm:h-[520px] w-full object-cover rounded-t-full" alt="Уход за лицом в студии">
+    <div class="col-span-2 flex flex-col gap-3 sm:gap-4">
+      <img src="https://images.unsplash.com/photo-1610992015762-45dca7fa3a85?w=600&q=80&auto=format&fit=crop" class="h-[160px] sm:h-[250px] w-full object-cover rounded-3xl" alt="Маникюр нюдовым лаком">
+      <div class="h-[168px] sm:h-[254px] rounded-3xl bg-blush-100 p-4 sm:p-6 flex flex-col justify-between">
+        <span class="font-serif text-4xl sm:text-5xl">−15%</span>
+        <span class="text-xs sm:text-sm text-cocoa/70">на первый визит при записи через сайт</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="bg-cocoa text-cream">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <div class="flex flex-wrap justify-between items-end gap-6">
+      <h2 class="font-serif text-4xl sm:text-5xl">Наши услуги</h2>
+      <p class="text-cream/60 max-w-sm text-sm leading-relaxed">Работаем только на профессиональной косметике. Все инструменты проходят трёхэтапную стерилизацию.</p>
+    </div>
+    <div class="mt-12 sm:mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a href="#booking" data-svc-cat="nails" data-reveal class="group block"><div class="h-72 overflow-hidden rounded-2xl"><img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=700&q=80&auto=format&fit=crop" class="h-full w-full object-cover group-hover:scale-105 transition duration-700" alt="Ногтевой сервис"></div><h3 class="font-serif text-2xl mt-5 group-hover:text-blush-200 transition">Ногтевой сервис</h3><p class="text-sm text-cream/60 mt-1">Маникюр, педикюр, наращивание</p><p class="mt-3 text-blush-200">от 2 200 ₽ <span class="opacity-0 group-hover:opacity-100 transition">→ записаться</span></p></a>
+      <a href="#booking" data-svc-cat="face" data-reveal class="group block"><div class="h-72 overflow-hidden rounded-2xl"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=80&auto=format&fit=crop" class="h-full w-full object-cover group-hover:scale-105 transition duration-700" alt="Уход за лицом"></div><h3 class="font-serif text-2xl mt-5 group-hover:text-blush-200 transition">Уход за лицом</h3><p class="text-sm text-cream/60 mt-1">Чистки, пилинги, массаж</p><p class="mt-3 text-blush-200">от 3 900 ₽ <span class="opacity-0 group-hover:opacity-100 transition">→ записаться</span></p></a>
+      <a href="#booking" data-svc-cat="hair" data-reveal class="group block"><div class="h-72 overflow-hidden rounded-2xl"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=700&q=80&auto=format&fit=crop" class="h-full w-full object-cover group-hover:scale-105 transition duration-700" alt="Стрижка и окрашивание волос"></div><h3 class="font-serif text-2xl mt-5 group-hover:text-blush-200 transition">Волосы</h3><p class="text-sm text-cream/60 mt-1">Стрижки, окрашивание, укладки</p><p class="mt-3 text-blush-200">от 2 800 ₽ <span class="opacity-0 group-hover:opacity-100 transition">→ записаться</span></p></a>
+      <a href="#booking" data-svc-cat="brows" data-reveal class="group block"><div class="h-72 overflow-hidden rounded-2xl"><img src="https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?w=700&q=80&auto=format&fit=crop" class="h-full w-full object-cover group-hover:scale-105 transition duration-700" alt="Брови и ресницы"></div><h3 class="font-serif text-2xl mt-5 group-hover:text-blush-200 transition">Брови и ресницы</h3><p class="text-sm text-cream/60 mt-1">Ламинирование, окрашивание</p><p class="mt-3 text-blush-200">от 1 900 ₽ <span class="opacity-0 group-hover:opacity-100 transition">→ записаться</span></p></a>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section id="booking" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+  <div class="lg:sticky lg:top-28">
+    <p class="uppercase tracking-[.25em] text-xs text-blush-600">Онлайн-запись</p>
+    <h2 class="font-serif text-4xl sm:text-5xl mt-4 leading-tight">Выберите время,<br>которое удобно вам</h2>
+    <p class="mt-6 text-cocoa/70 max-w-md leading-relaxed">Свободные окна обновляются в реальном времени. Напомним о визите за день и за два часа в Telegram или по SMS.</p>
+    <ul class="mt-8 space-y-3 text-sm">
+      <li class="flex gap-3"><span class="text-blush-400">✦</span>Перенос и отмена записи в один клик</li>
+      <li class="flex gap-3"><span class="text-blush-400">✦</span>История визитов и любимые мастера</li>
+      <li class="flex gap-3"><span class="text-blush-400">✦</span>Бонусы 5% с каждого посещения</li>
+    </ul>
+    <div class="mt-10 hidden lg:block rounded-3xl bg-blush-100 p-6">
+      <div class="text-xs uppercase tracking-[.2em] text-blush-600">Ваша запись</div>
+      <div id="sumSide" class="font-serif text-2xl mt-2 leading-snug">Выберите услугу</div>
+    </div>
+  </div>
+  <div class="min-w-0 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-xl shadow-blush-200/40">
+    <div class="text-xs uppercase tracking-[.2em] text-cocoa/50">1 · Услуга</div>
+    <div id="cats" class="mt-3 flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 text-sm"></div>
+    <div id="svcs" class="mt-3 grid gap-2"></div>
+
+    <div class="mt-7 text-xs uppercase tracking-[.2em] text-cocoa/50">2 · Мастер</div>
+    <div id="masterList" class="mt-3 grid grid-cols-2 gap-2 text-sm"></div>
+
+    <div class="mt-7 flex justify-between items-center">
+      <div><div class="text-xs uppercase tracking-[.2em] text-cocoa/50">3 · Дата</div><h3 id="monthName" class="font-serif text-2xl mt-1">Октябрь 2026</h3></div>
+      <div class="flex gap-2"><button id="prevM" aria-label="Предыдущий месяц" class="w-10 h-10 rounded-full border border-blush-200 grid place-items-center hover:bg-blush-100 transition disabled:opacity-30">‹</button><button id="nextM" aria-label="Следующий месяц" class="w-10 h-10 rounded-full border border-blush-200 grid place-items-center hover:bg-blush-100 transition disabled:opacity-30">›</button></div>
+    </div>
+    <div class="mt-4 grid grid-cols-7 gap-1 sm:gap-2 text-center text-sm">
+      <span class="text-cocoa/40 text-xs">Пн</span><span class="text-cocoa/40 text-xs">Вт</span><span class="text-cocoa/40 text-xs">Ср</span><span class="text-cocoa/40 text-xs">Чт</span><span class="text-cocoa/40 text-xs">Пт</span><span class="text-cocoa/40 text-xs">Сб</span><span class="text-cocoa/40 text-xs">Вс</span>
+    </div>
+    <div id="days" class="mt-1 grid grid-cols-7 gap-1 sm:gap-2 text-center text-sm"></div>
+
+    <div id="slotTitle" class="mt-6 text-sm text-cocoa/60">4 · Время</div>
+    <div id="slots" class="mt-3 grid grid-cols-4 gap-2 text-sm"></div>
+
+    <form data-demo id="bookForm" class="mt-7 pt-6 border-t border-blush-100 grid sm:grid-cols-2 gap-3">
+      <input required name="name" autocomplete="name" class="px-5 py-3.5 rounded-full bg-cream border border-blush-200 outline-none focus:border-blush-400" placeholder="Ваше имя">
+      <input required type="tel" name="phone" autocomplete="tel" class="px-5 py-3.5 rounded-full bg-cream border border-blush-200 outline-none focus:border-blush-400" placeholder="Телефон">
+      <button id="bookBtn" class="sm:col-span-2 w-full py-4 rounded-full bg-cocoa text-cream text-sm uppercase tracking-[.12em] hover:bg-blush-600 transition">Записаться</button>
+      <p id="bookSum" class="sm:col-span-2 text-sm text-cocoa/60 text-center"></p>
+      <p data-msg class="sm:col-span-2 text-sm text-blush-600 text-center" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<section id="masters" class="bg-blush-100">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <h2 class="font-serif text-4xl sm:text-5xl text-center">Мастера студии</h2>
+    <div class="mt-12 sm:mt-14 grid sm:grid-cols-3 gap-8">
+      <div data-reveal class="text-center"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?w=700&q=80&auto=format&fit=crop" class="h-80 w-full object-cover rounded-t-full" alt="Мастер маникюра Анна"><h3 class="font-serif text-2xl mt-5">Анна</h3><p class="text-sm text-cocoa/60">Топ-мастер маникюра · 9 лет опыта</p><a href="#booking" data-pick-master="Анна" class="inline-block mt-3 text-sm text-blush-600 underline underline-offset-4 hover:text-cocoa">Записаться к Анне</a></div>
+      <div data-reveal class="text-center"><img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=700&q=80&auto=format&fit=crop" class="h-80 w-full object-cover rounded-t-full" alt="Стилист-колорист Мария"><h3 class="font-serif text-2xl mt-5">Мария</h3><p class="text-sm text-cocoa/60">Стилист-колорист · 7 лет опыта</p><a href="#booking" data-pick-master="Мария" class="inline-block mt-3 text-sm text-blush-600 underline underline-offset-4 hover:text-cocoa">Записаться к Марии</a></div>
+      <div data-reveal class="text-center"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=700&q=80&auto=format&fit=crop" class="h-80 w-full object-cover rounded-t-full" alt="Визажист и бровист Вероника"><h3 class="font-serif text-2xl mt-5">Вероника</h3><p class="text-sm text-cocoa/60">Визажист, бровист · 6 лет опыта</p><a href="#booking" data-pick-master="Вероника" class="inline-block mt-3 text-sm text-blush-600 underline underline-offset-4 hover:text-cocoa">Записаться к Веронике</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="prices" class="max-w-5xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <h2 class="font-serif text-4xl sm:text-5xl text-center">Цены</h2>
+  <p class="text-center text-cocoa/60 mt-3 text-sm">Итоговую стоимость мастер называет до начала процедуры</p>
+  <div id="priceList" class="mt-12 grid md:grid-cols-2 gap-x-12 gap-y-10" data-reveal></div>
+</section>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 sm:pb-24 grid md:grid-cols-3 gap-6">
+  <div data-reveal class="md:col-span-2 rounded-[32px] bg-white p-7 sm:p-10">
+    <div class="text-blush-400">★★★★★</div>
+    <p class="font-serif text-2xl sm:text-3xl leading-snug mt-5">«Лучший маникюр в моей жизни: держится три недели, а атмосфера такая, что не хочется уходить. Записалась сразу на месяц вперёд.»</p>
+    <p class="mt-6 text-sm text-cocoa/60">Ольга, клиентка с 2024 года</p>
+  </div>
+  <div data-reveal class="rounded-[32px] bg-cocoa text-cream p-7 sm:p-10 flex flex-col justify-between">
+    <h3 class="font-serif text-3xl">Подарочный сертификат</h3>
+    <p class="text-sm text-cream/70 mt-4">Электронный или в красивом конверте. Действует 12 месяцев на любые услуги.</p>
+    <button data-open="giftModal" class="mt-8 py-4 rounded-full bg-blush-200 text-cocoa text-center text-sm uppercase tracking-[.15em] hover:bg-cream transition">Подарить</button>
+  </div>
+</section>
+
+<footer id="contacts" class="border-t border-blush-200 pb-12 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-14 grid md:grid-cols-4 gap-8 text-sm text-cocoa/70">
+    <div><span class="font-serif text-3xl text-cocoa">Lumière</span><p class="mt-3">Студия красоты · © 2026</p></div>
+    <div><div class="text-xs uppercase tracking-[.2em] text-cocoa/40">Адрес</div><p class="mt-2">Москва, Малая Бронная, 00<br>5 минут от м. Пушкинская</p></div>
+    <div><div class="text-xs uppercase tracking-[.2em] text-cocoa/40">Часы работы</div><p class="mt-2">Ежедневно 9:00 — 22:00</p></div>
+    <div><div class="text-xs uppercase tracking-[.2em] text-cocoa/40">Связаться</div><p class="mt-2"><a href="tel:+79000000000" class="hover:text-blush-600">+7 (900) 000-00-00</a><br><a href="mailto:hello@example.ru" class="hover:text-blush-600">hello@example.ru</a></p></div>
+  </div>
+</footer>
+
+<!-- Gift modal -->
+<div id="giftModal" data-modal class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-cocoa/60 backdrop-blur-sm sm:p-6">
+  <div class="bg-cream w-full sm:max-w-lg rounded-t-[28px] sm:rounded-[32px] p-6 sm:p-9 relative max-h-[92vh] overflow-y-auto">
+    <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white grid place-items-center text-xl">×</button>
+    <h3 class="font-serif text-3xl sm:text-4xl pr-10">Подарочный сертификат</h3>
+    <p class="mt-2 text-sm text-cocoa/60">Выберите номинал, и мы пришлём сертификат на почту или подготовим конверт к вашему приходу.</p>
+    <div id="giftSums" class="mt-6 grid grid-cols-4 gap-2 text-sm">
+      <button type="button" data-sum="3000" class="chip py-3 rounded-full border border-blush-200">3 000</button>
+      <button type="button" data-sum="5000" class="chip py-3 rounded-full bg-cocoa text-cream">5 000</button>
+      <button type="button" data-sum="10000" class="chip py-3 rounded-full border border-blush-200">10 000</button>
+      <button type="button" data-sum="15000" class="chip py-3 rounded-full border border-blush-200">15 000</button>
+    </div>
+    <form data-demo class="mt-5 space-y-3">
+      <input required name="to" class="w-full px-5 py-3.5 rounded-full bg-white border border-blush-200 outline-none focus:border-blush-400" placeholder="Кому дарите">
+      <input required type="email" name="email" class="w-full px-5 py-3.5 rounded-full bg-white border border-blush-200 outline-none focus:border-blush-400" placeholder="Ваш email">
+      <button class="w-full py-4 rounded-full bg-cocoa text-cream text-sm uppercase tracking-[.12em] hover:bg-blush-600 transition">Оформить на <span id="giftSum">5 000</span> ₽</button>
+      <p data-msg class="text-sm text-blush-600 text-center" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  // ---- Данные ----
+  const CATS = { nails: 'Ногти', face: 'Лицо', hair: 'Волосы', brows: 'Брови и ресницы' };
+  const SVCS = [
+    { id: 1, c: 'nails', t: 'Маникюр с покрытием', p: 2600, d: 90, m: ['Анна', 'Ксения'] },
+    { id: 2, c: 'nails', t: 'Маникюр без покрытия', p: 2200, d: 60, m: ['Анна', 'Ксения'] },
+    { id: 3, c: 'nails', t: 'Педикюр с покрытием', p: 3400, d: 90, m: ['Анна', 'Ксения'] },
+    { id: 4, c: 'face', t: 'Комбинированная чистка', p: 4500, d: 75, m: ['Вероника', 'Елена'] },
+    { id: 5, c: 'face', t: 'Массаж лица', p: 3900, d: 60, m: ['Вероника', 'Елена'] },
+    { id: 6, c: 'face', t: 'Пилинг PRX-T33', p: 6200, d: 45, m: ['Елена'] },
+    { id: 7, c: 'hair', t: 'Женская стрижка', p: 2800, d: 60, m: ['Мария', 'Ирина'] },
+    { id: 8, c: 'hair', t: 'Окрашивание в один тон', p: 5500, d: 120, m: ['Мария'] },
+    { id: 9, c: 'hair', t: 'Укладка', p: 2900, d: 45, m: ['Мария', 'Ирина'] },
+    { id: 10, c: 'brows', t: 'Ламинирование бровей', p: 2400, d: 60, m: ['Вероника'] },
+    { id: 11, c: 'brows', t: 'Ламинирование ресниц', p: 2900, d: 75, m: ['Вероника'] },
+    { id: 12, c: 'brows', t: 'Коррекция и окрашивание', p: 1900, d: 40, m: ['Вероника'] }
+  ];
+  const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const MONTHS_G = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const ALL_SLOTS = ['10:00','11:30','13:00','14:30','16:00','17:30','19:00','20:30'];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const fmt = n => n.toLocaleString('ru-RU');
+  const S = { cat: 'nails', svc: SVCS[0], master: 'Анна', date: null, time: null, view: new Date(today.getFullYear(), today.getMonth(), 1) };
+
+  // Детерминированная «занятость» для правдоподобия
+  const hash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+  const busy = (d, master, slot) => hash(d.toDateString() + master + slot) % 3 === 0;
+  const dayFull = (d, master) => hash(d.toDateString() + master) % 13 === 0;
+
+  const $ = id => document.getElementById(id);
+  const ON = 'bg-cocoa text-cream border-cocoa', OFF = 'border-blush-200 hover:bg-blush-100';
+
+  function renderCats() {
+    $('cats').innerHTML = Object.entries(CATS).map(([k, v]) => `<button type="button" data-cat="${k}" class="chip shrink-0 px-4 py-2.5 rounded-full border ${k === S.cat ? ON : OFF}">${v}</button>`).join('');
+  }
+  function renderSvcs() {
+    $('svcs').innerHTML = SVCS.filter(s => s.c === S.cat).map(s => `<button type="button" data-svc="${s.id}" class="chip text-left px-4 py-3 rounded-2xl border flex justify-between items-center gap-3 ${s.id === S.svc.id ? 'border-blush-400 bg-blush-100' : 'border-blush-200 hover:border-blush-400'}"><span><b class="font-medium">${s.t}</b><span class="block text-xs text-cocoa/50 mt-0.5">${s.d} мин</span></span><span class="whitespace-nowrap">${fmt(s.p)} ₽</span></button>`).join('');
+  }
+  function renderMasters() {
+    if (!S.svc.m.includes(S.master)) S.master = S.svc.m[0];
+    $('masterList').innerHTML = S.svc.m.map(m => `<button type="button" data-master="${m}" class="chip px-4 py-3 rounded-2xl border ${m === S.master ? ON : OFF}">${m}</button>`).join('');
+  }
+  function renderDays() {
+    const v = S.view, y = v.getFullYear(), mo = v.getMonth();
+    $('monthName').textContent = MONTHS[mo] + ' ' + y;
+    const first = (new Date(y, mo, 1).getDay() + 6) % 7, len = new Date(y, mo + 1, 0).getDate();
+    const max = new Date(today); max.setDate(max.getDate() + 45);
+    let html = '<span></span>'.repeat(first);
+    for (let i = 1; i <= len; i++) {
+      const d = new Date(y, mo, i);
+      const off = d < today || d > max || dayFull(d, S.master);
+      const sel = S.date && d.getTime() === S.date.getTime();
+      html += `<button type="button" ${off ? 'disabled' : ''} data-day="${i}" class="day py-2.5 rounded-full transition ${sel ? 'bg-cocoa text-cream' : off ? '' : 'hover:bg-blush-100'} ${d.getTime() === today.getTime() && !sel ? 'ring-1 ring-blush-400' : ''}">${i}</button>`;
+    }
+    $('days').innerHTML = html;
+    $('prevM').disabled = y === today.getFullYear() && mo === today.getMonth();
+    $('nextM').disabled = new Date(y, mo + 1, 1) > max;
+  }
+  function renderSlots() {
+    if (!S.date) { $('slotTitle').textContent = '4 · Время: сначала выберите дату'; $('slots').innerHTML = ''; return; }
+    $('slotTitle').textContent = `4 · Свободно ${S.date.getDate()} ${MONTHS_G[S.date.getMonth()]} · мастер ${S.master}`;
+    const now = new Date();
+    $('slots').innerHTML = ALL_SLOTS.map(t => {
+      const [h, m] = t.split(':'); const dt = new Date(S.date); dt.setHours(+h, +m);
+      const off = busy(S.date, S.master, t) || dt < now;
+      const sel = S.time === t;
+      return `<button type="button" ${off ? 'disabled' : ''} data-time="${t}" class="py-2.5 text-center rounded-xl border transition ${sel ? 'bg-blush-400 text-white border-blush-400' : off ? 'border-blush-100 text-cocoa/30 line-through cursor-not-allowed' : 'border-blush-200 hover:border-blush-400'}">${t}</button>`;
+    }).join('');
+  }
+  function renderSum() {
+    let s = `${S.svc.t} · ${fmt(S.svc.p)} ₽ · ${S.master}`;
+    if (S.date) s += ` · ${S.date.getDate()} ${MONTHS_G[S.date.getMonth()]}`;
+    if (S.time) s += `, ${S.time}`;
+    $('sumSide').textContent = s;
+    $('bookSum').textContent = s;
+    $('bookBtn').textContent = S.time ? `Записаться на ${S.time}` : 'Выберите дату и время';
+  }
+  function firstFreeDate() {
+    const d = new Date(today);
+    for (let i = 0; i < 30; i++) { if (!dayFull(d, S.master)) return new Date(d); d.setDate(d.getDate() + 1); }
+    return null;
+  }
+  function renderAll() { renderCats(); renderSvcs(); renderMasters(); renderDays(); renderSlots(); renderSum(); }
+
+  $('cats').onclick = e => { const b = e.target.closest('[data-cat]'); if (!b) return; S.cat = b.dataset.cat; S.svc = SVCS.find(s => s.c === S.cat); S.time = null; renderAll(); };
+  $('svcs').onclick = e => { const b = e.target.closest('[data-svc]'); if (!b) return; S.svc = SVCS.find(s => s.id === +b.dataset.svc); S.time = null; renderAll(); };
+  $('masterList').onclick = e => { const b = e.target.closest('[data-master]'); if (!b) return; S.master = b.dataset.master; S.time = null; if (S.date && dayFull(S.date, S.master)) S.date = null; renderAll(); };
+  $('days').onclick = e => { const b = e.target.closest('[data-day]'); if (!b || b.disabled) return; S.date = new Date(S.view.getFullYear(), S.view.getMonth(), +b.dataset.day); S.time = null; renderDays(); renderSlots(); renderSum(); };
+  $('slots').onclick = e => { const b = e.target.closest('[data-time]'); if (!b || b.disabled) return; S.time = b.dataset.time; renderSlots(); renderSum(); };
+  $('prevM').onclick = () => { S.view = new Date(S.view.getFullYear(), S.view.getMonth() - 1, 1); renderDays(); };
+  $('nextM').onclick = () => { S.view = new Date(S.view.getFullYear(), S.view.getMonth() + 1, 1); renderDays(); };
+
+  // Ссылки «записаться» из услуг и мастеров
+  document.querySelectorAll('[data-svc-cat]').forEach(a => a.addEventListener('click', () => { S.cat = a.dataset.svcCat; S.svc = SVCS.find(s => s.c === S.cat); S.time = null; renderAll(); }));
+  document.querySelectorAll('[data-pick-master]').forEach(a => a.addEventListener('click', () => {
+    const m = a.dataset.pickMaster; const svc = SVCS.find(s => s.m.includes(m)); S.cat = svc.c; S.svc = svc; S.master = m; S.time = null; renderAll();
+  }));
+
+  // Форма: без времени не отправляем
+  const bookForm = $('bookForm');
+  bookForm.addEventListener('submit', e => {
+    if (!S.time) { e.stopImmediatePropagation(); e.preventDefault(); const m = bookForm.querySelector('[data-msg]'); m.dataset.state = 'err'; m.textContent = 'Выберите дату и свободное время.'; }
+  }, true);
+  bookForm.addEventListener('demo:sent', () => { bookForm.querySelector('[data-msg]').textContent = `Спасибо! Это демо-версия сайта, заявка никуда не отправляется. Ваш выбор: ${$('bookSum').textContent}.`; });
+
+  S.date = firstFreeDate();
+  renderAll();
+
+  // Прайс-лист из тех же данных
+  $('priceList').innerHTML = Object.entries(CATS).map(([k, v]) => `<div><h3 class="font-serif text-3xl">${v}</h3><ul class="mt-4 divide-y divide-blush-200">` +
+    SVCS.filter(s => s.c === k).map(s => `<li class="py-3 flex justify-between gap-4 text-sm"><span>${s.t} <span class="text-cocoa/40">· ${s.d} мин</span></span><span class="whitespace-nowrap font-medium">${fmt(s.p)} ₽</span></li>`).join('') + '</ul></div>').join('');
+
+  // Сертификат
+  document.querySelectorAll('#giftSums button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('#giftSums button').forEach(x => x.className = 'chip py-3 rounded-full border border-blush-200');
+    b.className = 'chip py-3 rounded-full bg-cocoa text-cream'; $('giftSum').textContent = fmt(+b.dataset.sum);
+  });
+</script>
+</body>
+</html>

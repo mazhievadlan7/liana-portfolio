@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>PULSE — фитнес-клуб</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{display:['Oswald','sans-serif'],sans:['Inter','sans-serif']},colors:{neon:'#c6ff3d',coal:'#0e0f10'}}}}</script>
+<style>body{-webkit-font-smoothing:antialiased;background:#0e0f10}.stroke{-webkit-text-stroke:2px #c6ff3d;color:transparent}</style>
+</head>
+<body class="text-white font-sans">
+<section class="relative min-h-[720px] overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=2000&q=80&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50" alt="">
+  <div class="absolute inset-0 bg-gradient-to-r from-coal via-coal/70 to-transparent"></div>
+  <header class="relative max-w-7xl mx-auto px-6 py-7 flex justify-between items-center">
+    <div class="font-display text-3xl tracking-wider">PULSE<span class="text-neon">.</span></div>
+    <nav class="hidden lg:flex gap-9 text-sm uppercase tracking-widest text-white/70"><a>Клуб</a><a>Тренеры</a><a>Расписание</a><a>Абонементы</a></nav>
+    <a class="px-6 py-3 bg-neon text-coal font-semibold uppercase text-sm tracking-wider">Пробная тренировка</a>
+  </header>
+  <div class="relative max-w-7xl mx-auto px-6 pt-20">
+    <p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Фитнес-клуб 24/7 · 2 400 м²</p>
+    <h1 class="font-display text-7xl md:text-8xl uppercase leading-[.95] mt-6">Сильнее,<br><span class="stroke">чем вчера</span></h1>
+    <p class="mt-7 text-lg text-white/70 max-w-lg">Тренажёрный зал, функциональная зона, бассейн 25 метров и 60 групповых программ. Первая тренировка с тренером бесплатно.</p>
+    <div class="mt-10 flex gap-4"><a class="px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider">Записаться бесплатно</a><a class="px-8 py-4 border border-white/30 font-bold uppercase tracking-wider">Смотреть клуб ▶</a></div>
+  </div>
+</section>
+
+<section class="border-y border-white/10">
+  <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div><div class="font-display text-5xl text-neon">24/7</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">без выходных</div></div>
+    <div><div class="font-display text-5xl">32</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">тренера</div></div>
+    <div><div class="font-display text-5xl">60+</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">групповых программ</div></div>
+    <div><div class="font-display text-5xl">25 м</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">бассейн</div></div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 py-24">
+  <h2 class="font-display text-5xl uppercase">Абонементы</h2>
+  <div class="mt-12 grid md:grid-cols-3 gap-5">
+    <div class="p-9 border border-white/10"><div class="uppercase tracking-widest text-sm text-white/60">Дневной</div><div class="font-display text-5xl mt-4">2 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Зал и групповые с 7:00 до 17:00</li><li>— Вводная тренировка</li><li>— Заморозка 14 дней</li></ul><a class="mt-10 block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider">Выбрать</a></div>
+    <div class="p-9 bg-neon text-coal relative"><span class="absolute top-6 right-6 text-xs font-bold uppercase bg-coal text-neon px-3 py-1">Хит</span><div class="uppercase tracking-widest text-sm">Безлимит</div><div class="font-display text-5xl mt-4">3 900 ₽<span class="text-lg font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-sm"><li>— Клуб 24/7, бассейн и сауна</li><li>— 2 тренировки с тренером</li><li>— Заморозка 30 дней</li></ul><a class="mt-10 block text-center py-4 bg-coal text-neon uppercase font-semibold tracking-wider">Выбрать</a></div>
+    <div class="p-9 border border-white/10"><div class="uppercase tracking-widest text-sm text-white/60">Персональный</div><div class="font-display text-5xl mt-4">12 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Всё из «Безлимита»</li><li>— 12 персональных тренировок</li><li>— План питания от нутрициолога</li></ul><a class="mt-10 block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider">Выбрать</a></div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-5">
+  <img src="https://images.unsplash.com/photo-1518617840859-acd542e13a99?w=1100&q=80&auto=format&fit=crop" class="h-[440px] w-full object-cover" alt="">
+  <div class="bg-white/5 border border-white/10 p-12 flex flex-col justify-between">
+    <div><p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Персональные тренировки</p><h2 class="font-display text-5xl uppercase mt-5 leading-tight">Результат за 12 недель или вернём деньги</h2><p class="mt-5 text-white/65">Тренер составит программу под вашу цель: похудение, рельеф, сила или восстановление после травмы.</p></div>
+    <a class="mt-10 self-start px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider">Подобрать тренера</a>
+  </div>
+</section>
+<footer class="border-t border-white/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-white/45"><span class="font-display text-xl text-white">PULSE<span class="text-neon">.</span></span><span>Фитнес-клуб · открыт круглосуточно</span><span>© 2026</span></div></footer>
+</body>
+</html>

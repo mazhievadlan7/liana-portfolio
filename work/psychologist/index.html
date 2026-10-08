@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вера Ладова — психолог-консультант, онлайн и очно</title>
+<meta name="description" content="Частный психолог Вера Ладова: тревога, выгорание, отношения, самооценка. Онлайн и очно в Москве. Пройдите короткий тест и запишитесь на удобное время.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { serif: ['Fraunces','Georgia','serif'], sans: ['Manrope','system-ui','sans-serif'] },
+  colors: { cream:'#F7F2EB', sand:'#EFE6DA', clay:'#C2714F', claydk:'#A85C3D', sage:'#8B9A7E', sagelt:'#DDE3D3', ink:'#2E2A26', mute:'#6F665D' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#F7F2EB; color:#2E2A26; -webkit-font-smoothing:antialiased; }
+  .js .rv { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .js .rv.in { opacity:1; transform:none; }
+  .blob { border-radius: 58% 42% 46% 54% / 52% 44% 56% 48%; }
+  .blob2 { border-radius: 42% 58% 62% 38% / 46% 58% 42% 54%; }
+  .arch { border-radius: 999px 999px 32px 32px; }
+  .grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E"); }
+  .faq-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s ease; }
+  .faq-item.open .faq-body { grid-template-rows:1fr; }
+  .faq-item.open .faq-ico { transform:rotate(45deg); background:#C2714F; color:#fff; }
+  .opt { transition:all .25s ease; }
+  .opt:hover { border-color:#C2714F; background:#fff; }
+  .day.active { background:#2E2A26; color:#F7F2EB; border-color:#2E2A26; }
+  .slot.active { background:#C2714F; color:#fff; border-color:#C2714F; }
+  .slot:disabled { opacity:.35; text-decoration:line-through; cursor:not-allowed; }
+  .no-scrollbar::-webkit-scrollbar { display:none; } .no-scrollbar { scrollbar-width:none; }
+  @keyframes floaty { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-10px) } }
+  .floaty { animation:floaty 6s ease-in-out infinite; }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden grain">
+
+<!-- Header -->
+<header id="top" class="sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-ink/5">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 md:h-20 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-3">
+      <span class="w-9 h-9 blob bg-clay/90 grid place-items-center text-cream font-serif text-lg">В</span>
+      <span class="leading-tight"><span class="block font-serif text-lg">Вера Ладова</span><span class="block text-[11px] tracking-[.18em] uppercase text-mute">психолог</span></span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 text-[15px] text-mute">
+      <a href="#about" class="hover:text-ink transition">Обо мне</a>
+      <a href="#topics" class="hover:text-ink transition">С чем работаю</a>
+      <a href="#quiz" class="hover:text-ink transition">Тест</a>
+      <a href="#prices" class="hover:text-ink transition">Форматы и цены</a>
+      <a href="#faq" class="hover:text-ink transition">Вопросы</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#booking" class="hidden sm:inline-flex px-5 py-2.5 rounded-full bg-ink text-cream text-sm font-semibold hover:bg-clay transition">Записаться</a>
+      <button id="burger" aria-label="Открыть меню" class="lg:hidden w-11 h-11 rounded-full border border-ink/15 grid place-items-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div id="mmenu" class="fixed inset-0 z-50 bg-cream hidden flex-col">
+  <div class="px-5 h-16 flex items-center justify-between border-b border-ink/5">
+    <span class="font-serif text-lg">Вера Ладова</span>
+    <button id="mclose" aria-label="Закрыть меню" class="w-11 h-11 rounded-full border border-ink/15 grid place-items-center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 px-6 py-10 flex flex-col gap-6 font-serif text-3xl">
+    <a href="#about" class="mlink">Обо мне</a>
+    <a href="#topics" class="mlink">С чем работаю</a>
+    <a href="#quiz" class="mlink">Тест на 2 минуты</a>
+    <a href="#prices" class="mlink">Форматы и цены</a>
+    <a href="#booking" class="mlink">Запись</a>
+    <a href="#faq" class="mlink">Вопросы</a>
+  </nav>
+  <div class="p-6"><a href="#booking" class="mlink block text-center px-6 py-4 rounded-full bg-clay text-white font-semibold">Записаться на консультацию</a></div>
+</div>
+
+<main>
+<!-- Hero -->
+<section class="relative overflow-hidden">
+  <div class="absolute -top-24 -right-24 w-[420px] h-[420px] blob bg-sagelt/70"></div>
+  <div class="absolute top-[55%] -left-32 w-[300px] h-[300px] blob2 bg-sand"></div>
+  <div class="relative max-w-7xl mx-auto px-5 md:px-8 pt-10 md:pt-20 pb-16 md:pb-28 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+    <div class="lg:col-span-7 rv">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-ink/5 text-sm text-mute">
+        <span class="w-2 h-2 rounded-full bg-sage animate-pulse"></span> Есть свободные окна на этой неделе
+      </div>
+      <h1 class="mt-6 font-serif font-light text-[44px] leading-[1.02] sm:text-6xl lg:text-[84px] tracking-[-0.02em]">
+        Место, где можно <em class="italic text-clay">выдохнуть</em> и&nbsp;разобраться в&nbsp;себе
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-mute max-w-xl leading-relaxed">Я психолог-консультант с 9-летней практикой. Помогаю справиться с тревогой, выгоранием и сложностями в отношениях бережно, без оценок и в вашем темпе.</p>
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a href="#booking" class="inline-flex justify-center items-center gap-2 px-7 py-4 rounded-full bg-clay text-white font-semibold hover:bg-claydk transition shadow-[0_12px_30px_-12px_rgba(194,113,79,.7)]">Записаться на встречу
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="#quiz" class="inline-flex justify-center items-center px-7 py-4 rounded-full border border-ink/15 font-semibold hover:bg-white transition">Пройти тест за 2 минуты</a>
+      </div>
+      <dl class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+        <div><dt class="font-serif text-3xl md:text-4xl">9 лет</dt><dd class="text-sm text-mute mt-1">частной практики</dd></div>
+        <div><dt class="font-serif text-3xl md:text-4xl">3 200+</dt><dd class="text-sm text-mute mt-1">часов консультаций</dd></div>
+        <div><dt class="font-serif text-3xl md:text-4xl">КПТ</dt><dd class="text-sm text-mute mt-1">и схема-терапия</dd></div>
+      </dl>
+    </div>
+    <div class="lg:col-span-5 relative rv">
+      <div class="relative mx-auto max-w-[420px]">
+        <div class="absolute inset-0 translate-x-4 translate-y-4 arch bg-sagelt"></div>
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1200&q=80&auto=format&fit=crop" alt="Психолог Вера Ладова, портрет" class="relative w-full h-[440px] sm:h-[520px] object-cover arch">
+        <div class="floaty absolute -left-2 sm:-left-10 bottom-16 bg-white rounded-3xl shadow-xl shadow-ink/10 px-5 py-4 max-w-[230px]">
+          <div class="text-xs uppercase tracking-widest text-mute">Ближайшее окно</div>
+          <div class="font-serif text-xl mt-1" id="heroSlot">чт, 18:00</div>
+          <div class="text-sm text-mute">онлайн · 50 минут</div>
+        </div>
+        <div class="absolute -right-2 sm:-right-6 top-10 bg-ink text-cream rounded-full w-24 h-24 grid place-items-center text-center text-xs leading-tight rotate-[-8deg]">
+          <span><b class="font-serif text-2xl block font-normal">4,98</b>средняя<br>оценка</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="py-20 md:py-28 bg-white/60 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-5 rv">
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80&auto=format&fit=crop" alt="Уютный кабинет психолога с жёлтым креслом" class="w-full h-[380px] md:h-[480px] object-cover rounded-[40px]">
+        <div class="absolute -bottom-6 right-6 bg-cream rounded-3xl px-6 py-5 shadow-lg shadow-ink/5 max-w-[260px]">
+          <p class="font-serif italic text-lg leading-snug">«Здесь не нужно быть сильной. Можно быть настоящей».</p>
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-7 lg:pl-8 rv">
+      <p class="text-sm tracking-[.2em] uppercase text-clay font-semibold">Обо мне</p>
+      <h2 class="mt-4 font-serif font-light text-4xl md:text-5xl leading-[1.1]">Я верю, что у каждого человека есть ресурс. Иногда к нему просто нужен проводник</h2>
+      <p class="mt-6 text-lg text-mute leading-relaxed">Работаю в когнитивно-поведенческом подходе и схема-терапии: это методы с доказанной эффективностью. На сессиях мы не просто говорим о чувствах, а находим, что именно запускает тревогу или усталость, и пробуем новые способы жить с этим.</p>
+      <ul class="mt-8 grid sm:grid-cols-2 gap-4">
+        <li class="flex gap-3 p-5 rounded-3xl bg-cream"><span class="w-9 h-9 shrink-0 rounded-full bg-sagelt grid place-items-center text-sage">✓</span><span><b class="font-semibold">Клиническая психология</b><br><span class="text-sm text-mute">магистратура, 2015</span></span></li>
+        <li class="flex gap-3 p-5 rounded-3xl bg-cream"><span class="w-9 h-9 shrink-0 rounded-full bg-sagelt grid place-items-center text-sage">✓</span><span><b class="font-semibold">КПТ, 2 года обучения</b><br><span class="text-sm text-mute">сертифицированный курс</span></span></li>
+        <li class="flex gap-3 p-5 rounded-3xl bg-cream"><span class="w-9 h-9 shrink-0 rounded-full bg-sagelt grid place-items-center text-sage">✓</span><span><b class="font-semibold">Схема-терапия</b><br><span class="text-sm text-mute">базовый и продвинутый уровень</span></span></li>
+        <li class="flex gap-3 p-5 rounded-3xl bg-cream"><span class="w-9 h-9 shrink-0 rounded-full bg-sagelt grid place-items-center text-sage">✓</span><span><b class="font-semibold">Личная терапия и супервизия</b><br><span class="text-sm text-mute">регулярно, с 2014 года</span></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Topics -->
+<section id="topics" class="py-20 md:py-28 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 rv">
+      <div>
+        <p class="text-sm tracking-[.2em] uppercase text-clay font-semibold">С чем работаю</p>
+        <h2 class="mt-4 font-serif font-light text-4xl md:text-6xl leading-[1.05] max-w-2xl">Запросы, с которыми ко мне приходят чаще всего</h2>
+      </div>
+      <p class="text-mute max-w-sm">Если вашей темы нет в списке, напишите. Скажу честно, смогу ли помочь, или порекомендую коллегу.</p>
+    </div>
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" id="topicGrid"></div>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section id="quiz" class="py-20 md:py-28 scroll-mt-20">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="relative rounded-[40px] md:rounded-[56px] bg-ink text-cream overflow-hidden rv">
+      <div class="absolute -right-20 -top-20 w-80 h-80 blob bg-clay/30"></div>
+      <div class="absolute -left-16 bottom-0 w-64 h-64 blob2 bg-sage/25"></div>
+      <div class="relative grid lg:grid-cols-12 gap-10 p-7 sm:p-10 md:p-16">
+        <div class="lg:col-span-5">
+          <p class="text-sm tracking-[.2em] uppercase text-[#E7B39B] font-semibold">Тест · 5 вопросов</p>
+          <h2 class="mt-4 font-serif font-light text-4xl md:text-5xl leading-[1.08]">Как вы на самом деле?</h2>
+          <p class="mt-5 text-cream/70 leading-relaxed">Короткая самопроверка уровня напряжения за последние две недели. Это не диагноз, а повод прислушаться к себе. Ответы никуда не отправляются.</p>
+          <div class="mt-8 hidden lg:flex items-center gap-3 text-sm text-cream/60"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Анонимно, результат видите только вы</div>
+        </div>
+        <div class="lg:col-span-7">
+          <div id="quizBox" class="bg-cream text-ink rounded-[32px] p-6 sm:p-8 min-h-[420px] flex flex-col"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <h2 class="font-serif font-light text-4xl md:text-5xl rv">Как проходит работа</h2>
+    <ol class="mt-12 grid md:grid-cols-4 gap-6">
+      <li class="rv relative pt-8 border-t border-ink/15"><span class="absolute -top-4 left-0 w-8 h-8 rounded-full bg-clay text-white text-sm grid place-items-center">1</span><h3 class="font-serif text-2xl">Заявка</h3><p class="mt-2 text-mute">Выбираете время на сайте или пишете в мессенджер. Отвечаю в течение 2 часов.</p></li>
+      <li class="rv relative pt-8 border-t border-ink/15"><span class="absolute -top-4 left-0 w-8 h-8 rounded-full bg-clay text-white text-sm grid place-items-center">2</span><h3 class="font-serif text-2xl">Первая встреча</h3><p class="mt-2 text-mute">Знакомимся, проясняем запрос и решаем, подходим ли мы друг другу.</p></li>
+      <li class="rv relative pt-8 border-t border-ink/15"><span class="absolute -top-4 left-0 w-8 h-8 rounded-full bg-clay text-white text-sm grid place-items-center">3</span><h3 class="font-serif text-2xl">Регулярные сессии</h3><p class="mt-2 text-mute">Раз в неделю по 50 минут. Между встречами небольшие задания по желанию.</p></li>
+      <li class="rv relative pt-8 border-t border-ink/15"><span class="absolute -top-4 left-0 w-8 h-8 rounded-full bg-clay text-white text-sm grid place-items-center">4</span><h3 class="font-serif text-2xl">Итоги</h3><p class="mt-2 text-mute">Каждые 5 встреч сверяемся: что изменилось и куда двигаемся дальше.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- Prices -->
+<section id="prices" class="py-20 md:py-28 bg-sand/60 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto rv">
+      <p class="text-sm tracking-[.2em] uppercase text-clay font-semibold">Форматы и цены</p>
+      <h2 class="mt-4 font-serif font-light text-4xl md:text-6xl leading-[1.05]">Выберите, как вам удобнее</h2>
+      <p class="mt-5 text-mute">Оплата после встречи. Перенос бесплатно, если предупредить за 24 часа.</p>
+    </div>
+    <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <article class="rv bg-cream rounded-[32px] p-7 flex flex-col hover:-translate-y-1 transition duration-300">
+        <div class="w-12 h-12 blob bg-sagelt grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6E7F62" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3 class="mt-6 font-serif text-2xl">Знакомство</h3>
+        <p class="mt-2 text-sm text-mute flex-1">20 минут по видеосвязи: обсудим запрос и ответим на вопросы друг друга.</p>
+        <div class="mt-6 font-serif text-4xl">0 ₽</div>
+        <button data-format="Знакомство, 20 мин" class="pick mt-6 px-5 py-3 rounded-full border border-ink/15 font-semibold hover:bg-ink hover:text-cream transition">Выбрать</button>
+      </article>
+      <article class="rv bg-ink text-cream rounded-[32px] p-7 flex flex-col relative md:-translate-y-3 hover:-translate-y-4 transition duration-300">
+        <span class="absolute top-6 right-6 text-[11px] uppercase tracking-widest bg-clay px-3 py-1 rounded-full">Чаще выбирают</span>
+        <div class="w-12 h-12 blob bg-clay/30 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E7B39B" stroke-width="1.8"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3 class="mt-6 font-serif text-2xl">Онлайн-сессия</h3>
+        <p class="mt-2 text-sm text-cream/70 flex-1">50 минут в Zoom или Telegram. Подходит, если вы в другом городе или стране.</p>
+        <div class="mt-6 font-serif text-4xl">4 500 ₽</div>
+        <button data-format="Онлайн-сессия, 50 мин" class="pick mt-6 px-5 py-3 rounded-full bg-clay font-semibold hover:bg-claydk transition">Выбрать</button>
+      </article>
+      <article class="rv bg-cream rounded-[32px] p-7 flex flex-col hover:-translate-y-1 transition duration-300">
+        <div class="w-12 h-12 blob bg-sagelt grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6E7F62" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg></div>
+        <h3 class="mt-6 font-serif text-2xl">Очная встреча</h3>
+        <p class="mt-2 text-sm text-mute flex-1">50 минут в кабинете в 5 минутах от м. Чистые пруды. Чай, плед и тишина.</p>
+        <div class="mt-6 font-serif text-4xl">5 000 ₽</div>
+        <button data-format="Очная встреча, 50 мин" class="pick mt-6 px-5 py-3 rounded-full border border-ink/15 font-semibold hover:bg-ink hover:text-cream transition">Выбрать</button>
+      </article>
+      <article class="rv bg-cream rounded-[32px] p-7 flex flex-col hover:-translate-y-1 transition duration-300">
+        <div class="w-12 h-12 blob bg-sagelt grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6E7F62" stroke-width="1.8"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M12 20c0-3 3-5 6-5s4 1 4 3"/></svg></div>
+        <h3 class="mt-6 font-serif text-2xl">Пакет 5 сессий</h3>
+        <p class="mt-2 text-sm text-mute flex-1">Онлайн или очно. Экономия 2 500 ₽ и закреплённое время каждую неделю.</p>
+        <div class="mt-6 font-serif text-4xl">20 000 ₽</div>
+        <button data-format="Пакет 5 сессий" class="pick mt-6 px-5 py-3 rounded-full border border-ink/15 font-semibold hover:bg-ink hover:text-cream transition">Выбрать</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section id="booking" class="py-20 md:py-28 scroll-mt-20">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12">
+      <div class="lg:col-span-4 rv">
+        <p class="text-sm tracking-[.2em] uppercase text-clay font-semibold">Онлайн-запись</p>
+        <h2 class="mt-4 font-serif font-light text-4xl md:text-5xl leading-[1.08]">Выберите день и время</h2>
+        <p class="mt-5 text-mute">Время указано по Москве. После записи я напишу вам, чтобы подтвердить встречу и прислать ссылку.</p>
+        <div class="mt-8 p-6 rounded-[28px] bg-white/70 border border-ink/5" id="summary">
+          <div class="text-xs uppercase tracking-widest text-mute">Ваша запись</div>
+          <div class="mt-3 space-y-2 text-[15px]">
+            <div class="flex justify-between gap-4"><span class="text-mute">Формат</span><b id="sumFormat" class="text-right font-semibold">Онлайн-сессия, 50 мин</b></div>
+            <div class="flex justify-between gap-4"><span class="text-mute">Дата</span><b id="sumDate" class="text-right font-semibold">не выбрана</b></div>
+            <div class="flex justify-between gap-4"><span class="text-mute">Время</span><b id="sumTime" class="text-right font-semibold">не выбрано</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-8 rv">
+        <form id="bookForm" novalidate class="bg-white rounded-[36px] p-6 sm:p-8 md:p-10 shadow-[0_30px_80px_-40px_rgba(46,42,38,.35)]">
+          <label class="block text-sm font-semibold mb-3">Формат</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="formatBtns">
+            <button type="button" data-f="Знакомство, 20 мин" class="fmt px-3 py-3 rounded-2xl border border-ink/10 text-sm hover:border-clay transition">Знакомство</button>
+            <button type="button" data-f="Онлайн-сессия, 50 мин" class="fmt px-3 py-3 rounded-2xl border border-ink/10 text-sm hover:border-clay transition">Онлайн</button>
+            <button type="button" data-f="Очная встреча, 50 мин" class="fmt px-3 py-3 rounded-2xl border border-ink/10 text-sm hover:border-clay transition">Очно</button>
+            <button type="button" data-f="Пакет 5 сессий" class="fmt px-3 py-3 rounded-2xl border border-ink/10 text-sm hover:border-clay transition">Пакет 5</button>
+          </div>
+
+          <div class="mt-8 flex items-center justify-between">
+            <label class="text-sm font-semibold">День</label>
+            <div class="flex gap-2">
+              <button type="button" id="dPrev" aria-label="Предыдущие дни" class="w-9 h-9 rounded-full border border-ink/10 grid place-items-center hover:bg-cream">‹</button>
+              <button type="button" id="dNext" aria-label="Следующие дни" class="w-9 h-9 rounded-full border border-ink/10 grid place-items-center hover:bg-cream">›</button>
+            </div>
+          </div>
+          <div id="days" class="mt-3 grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
+
+          <label class="block mt-8 text-sm font-semibold">Свободное время</label>
+          <div id="slots" class="mt-3 grid grid-cols-3 sm:grid-cols-6 gap-2"></div>
+          <p id="slotHint" class="mt-2 text-sm text-mute">Сначала выберите день.</p>
+
+          <div class="mt-8 grid sm:grid-cols-2 gap-4">
+            <div><label for="bName" class="block text-sm font-semibold mb-2">Как к вам обращаться</label><input id="bName" class="w-full px-5 py-4 rounded-2xl bg-cream border border-transparent focus:border-clay focus:bg-white outline-none transition" placeholder="Имя"></div>
+            <div><label for="bPhone" class="block text-sm font-semibold mb-2">Телефон или Telegram</label><input id="bPhone" class="w-full px-5 py-4 rounded-2xl bg-cream border border-transparent focus:border-clay focus:bg-white outline-none transition" placeholder="+7 (900) 000-00-00"></div>
+          </div>
+          <div class="mt-4"><label for="bMsg" class="block text-sm font-semibold mb-2">Коротко о запросе <span class="text-mute font-normal">(необязательно)</span></label><textarea id="bMsg" rows="3" class="w-full px-5 py-4 rounded-2xl bg-cream border border-transparent focus:border-clay focus:bg-white outline-none transition resize-none" placeholder="Например: последние полгода постоянная тревога, плохо сплю"></textarea></div>
+          <p id="bErr" class="mt-4 text-sm text-claydk hidden"></p>
+          <button class="mt-6 w-full px-7 py-4 rounded-full bg-clay text-white font-semibold hover:bg-claydk transition">Записаться</button>
+          <p class="mt-3 text-xs text-mute text-center">Нажимая кнопку, вы соглашаетесь на обработку персональных данных. Всё, что вы расскажете, остаётся между нами.</p>
+          <div id="bOk" class="hidden mt-6 p-5 rounded-2xl bg-sagelt text-ink text-center font-medium">Спасибо! Это демо-версия сайта, заявка никуда не отправляется.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 md:py-24 bg-white/60">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <h2 class="font-serif font-light text-4xl md:text-5xl rv">Что говорят клиенты</h2>
+    <p class="mt-3 text-mute rv">Отзывы публикуются анонимно и с согласия авторов.</p>
+    <div class="mt-12 grid md:grid-cols-3 gap-5">
+      <figure class="rv p-8 rounded-[32px] bg-cream"><div class="text-clay text-5xl font-serif leading-none">“</div><blockquote class="mt-2 text-lg leading-relaxed">Пришла с паническими атаками, которые мешали ездить в метро. Через три месяца поймала себя на том, что спокойно доехала через весь город и даже не заметила.</blockquote><figcaption class="mt-6 text-sm text-mute">Анна, 31 год · 14 сессий</figcaption></figure>
+      <figure class="rv p-8 rounded-[32px] bg-cream"><div class="text-clay text-5xl font-serif leading-none">“</div><blockquote class="mt-2 text-lg leading-relaxed">Думал, что психолог будет кивать и спрашивать «что вы чувствуете». Вместо этого получил понятные инструменты против выгорания, которые работают на практике.</blockquote><figcaption class="mt-6 text-sm text-mute">Дмитрий, 38 лет · 10 сессий</figcaption></figure>
+      <figure class="rv p-8 rounded-[32px] bg-cream"><div class="text-clay text-5xl font-serif leading-none">“</div><blockquote class="mt-2 text-lg leading-relaxed">Самое ценное: ни разу не почувствовала себя глупо или неловко. Вера помогла мне перестать извиняться за каждое своё желание.</blockquote><figcaption class="mt-6 text-sm text-mute">Ольга, 27 лет · онлайн из Берлина</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 md:py-28 scroll-mt-20">
+  <div class="max-w-4xl mx-auto px-5 md:px-8">
+    <div class="text-center rv">
+      <p class="text-sm tracking-[.2em] uppercase text-clay font-semibold">Вопросы</p>
+      <h2 class="mt-4 font-serif font-light text-4xl md:text-6xl">Частые вопросы</h2>
+    </div>
+    <div class="mt-12 space-y-3" id="faqList">
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">Сколько встреч понадобится?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Зависит от запроса. Конкретную ситуацию, например подготовку к разговору или решение о переезде, часто удаётся разобрать за 3–5 встреч. Работа с тревогой или самооценкой обычно занимает от 3 до 6 месяцев.</p></div></div>
+      </div>
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">Онлайн так же эффективно, как очно?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Да, исследования показывают сопоставимый результат. Важно только найти тихое место, где вас никто не услышит, и хороший интернет. Половина моих клиентов работает со мной онлайн.</p></div></div>
+      </div>
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">Это конфиденциально?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Полностью. Я соблюдаю этический кодекс психолога: не записываю сессии и не обсуждаю клиентов с третьими лицами. На супервизии случаи разбираются только обезличенно.</p></div></div>
+      </div>
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">Чем психолог отличается от психиатра?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Психолог работает словом: помогает разобраться в мыслях, эмоциях и поведении. Психиатр — врач, он ставит диагнозы и назначает лекарства. Если я увижу, что вам нужна помощь врача, скажу об этом прямо и подскажу, к кому обратиться.</p></div></div>
+      </div>
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">Как отменить или перенести встречу?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Напишите мне не позднее чем за 24 часа, и перенос будет бесплатным. При более поздней отмене сессия оплачивается в размере 50%.</p></div></div>
+      </div>
+      <div class="faq-item rv rounded-[28px] bg-white/70 border border-ink/5">
+        <button class="faq-q w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"><span class="font-serif text-xl md:text-2xl">А если я не знаю, с чего начать?</span><span class="faq-ico w-10 h-10 shrink-0 rounded-full bg-cream grid place-items-center text-xl transition">+</span></button>
+        <div class="faq-body"><div class="overflow-hidden"><p class="px-6 md:px-8 pb-7 text-mute leading-relaxed">Это нормально, так приходит большинство. Начните с бесплатного знакомства: вам не нужно заранее формулировать запрос, мы сделаем это вместе.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="pb-24">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="relative overflow-hidden rounded-[40px] md:rounded-[56px] rv">
+      <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&q=80&auto=format&fit=crop" alt="Поле жёлтых цветов" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/60 to-ink/20"></div>
+      <div class="relative p-8 sm:p-12 md:p-20 max-w-2xl text-cream">
+        <h2 class="font-serif font-light text-4xl md:text-6xl leading-[1.05]">Первый шаг самый трудный. Давайте сделаем его вместе</h2>
+        <p class="mt-5 text-cream/80 text-lg">Бесплатное знакомство 20 минут: без обязательств, просто поговорим.</p>
+        <button data-format="Знакомство, 20 мин" class="pick mt-8 px-7 py-4 rounded-full bg-cream text-ink font-semibold hover:bg-white transition">Записаться на знакомство</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-ink/10 pb-24 md:pb-10">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
+    <div class="md:col-span-2">
+      <div class="font-serif text-2xl">Вера Ладова</div>
+      <p class="mt-3 text-mute max-w-sm">Психолог-консультант. Онлайн и очно в Москве. Если вам сейчас очень плохо и есть угроза жизни, звоните 112.</p>
+    </div>
+    <div><div class="font-semibold mb-3">Контакты</div><a href="tel:+79000000000" class="block text-mute hover:text-ink">+7 (900) 000-00-00</a><a href="mailto:hello@example.ru" class="block text-mute hover:text-ink mt-1">hello@example.ru</a></div>
+    <div><div class="font-semibold mb-3">Кабинет</div><p class="text-mute">Москва, 5 минут от м. Чистые пруды<br>Пн–Сб, 10:00–21:00</p></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 text-xs text-mute">© 2026 Вера Ладова. Не является медицинской услугой.</div>
+</footer>
+
+<a href="../../" class="fixed left-3 bottom-3 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/70 text-cream text-[11px] md:text-xs backdrop-blur opacity-80 hover:opacity-100 transition">
+  <span class="w-1.5 h-1.5 rounded-full bg-[#E7B39B]"></span>Демо-проект<span class="hidden sm:inline"> · портфолио Лианы</span>
+</a>
+
+<script>
+document.documentElement.classList.add('js');
+// Reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+function observe(){ document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el)); }
+
+// Burger
+const mm = document.getElementById('mmenu');
+const openM = () => { mm.classList.remove('hidden'); mm.classList.add('flex'); document.body.style.overflow='hidden'; };
+const closeM = () => { mm.classList.add('hidden'); mm.classList.remove('flex'); document.body.style.overflow=''; };
+document.getElementById('burger').onclick = openM;
+document.getElementById('mclose').onclick = closeM;
+document.querySelectorAll('.mlink').forEach(a => a.addEventListener('click', closeM));
+
+// Topics
+const topics = [
+  ['Тревога и беспокойство','Постоянное напряжение, мысли по кругу, трудно расслабиться и уснуть.','M12 3c4 3 6 6 6 9a6 6 0 01-12 0c0-3 2-6 6-9z'],
+  ['Выгорание и усталость','Нет сил даже на любимое, работа не радует, отдых не восстанавливает.','M4 20h16M7 16c0-4 5-5 5-11 3 3 5 6 5 11'],
+  ['Отношения и пара','Повторяющиеся конфликты, ревность, трудно договариваться и быть услышанным.','M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z'],
+  ['Самооценка','Внутренний критик, сравнение с другими, страх ошибиться и показаться глупо.','M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z'],
+  ['Панические атаки','Внезапный страх, учащённое сердцебиение, избегание мест и ситуаций.','M3 12h4l2-5 4 10 2-5h6'],
+  ['Кризисы и перемены','Переезд, развод, смена профессии, рождение ребёнка: когда почва уходит из-под ног.','M4 17l6-6 4 4 6-8'],
+  ['Горе и утрата','Потеря близкого человека, отношений или привычной жизни. Помогу прожить это.','M12 21a9 9 0 110-18 7 7 0 000 18z'],
+  ['Поиск себя','Не понимаете, чего хотите, живёте «как надо» и устали от этого.','M12 2a10 10 0 100 20 10 10 0 000-20zm3.5 6.5l-2 5-5 2 2-5z']
+];
+document.getElementById('topicGrid').innerHTML = topics.map((t,i) => `
+  <article class="rv group flex sm:block gap-5 p-6 sm:p-7 rounded-[32px] ${i%5===0?'bg-sagelt/70':'bg-white/70'} border border-ink/5 hover:bg-white hover:shadow-[0_24px_60px_-30px_rgba(46,42,38,.35)] hover:-translate-y-1 transition duration-300" style="transition-delay:${(i%4)*60}ms">
+    <div class="w-14 h-14 shrink-0 ${i%2?'blob2':'blob'} bg-cream group-hover:bg-clay/15 grid place-items-center transition">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C2714F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${t[2]}"/></svg>
+    </div>
+    <div><h3 class="sm:mt-6 font-serif text-2xl leading-tight">${t[0]}</h3>
+    <p class="mt-2 sm:mt-3 text-mute text-[15px] leading-relaxed">${t[1]}</p></div>
+  </article>`).join('');
+
+// Quiz
+const Q = [
+  ['Как вы спите последние две недели?', ['Хорошо, высыпаюсь','Иногда долго не могу уснуть','Часто просыпаюсь ночью или рано утром','Сон почти не восстанавливает']],
+  ['Насколько часто вы чувствуете тревогу без явной причины?', ['Почти никогда','Пару раз в неделю','Большую часть дней','Практически постоянно']],
+  ['Радуют ли вас вещи, которые раньше нравились?', ['Да, как обычно','Чуть меньше, чем раньше','Заметно меньше','Почти ничего не радует']],
+  ['Как вы справляетесь с привычными делами?', ['Легко, всё успеваю','Приходится себя заставлять','Многое откладываю на потом','Сил не хватает даже на базовое']],
+  ['Есть ли рядом человек, с которым можно поговорить по душам?', ['Да, и не один','Есть, но не всегда решаюсь','Скорее нет','Нет, справляюсь в одиночку']]
+];
+const R = [
+  { max:4, title:'Вы в ресурсе', tag:'Низкий уровень напряжения', text:'Похоже, сейчас вы неплохо справляетесь. Если хочется глубже понять себя, поставить цели или подготовиться к переменам, консультация поможет сделать это осознанно.', rec:'Знакомство, 20 мин', btn:'Записаться на бесплатное знакомство', color:'#8B9A7E' },
+  { max:9, title:'Вы устали больше, чем кажется', tag:'Умеренное напряжение', text:'Организм подаёт сигналы: сон, настроение и силы уже реагируют на нагрузку. Сейчас самое время остановиться, пока это не переросло в выгорание. Обычно в такой ситуации хватает 5–8 встреч.', rec:'Пакет 5 сессий', btn:'Выбрать пакет из 5 сессий', color:'#D49A5E' },
+  { max:15, title:'Вам важно не оставаться с этим одной', tag:'Высокий уровень напряжения', text:'Ваши ответы говорят о сильной нагрузке. Это не слабость, а повод позаботиться о себе. Рекомендую начать с регулярных встреч раз в неделю. Если появляются мысли о том, что жить не хочется, обратитесь за экстренной помощью по номеру 112.', rec:'Онлайн-сессия, 50 мин', btn:'Записаться на ближайшую сессию', color:'#C2714F' }
+];
+let qi = 0, ans = [];
+const box = document.getElementById('quizBox');
+function renderQ(){
+  if (qi >= Q.length) return renderRes();
+  const [q, opts] = Q[qi];
+  box.innerHTML = `
+    <div class="flex items-center justify-between text-sm text-mute"><span>Вопрос ${qi+1} из ${Q.length}</span>${qi>0?'<button id="qBack" class="underline underline-offset-4 hover:text-ink">Назад</button>':'<span></span>'}</div>
+    <div class="mt-3 h-1.5 rounded-full bg-sand overflow-hidden"><div class="h-full bg-clay rounded-full transition-all duration-500" style="width:${(qi/Q.length)*100}%"></div></div>
+    <h3 class="mt-7 font-serif text-2xl md:text-3xl leading-snug">${q}</h3>
+    <div class="mt-6 grid gap-2.5">${opts.map((o,i)=>`<button data-v="${i}" class="opt text-left px-5 py-4 rounded-2xl border ${ans[qi]===i?'border-clay bg-white':'border-ink/10'} flex items-center gap-4"><span class="w-6 h-6 shrink-0 rounded-full border-2 ${ans[qi]===i?'border-clay bg-clay':'border-ink/20'}"></span>${o}</button>`).join('')}</div>`;
+  box.querySelectorAll('.opt').forEach(b => b.onclick = () => { ans[qi] = +b.dataset.v; b.classList.add('border-clay','bg-white'); setTimeout(()=>{ qi++; renderQ(); }, 220); });
+  const back = document.getElementById('qBack'); if (back) back.onclick = () => { qi--; renderQ(); };
+}
+function renderRes(){
+  const s = ans.reduce((a,b)=>a+b,0);
+  const r = R.find(x => s <= x.max);
+  box.innerHTML = `
+    <div class="flex items-center gap-3"><span class="px-3 py-1 rounded-full text-xs font-semibold text-white" style="background:${r.color}">${r.tag}</span><span class="text-sm text-mute">${s} из 15 баллов</span></div>
+    <div class="mt-4 h-2 rounded-full bg-sand overflow-hidden"><div class="h-full rounded-full transition-all duration-700" style="width:${Math.max(6,s/15*100)}%;background:${r.color}"></div></div>
+    <h3 class="mt-7 font-serif text-3xl md:text-4xl leading-tight">${r.title}</h3>
+    <p class="mt-4 text-mute leading-relaxed">${r.text}</p>
+    <div class="mt-5 p-4 rounded-2xl bg-white text-sm"><span class="text-mute">Рекомендуемый формат:</span> <b>${r.rec}</b></div>
+    <div class="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
+      <button id="qBook" class="px-6 py-3.5 rounded-full bg-clay text-white font-semibold hover:bg-claydk transition">${r.btn}</button>
+      <button id="qAgain" class="px-6 py-3.5 rounded-full border border-ink/15 font-semibold hover:bg-white transition">Пройти заново</button>
+    </div>`;
+  document.getElementById('qAgain').onclick = () => { qi=0; ans=[]; renderQ(); };
+  document.getElementById('qBook').onclick = () => { setFormat(r.rec); document.getElementById('booking').scrollIntoView({behavior:'smooth'}); };
+}
+renderQ();
+
+// Booking
+const MON = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WD = ['вс','пн','вт','ср','чт','пт','сб'];
+const ALL = ['10:00','11:00','12:30','15:00','16:30','18:00','19:00','20:00'];
+let days = [], dayOffset = 0, selDay = null, selTime = null, fmt = 'Онлайн-сессия, 50 мин';
+(function(){ const t = new Date(); t.setHours(0,0,0,0); let d = new Date(t); d.setDate(d.getDate()+1); while (days.length < 21) { if (d.getDay() !== 0) days.push(new Date(d)); d.setDate(d.getDate()+1); } })();
+const perPage = () => window.innerWidth < 640 ? 4 : 7;
+function slotsFor(d){ const seed = d.getDate()*7 + d.getMonth()*3; return ALL.map((t,i) => ({ t, free: ((seed + i*5) % 7) > 2 && !(d.getDay()===6 && i>4) })); }
+function renderDays(){
+  const pp = perPage(); dayOffset = Math.max(0, Math.min(dayOffset, days.length-pp));
+  document.getElementById('days').innerHTML = days.slice(dayOffset, dayOffset+pp).map(d => {
+    const k = d.toDateString(); const free = slotsFor(d).filter(s=>s.free).length;
+    return `<button type="button" data-k="${k}" class="day ${selDay===k?'active':''} py-3 rounded-2xl border border-ink/10 hover:border-clay transition text-center">
+      <span class="block text-xs uppercase opacity-70">${WD[d.getDay()]}</span><span class="block font-serif text-2xl">${d.getDate()}</span><span class="block text-[11px] opacity-70">${free} окон</span></button>`;
+  }).join('');
+  document.querySelectorAll('.day').forEach(b => b.onclick = () => { selDay = b.dataset.k; selTime = null; renderDays(); renderSlots(); upd(); });
+}
+function renderSlots(){
+  const el = document.getElementById('slots'); const hint = document.getElementById('slotHint');
+  if (!selDay) { el.innerHTML=''; hint.classList.remove('hidden'); return; }
+  hint.classList.add('hidden');
+  const d = days.find(x => x.toDateString()===selDay);
+  el.innerHTML = slotsFor(d).map(s => `<button type="button" ${s.free?'':'disabled'} data-t="${s.t}" class="slot ${selTime===s.t?'active':''} py-3 rounded-2xl border border-ink/10 hover:border-clay transition text-sm font-semibold">${s.t}</button>`).join('');
+  el.querySelectorAll('.slot:not([disabled])').forEach(b => b.onclick = () => { selTime = b.dataset.t; renderSlots(); upd(); });
+}
+function upd(){
+  document.getElementById('sumFormat').textContent = fmt;
+  const d = selDay ? days.find(x => x.toDateString()===selDay) : null;
+  document.getElementById('sumDate').textContent = d ? `${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}` : 'не выбрана';
+  document.getElementById('sumTime').textContent = selTime || 'не выбрано';
+}
+function setFormat(f){ fmt = f; document.querySelectorAll('.fmt').forEach(b => { const on = b.dataset.f===f; b.classList.toggle('bg-ink',on); b.classList.toggle('text-cream',on); b.classList.toggle('border-ink',on); }); upd(); }
+document.querySelectorAll('.fmt').forEach(b => b.onclick = () => setFormat(b.dataset.f));
+document.querySelectorAll('.pick').forEach(b => b.onclick = () => { setFormat(b.dataset.format); document.getElementById('booking').scrollIntoView({behavior:'smooth'}); });
+document.getElementById('dPrev').onclick = () => { dayOffset -= perPage(); renderDays(); };
+document.getElementById('dNext').onclick = () => { dayOffset += perPage(); renderDays(); };
+window.addEventListener('resize', renderDays);
+// first free day preselect for hero card
+(function(){ const d = days[0]; const s = slotsFor(d).find(x=>x.free); if (s) document.getElementById('heroSlot').textContent = `${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()].slice(0,3)} · ${s.t}`; })();
+setFormat(fmt); renderDays(); renderSlots();
+
+document.getElementById('bookForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = document.getElementById('bErr'); const ok = document.getElementById('bOk');
+  const name = document.getElementById('bName').value.trim(); const ph = document.getElementById('bPhone').value.trim();
+  let msg = '';
+  if (!selDay || !selTime) msg = 'Выберите день и время встречи.';
+  else if (name.length < 2) msg = 'Укажите, как к вам обращаться.';
+  else if (ph.replace(/\D/g,'').length < 10 && !/^@\w{3,}/.test(ph)) msg = 'Укажите телефон (10+ цифр) или ник в Telegram через @.';
+  if (msg) { err.textContent = msg; err.classList.remove('hidden'); ok.classList.add('hidden'); return; }
+  err.classList.add('hidden'); ok.classList.remove('hidden'); e.target.querySelectorAll('input,textarea').forEach(i=>i.value='');
+});
+
+// FAQ
+document.querySelectorAll('.faq-q').forEach(b => b.onclick = () => {
+  const it = b.closest('.faq-item'); const was = it.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(x => x.classList.remove('open'));
+  if (!was) it.classList.add('open');
+});
+document.querySelector('.faq-item').classList.add('open');
+
+observe();
+</script>
+</body>
+</html>
