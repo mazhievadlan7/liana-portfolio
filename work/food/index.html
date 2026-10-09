@@ -2,48 +2,286 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Тарелка — доставка здоровой еды</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тарелка — доставка здоровой еды за 45 минут</title>
+<meta name="description" content="Доставка здоровой еды «Тарелка»: боулы, супы и горячее с подсчётом КБЖУ, программы питания на неделю. Бесплатная доставка от 1 200 ₽.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Nunito','sans-serif']},colors:{tomato:'#ff5a3c',leaf:'#2f9e44',cream:'#fff8ee',ink:'#2b2118'}}}}</script>
-<style>body{-webkit-font-smoothing:antialiased}</style>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .drawer { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .pop { animation: pop .4s; }
+  @keyframes pop { 40% { transform: scale(1.15); } }
+</style>
 </head>
 <body class="bg-cream text-ink font-sans">
-<header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-  <div class="font-black text-2xl">🍽️ Тарелка</div>
-  <nav class="hidden lg:flex gap-8 font-bold text-ink/60"><a>Меню</a><a>Программы</a><a>Доставка</a><a>О нас</a></nav>
-  <a class="px-6 py-3 rounded-full bg-tomato text-white font-extrabold">Корзина · 0 ₽</a>
+<header class="sticky top-0 z-40 bg-cream/90 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-4 sm:py-5 flex justify-between items-center gap-3">
+    <a href="#top" class="font-black text-2xl whitespace-nowrap">🍽️ Тарелка</a>
+    <nav class="hidden lg:flex gap-8 font-bold text-ink/60"><a href="#menu" class="hover:text-tomato transition">Меню</a><a href="#programs" class="hover:text-tomato transition">Программы</a><a href="#delivery" class="hover:text-tomato transition">Доставка</a><a href="#about" class="hover:text-tomato transition">О нас</a></nav>
+    <div class="flex items-center gap-2">
+      <button id="cartBtn" class="px-4 sm:px-6 py-3 rounded-full bg-tomato text-white font-extrabold hover:brightness-110 transition whitespace-nowrap">🛒 <span id="cartSum">0 ₽</span></button>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-full bg-white grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden px-5 pb-6">
+    <nav class="flex flex-col text-xl font-extrabold gap-1"><a href="#menu" class="py-2.5">Меню</a><a href="#programs" class="py-2.5">Программы питания</a><a href="#delivery" class="py-2.5">Доставка</a><a href="#about" class="py-2.5">О нас</a></nav>
+  </div>
 </header>
-<section class="max-w-7xl mx-auto px-6 pt-6 pb-20 grid lg:grid-cols-2 gap-10 items-center">
+
+<section id="top" class="max-w-7xl mx-auto px-5 sm:px-6 pt-6 pb-20 grid lg:grid-cols-2 gap-10 items-center">
   <div>
-    <span class="inline-block px-4 py-2 rounded-full bg-leaf/10 text-leaf font-extrabold text-sm">🌿 Готовим утром — привозим к обеду</span>
-    <h1 class="mt-6 text-6xl font-black leading-[1.02]">Вкусно,<br>полезно и<br><span class="text-tomato">за 45 минут</span></h1>
-    <p class="mt-6 text-lg text-ink/60 max-w-md font-semibold">Боулы, супы и горячее с подсчётом КБЖУ. Доставляем по городу бесплатно от 1 200 ₽.</p>
-    <div class="mt-9 flex gap-3"><a class="px-8 py-4 rounded-full bg-tomato text-white font-extrabold shadow-xl shadow-tomato/30">Выбрать блюда</a><a class="px-8 py-4 rounded-full bg-white font-extrabold">Программы питания</a></div>
+    <span class="inline-block px-4 py-2 rounded-full bg-leaf/10 text-leaf font-extrabold text-sm">🌿 Готовим утром, привозим к обеду</span>
+    <h1 class="mt-6 text-5xl sm:text-6xl font-black leading-[1.02]">Вкусно,<br>полезно и<br><span class="text-tomato">за 45 минут</span></h1>
+    <p class="mt-6 text-base sm:text-lg text-ink/60 max-w-md font-semibold">Боулы, супы и горячее с подсчётом КБЖУ. Доставляем по городу бесплатно от 1 200 ₽.</p>
+    <div class="mt-9 flex flex-col sm:flex-row gap-3"><a href="#menu" class="text-center px-8 py-4 rounded-full bg-tomato text-white font-extrabold shadow-xl shadow-tomato/30 hover:-translate-y-0.5 transition">Выбрать блюда</a><a href="#programs" class="text-center px-8 py-4 rounded-full bg-white font-extrabold hover:bg-ink hover:text-white transition">Программы питания</a></div>
     <div class="mt-10 flex items-center gap-4 text-sm font-bold text-ink/60"><span class="text-2xl">⭐ 4,9</span>12 000 заказов в месяц</div>
   </div>
-  <div class="relative">
+  <div class="relative max-w-md sm:max-w-none mx-auto w-full">
     <div class="absolute inset-6 rounded-full bg-tomato/15"></div>
-    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1000&q=80&auto=format&fit=crop" class="relative rounded-full aspect-square w-full object-cover border-[14px] border-white shadow-2xl" alt="">
-    <div class="absolute top-10 -left-4 bg-white rounded-2xl shadow-xl px-5 py-3 font-extrabold">🥑 420 ккал</div>
-    <div class="absolute bottom-10 -right-2 bg-leaf text-white rounded-2xl shadow-xl px-5 py-3 font-extrabold">🚚 Бесплатно от 1 200 ₽</div>
+    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1000&q=80&auto=format&fit=crop" class="relative rounded-full aspect-square w-full object-cover border-[10px] sm:border-[14px] border-white shadow-2xl" alt="Овощной боул с киноа">
+    <div class="absolute top-8 left-0 sm:-left-4 bg-white rounded-2xl shadow-xl px-4 sm:px-5 py-3 font-extrabold text-sm sm:text-base">🥑 420 ккал</div>
+    <div class="absolute bottom-8 right-0 sm:-right-2 bg-leaf text-white rounded-2xl shadow-xl px-4 sm:px-5 py-3 font-extrabold text-sm sm:text-base">🚚 Бесплатно от 1 200 ₽</div>
   </div>
 </section>
-<section class="max-w-7xl mx-auto px-6 pb-20">
-  <div class="flex justify-between items-end"><h2 class="text-4xl font-black">Хиты недели</h2><div class="flex gap-2 font-bold text-sm"><span class="px-4 py-2 rounded-full bg-ink text-white">Все</span><span class="px-4 py-2 rounded-full bg-white">Боулы</span><span class="px-4 py-2 rounded-full bg-white">Супы</span><span class="px-4 py-2 rounded-full bg-white">Десерты</span></div></div>
-  <div class="mt-10 grid md:grid-cols-3 gap-6">
-    <div class="bg-white rounded-[28px] p-4"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=700&q=80&auto=format&fit=crop" class="h-56 w-full object-cover rounded-[20px]" alt=""><div class="px-2 pt-4"><h3 class="font-extrabold text-xl">Боул с яйцом пашот</h3><p class="text-sm text-ink/55 font-semibold mt-1">380 ккал · Б 18 · Ж 16 · У 34</p><div class="mt-4 flex justify-between items-center"><span class="text-2xl font-black">390 ₽</span><span class="w-11 h-11 rounded-full bg-tomato text-white grid place-items-center text-2xl font-black">+</span></div></div></div>
-    <div class="bg-white rounded-[28px] p-4"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700&q=80&auto=format&fit=crop" class="h-56 w-full object-cover rounded-[20px]" alt=""><div class="px-2 pt-4"><h3 class="font-extrabold text-xl">Салат с киноа и тыквой</h3><p class="text-sm text-ink/55 font-semibold mt-1">310 ккал · Б 11 · Ж 12 · У 38</p><div class="mt-4 flex justify-between items-center"><span class="text-2xl font-black">350 ₽</span><span class="w-11 h-11 rounded-full bg-tomato text-white grid place-items-center text-2xl font-black">+</span></div></div></div>
-    <div class="bg-white rounded-[28px] p-4"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&q=80&auto=format&fit=crop" class="h-56 w-full object-cover rounded-[20px]" alt=""><div class="px-2 pt-4"><h3 class="font-extrabold text-xl">Сет «Азия» на двоих</h3><p class="text-sm text-ink/55 font-semibold mt-1">3 блюда · 1 450 ккал</p><div class="mt-4 flex justify-between items-center"><span class="text-2xl font-black">1 190 ₽</span><span class="w-11 h-11 rounded-full bg-tomato text-white grid place-items-center text-2xl font-black">+</span></div></div></div>
+
+<section id="menu" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20">
+  <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-5">
+    <h2 class="text-4xl font-black">Меню на сегодня</h2>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <div id="filters" class="flex gap-2 overflow-x-auto -mx-5 px-5 sm:mx-0 sm:px-0 font-bold text-sm"></div>
+      <label class="inline-flex items-center gap-2 text-sm font-bold cursor-pointer select-none"><input id="veg" type="checkbox" class="w-4 h-4 accent-[#2f9e44]">🌱 Только вегетарианское</label>
+    </div>
+  </div>
+  <div id="grid" class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</section>
+
+<section id="programs" class="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+  <div class="rounded-[32px] sm:rounded-[40px] bg-leaf text-white p-7 sm:p-12 grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+    <div><h2 class="text-3xl sm:text-4xl font-black leading-tight">Программы питания на неделю</h2><p class="mt-4 text-white/80 font-semibold">Рацион от нутрициолога, 5 приёмов пищи в день. Привозим утром на 2 дня.</p>
+      <div class="mt-6 text-sm font-bold">Дней в программе</div>
+      <div id="days" class="mt-2 inline-flex p-1 rounded-full bg-white/15 text-sm font-extrabold"></div>
+    </div>
+    <div data-reveal class="bg-white/10 rounded-3xl p-7 flex flex-col"><b class="text-xl">Лёгкость</b><p class="text-white/75 text-sm mt-1 font-semibold">1 200 ккал · для снижения веса</p><p class="mt-6 text-3xl font-black">1 090 ₽<span class="text-base">/день</span></p><button data-prog="Лёгкость|1090" class="mt-6 py-3 rounded-full bg-white text-leaf font-extrabold hover:bg-cream transition">В корзину</button></div>
+    <div data-reveal class="bg-white text-ink rounded-3xl p-7 flex flex-col"><b class="text-xl">Баланс</b><p class="text-ink/55 text-sm mt-1 font-semibold">1 800 ккал · для поддержания формы</p><p class="mt-6 text-3xl font-black">1 290 ₽<span class="text-base">/день</span></p><button data-prog="Баланс|1290" class="mt-6 py-3 rounded-full bg-tomato text-white font-extrabold hover:brightness-110 transition">В корзину</button></div>
+    <div data-reveal class="bg-white/10 rounded-3xl p-7 flex flex-col"><b class="text-xl">Сила</b><p class="text-white/75 text-sm mt-1 font-semibold">2 500 ккал · для набора массы</p><p class="mt-6 text-3xl font-black">1 490 ₽<span class="text-base">/день</span></p><button data-prog="Сила|1490" class="mt-6 py-3 rounded-full bg-white text-leaf font-extrabold hover:bg-cream transition">В корзину</button></div>
   </div>
 </section>
-<section class="max-w-7xl mx-auto px-6 pb-20">
-  <div class="rounded-[40px] bg-leaf text-white p-12 grid lg:grid-cols-3 gap-10">
-    <div class="lg:col-span-1"><h2 class="text-4xl font-black leading-tight">Программы питания на неделю</h2><p class="mt-4 text-white/80 font-semibold">Рацион от нутрициолога, 5 приёмов пищи в день</p></div>
-    <div class="bg-white/10 rounded-3xl p-7"><b class="text-xl">Лёгкость</b><p class="text-white/75 text-sm mt-1 font-semibold">1 200 ккал · для снижения веса</p><p class="mt-6 text-3xl font-black">1 090 ₽<span class="text-base">/день</span></p></div>
-    <div class="bg-white text-ink rounded-3xl p-7"><b class="text-xl">Баланс</b><p class="text-ink/55 text-sm mt-1 font-semibold">1 800 ккал · для поддержания формы</p><p class="mt-6 text-3xl font-black">1 290 ₽<span class="text-base">/день</span></p></div>
+
+<section id="delivery" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 grid md:grid-cols-3 gap-5">
+  <div data-reveal class="bg-white rounded-[28px] p-7"><div class="text-4xl">🚚</div><h3 class="mt-4 text-xl font-black">45 минут</h3><p class="mt-2 text-ink/60 font-semibold">Среднее время доставки по городу. Опоздали больше чем на 15 минут, дарим десерт.</p></div>
+  <div data-reveal class="bg-white rounded-[28px] p-7"><div class="text-4xl">💸</div><h3 class="mt-4 text-xl font-black">Бесплатно от 1 200 ₽</h3><p class="mt-2 text-ink/60 font-semibold">Меньше 1 200 ₽ доставка стоит 199 ₽. За город по договорённости.</p></div>
+  <div data-reveal class="bg-white rounded-[28px] p-7"><div class="text-4xl">🕘</div><h3 class="mt-4 text-xl font-black">9:00–22:00</h3><p class="mt-2 text-ink/60 font-semibold">Принимаем заказы каждый день. Можно заказать к нужному времени.</p></div>
+</section>
+
+<section id="about" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 grid lg:grid-cols-2 gap-8 items-center">
+  <img data-reveal src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1100&q=80&auto=format&fit=crop" alt="Повара готовят на кухне" class="rounded-[32px] h-72 sm:h-96 w-full object-cover">
+  <div data-reveal>
+    <h2 class="text-3xl sm:text-4xl font-black">Своя кухня и нутрициолог</h2>
+    <p class="mt-4 text-ink/60 font-semibold text-lg">Готовим на собственной кухне из фермерских продуктов, без майонеза и усилителей вкуса. Меню обновляем каждую неделю, а КБЖУ считает наш нутрициолог.</p>
+    <div class="mt-8 grid grid-cols-3 gap-4">
+      <div><div class="text-3xl font-black text-tomato">6 лет</div><div class="text-sm font-bold text-ink/50">готовим для вас</div></div>
+      <div><div class="text-3xl font-black text-tomato">40+</div><div class="text-sm font-bold text-ink/50">блюд в меню</div></div>
+      <div><div class="text-3xl font-black text-tomato">0</div><div class="text-sm font-bold text-ink/50">консервантов</div></div>
+    </div>
   </div>
 </section>
-<footer class="border-t border-ink/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm font-bold text-ink/45"><span class="text-ink">🍽️ Тарелка</span><span>Доставка здоровой еды · ежедневно 9:00–22:00</span><span>© 2026</span></div></footer>
+
+<footer class="border-t border-ink/10 pb-12 sm:pb-0"><div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 flex flex-col md:flex-row justify-between gap-3 text-sm font-bold text-ink/45"><span class="text-ink">🍽️ Тарелка</span><span>Доставка здоровой еды · ежедневно 9:00–22:00</span><span><a href="tel:+79000000000" class="hover:text-tomato">+7 (900) 000-00-00</a> · <a href="mailto:hello@example.ru" class="hover:text-tomato">hello@example.ru</a></span><span>© 2026</span></div></footer>
+
+<!-- Cart drawer -->
+<div id="cartModal" data-modal class="fixed inset-0 z-50 hidden justify-end bg-ink/50 backdrop-blur-sm">
+  <aside class="drawer w-full sm:max-w-md h-full bg-cream flex flex-col">
+    <div class="p-5 sm:p-6 flex justify-between items-center border-b border-ink/10"><h3 class="text-2xl font-black">Корзина</h3><button data-close aria-label="Закрыть" class="w-10 h-10 rounded-full bg-white grid place-items-center text-xl">×</button></div>
+    <div class="px-5 sm:px-6 pt-4">
+      <div id="freeText" class="text-sm font-bold"></div>
+      <div class="mt-2 h-2 rounded-full bg-ink/10 overflow-hidden"><div id="freeBar" class="h-full bg-leaf rounded-full transition-all duration-500" style="width:0%"></div></div>
+    </div>
+    <div id="cartList" class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3"></div>
+    <div class="p-5 sm:p-6 border-t border-ink/10 bg-white">
+      <div class="flex justify-between text-sm font-bold text-ink/60"><span>Доставка</span><span id="delPrice">199 ₽</span></div>
+      <div class="mt-1 flex justify-between text-xl font-black"><span>Итого</span><span id="cartTotal">0 ₽</span></div>
+      <form data-demo id="orderForm" class="mt-4 space-y-2">
+        <input required name="address" class="w-full px-5 py-3.5 rounded-2xl bg-cream border border-ink/10 outline-none focus:border-tomato" placeholder="Улица, дом, квартира">
+        <input required type="tel" name="phone" class="w-full px-5 py-3.5 rounded-2xl bg-cream border border-ink/10 outline-none focus:border-tomato" placeholder="Телефон">
+        <button id="orderBtn" class="w-full py-4 rounded-full bg-tomato text-white font-extrabold hover:brightness-110 transition disabled:opacity-40">Оформить заказ</button>
+        <p data-msg class="text-sm text-leaf text-center" role="status"></p>
+      </form>
+    </div>
+  </aside>
+</div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const U = id => `https://images.unsplash.com/${id}?w=700&q=80&auto=format&fit=crop`;
+  const MENU = [
+    { id: 1, c: 'bowl', n: 'Боул с яйцом пашот', k: '380 ккал · Б 18 · Ж 16 · У 34', p: 390, img: 'photo-1490645935967-10de6ba17061', veg: true, tag: 'Хит' },
+    { id: 2, c: 'bowl', n: 'Салат с киноа и тыквой', k: '310 ккал · Б 11 · Ж 12 · У 38', p: 350, img: 'photo-1547592180-85f173990554', veg: true },
+    { id: 3, c: 'hot', n: 'Сет «Азия» на двоих', k: '3 блюда · 1 450 ккал', p: 1190, img: 'photo-1504674900247-0877df9cc836', tag: 'На двоих' },
+    { id: 4, c: 'bowl', n: 'Поке с лососем', k: '450 ккал · Б 28 · Ж 17 · У 42', p: 520, img: 'photo-1546069901-ba9599a7e63c' },
+    { id: 5, c: 'bowl', n: 'Зелёный салат с орехами', k: '260 ккал · Б 8 · Ж 18 · У 16', p: 320, img: 'photo-1540189549336-e6e99c3679fe', veg: true },
+    { id: 6, c: 'soup', n: 'Томатный суп с базиликом', k: '180 ккал · Б 5 · Ж 7 · У 22', p: 290, img: 'photo-1547592166-23ac45744acd', veg: true },
+    { id: 7, c: 'soup', n: 'Суп-рагу с овощами', k: '240 ккал · Б 12 · Ж 8 · У 26', p: 310, img: 'photo-1603105037880-880cd4edfb0d' },
+    { id: 8, c: 'soup', n: 'Рамен с курицей', k: '480 ккал · Б 30 · Ж 14 · У 52', p: 450, img: 'photo-1569718212165-3a8278d5f624', tag: 'Новинка' },
+    { id: 9, c: 'hot', n: 'Карри с креветками и рисом', k: '520 ккал · Б 26 · Ж 18 · У 58', p: 490, img: 'photo-1559847844-5315695dadae' },
+    { id: 10, c: 'hot', n: 'Тост с авокадо', k: '330 ккал · Б 9 · Ж 19 · У 28', p: 290, img: 'photo-1588137378633-dea1336ce1e2', veg: true },
+    { id: 11, c: 'dessert', n: 'Чизкейк без сахара', k: '240 ккал · Б 9 · Ж 14 · У 18', p: 260, img: 'photo-1565958011703-44f9829ba187', veg: true },
+    { id: 12, c: 'dessert', n: 'Панна-котта с клубникой', k: '190 ккал · Б 4 · Ж 11 · У 18', p: 220, img: 'photo-1488477181946-6428a0291777', veg: true }
+  ];
+  const CATS = { all: 'Все', bowl: 'Боулы', soup: 'Супы', hot: 'Горячее', dessert: 'Десерты' };
+  const FREE = 1200, DEL = 199;
+  let cat = 'all', days = 5; const cart = new Map();
+  const fmt = n => n.toLocaleString('ru-RU') + ' ₽';
+  const $ = id => document.getElementById(id);
+  function renderMenu() {
+    $('filters').innerHTML = Object.entries(CATS).map(([k, v]) => `<button data-cat="${k}" class="shrink-0 px-4 py-2 rounded-full transition ${k === cat ? 'bg-ink text-white' : 'bg-white hover:bg-ink/10'}">${v}</button>`).join('');
+    const veg = $('veg').checked;
+    const list = MENU.filter(m => (cat === 'all' || m.c === cat) && (!veg || m.veg));
+    $('grid').innerHTML = list.length ? list.map(m => {
+      const q = cart.get('d' + m.id)?.q || 0;
+      return `<div class="group bg-white rounded-[28px] p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="relative h-56 overflow-hidden rounded-[20px]"><img src="${U(m.img)}" class="h-full w-full object-cover group-hover:scale-105 transition duration-500" alt="${m.n}">${m.tag ? `<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-white text-xs font-black">${m.tag}</span>` : ''}${m.veg ? '<span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-leaf text-white grid place-items-center text-sm" title="Вегетарианское">🌱</span>' : ''}</div>
+        <div class="px-2 pt-4"><h3 class="font-extrabold text-xl">${m.n}</h3><p class="text-sm text-ink/55 font-semibold mt-1">${m.k}</p>
+        <div class="mt-4 flex justify-between items-center"><span class="text-2xl font-black">${fmt(m.p)}</span>
+        ${q ? `<div class="flex items-center gap-2 bg-cream rounded-full p-1"><button data-dec="d${m.id}" class="w-9 h-9 rounded-full bg-white font-black text-lg" aria-label="Убрать">−</button><b class="w-5 text-center">${q}</b><button data-inc="${m.id}" class="w-9 h-9 rounded-full bg-tomato text-white font-black text-lg" aria-label="Добавить">+</button></div>`
+             : `<button data-inc="${m.id}" class="w-11 h-11 rounded-full bg-tomato text-white grid place-items-center text-2xl font-black hover:scale-110 transition" aria-label="Добавить ${m.n}">+</button>`}
+        </div></div></div>`;
+    }).join('') : '<p class="col-span-full text-center text-ink/50 font-bold py-10">В этой категории нет вегетарианских блюд, попробуйте другую.</p>';
+  }
+  function totals() { let s = 0, n = 0; cart.forEach(l => { s += l.p * l.q; n += l.q; }); return { s, n, del: s >= FREE || !s ? 0 : DEL }; }
+  function renderCart() {
+    const t = totals();
+    $('cartSum').textContent = t.n ? `${t.n} · ${fmt(t.s)}` : '0 ₽';
+    $('cartSum').classList.remove('pop'); void $('cartSum').offsetWidth; $('cartSum').classList.add('pop');
+    $('freeBar').style.width = Math.min(100, t.s / FREE * 100) + '%';
+    $('freeText').textContent = t.s >= FREE ? '🎉 Доставка бесплатная' : `До бесплатной доставки ${fmt(FREE - t.s)}`;
+    $('cartList').innerHTML = t.n ? [...cart].map(([k, l]) => `<div class="flex gap-3 items-center bg-white rounded-2xl p-3">${l.img ? `<img src="${U(l.img)}" class="w-16 h-16 rounded-xl object-cover" alt="">` : '<span class="w-16 h-16 rounded-xl bg-leaf/10 grid place-items-center text-2xl">🥗</span>'}<div class="flex-1 min-w-0"><div class="font-extrabold leading-tight">${l.n}</div><div class="text-sm text-ink/50 font-bold">${fmt(l.p)}</div></div><div class="flex items-center gap-1"><button data-dec="${k}" class="w-8 h-8 rounded-full bg-cream font-black">−</button><b class="w-5 text-center">${l.q}</b><button data-incc="${k}" class="w-8 h-8 rounded-full bg-cream font-black">+</button></div></div>`).join('')
+      : '<div class="text-center py-12"><div class="text-5xl">🥣</div><p class="mt-3 font-bold text-ink/50">Корзина пока пуста</p><a href="#menu" data-close class="inline-block mt-4 px-6 py-3 rounded-full bg-ink text-white font-extrabold">Перейти в меню</a></div>';
+    $('delPrice').textContent = t.del ? fmt(t.del) : 'бесплатно';
+    $('cartTotal').textContent = fmt(t.s + t.del);
+    $('orderBtn').disabled = !t.n;
+  }
+  function add(m) { const k = 'd' + m.id; const l = cart.get(k) || { n: m.n, p: m.p, img: m.img, q: 0 }; l.q++; cart.set(k, l); renderMenu(); renderCart(); }
+  document.addEventListener('click', e => {
+    const inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]'), incc = e.target.closest('[data-incc]');
+    if (inc) add(MENU.find(m => m.id === +inc.dataset.inc));
+    if (incc) { cart.get(incc.dataset.incc).q++; renderMenu(); renderCart(); }
+    if (dec) { const l = cart.get(dec.dataset.dec); l.q--; if (l.q <= 0) cart.delete(dec.dataset.dec); renderMenu(); renderCart(); }
+  });
+  $('filters').onclick = e => { const b = e.target.closest('[data-cat]'); if (b) { cat = b.dataset.cat; renderMenu(); } };
+  $('veg').onchange = renderMenu;
+  $('cartBtn').onclick = () => openModal('cartModal');
+  // Программы
+  const renderDays = () => $('days').innerHTML = [5, 7, 14].map(d => `<button data-d="${d}" class="px-4 py-2 rounded-full transition ${d === days ? 'bg-white text-leaf' : ''}">${d} дн.</button>`).join('');
+  $('days').onclick = e => { const b = e.target.closest('[data-d]'); if (b) { days = +b.dataset.d; renderDays(); } };
+  document.querySelectorAll('[data-prog]').forEach(b => b.onclick = () => {
+    const [n, p] = b.dataset.prog.split('|'); const k = 'p' + n + days;
+    const l = cart.get(k) || { n: `Программа «${n}», ${days} дн.`, p: +p * days, q: 0 }; l.q++; cart.set(k, l); renderCart();
+    b.textContent = 'Добавлено ✓'; setTimeout(() => b.textContent = 'В корзину', 1200);
+  });
+  $('orderForm').addEventListener('demo:sent', () => { cart.clear(); renderMenu(); renderCart(); });
+  renderDays(); renderMenu(); renderCart();
+</script>
 </body>
 </html>

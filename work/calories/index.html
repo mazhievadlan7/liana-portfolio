@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Норма — калькулятор калорий и планы питания от нутрициолога</title>
+<meta name="description" content="Рассчитайте суточную норму калорий и БЖУ по формуле Миффлина — Сан Жеора и получите готовый план питания под вашу цель от нутрициолога Дарьи Севериной.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { display:['Unbounded','sans-serif'], sans:['"Golos Text"','sans-serif'] },
+  colors: { cream:'#FBF7F1', ink:'#151515', tang:'#FF5A1F', tangDark:'#E04810', lime:'#D8F26E', leaf:'#E7EFD9', prot:'#FF5A1F', fat:'#F5B83D', carb:'#7BB662' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#FBF7F1; color:#151515; -webkit-font-smoothing:antialiased; }
+  .rv { opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity:1; transform:none; } .rv.now { transition:none; }
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:99px; background:linear-gradient(90deg,#FF5A1F var(--p,50%), rgba(255,255,255,.14) var(--p,50%)); outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:24px; height:24px; border-radius:50%; background:#fff; border:5px solid #FF5A1F; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.3); }
+  input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:#fff; border:5px solid #FF5A1F; cursor:pointer; }
+  .seg input { position:absolute; opacity:0; }
+  .seg span { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.8rem .5rem; border-radius:14px; cursor:pointer; transition:all .2s; font-weight:500; font-size:14px; text-align:center; }
+  .seg input:checked + span { background:#FF5A1F; color:#fff; }
+  .seg input:focus-visible + span { outline:2px solid #D8F26E; }
+  .act input { position:absolute; opacity:0; }
+  .act > span { display:block; padding:.75rem .9rem; border-radius:14px; border:1px solid rgba(255,255,255,.12); cursor:pointer; transition:all .2s; }
+  .act > input:checked + span { border-color:#FF5A1F; background:rgba(255,90,31,.12); }
+  .act > span:hover { border-color:rgba(255,255,255,.35); }
+  .num { width:4.5rem; background:transparent; text-align:right; font-family:Unbounded; font-size:20px; outline:none; border-bottom:1px dashed rgba(255,255,255,.3); }
+  .num::-webkit-inner-spin-button { opacity:0; }
+  .donut circle { transition:stroke-dasharray .6s cubic-bezier(.2,.7,.2,1), stroke-dashoffset .6s cubic-bezier(.2,.7,.2,1); }
+  .plan { transition:transform .35s, box-shadow .35s; }
+  .plan:hover { transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(0,0,0,.35); }
+  .modal { opacity:0; pointer-events:none; transition:opacity .3s; }
+  .modal.open { opacity:1; pointer-events:auto; }
+  .modal .box { transform:translateY(30px) scale(.97); transition:transform .35s cubic-bezier(.2,.7,.2,1); }
+  .modal.open .box { transform:none; }
+  .pm input { position:absolute; opacity:0; }
+  .pm span { display:flex; align-items:center; gap:.6rem; padding:.9rem 1rem; border:1.5px solid #e7e2da; border-radius:14px; cursor:pointer; transition:all .2s; }
+  .pm input:checked + span { border-color:#FF5A1F; background:#FFF3EE; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq[open] .pl { transform:rotate(45deg); background:#FF5A1F; color:#fff; }
+  .field { width:100%; border:1.5px solid #e7e2da; background:#fff; border-radius:14px; padding:.9rem 1rem; outline:none; font-size:16px; transition:border-color .2s; }
+  .field:focus { border-color:#FF5A1F; } .field.err { border-color:#d93025; }
+  .marq { animation:marq 30s linear infinite; } @keyframes marq { to { transform:translateX(-50%); } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<header class="sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-black/5">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 h-[72px] flex items-center justify-between">
+    <a href="#top" class="font-display font-semibold text-xl tracking-tight flex items-center gap-2"><span class="w-8 h-8 rounded-full bg-tang text-white grid place-items-center text-sm">н</span>норма.</a>
+    <nav class="hidden md:flex gap-8 text-[15px] text-black/70">
+      <a href="#calc" class="hover:text-tang transition">Калькулятор</a><a href="#plans" class="hover:text-tang transition">Планы питания</a><a href="#about" class="hover:text-tang transition">Обо мне</a><a href="#reviews" class="hover:text-tang transition">Результаты</a><a href="#faq" class="hover:text-tang transition">Вопросы</a>
+    </nav>
+    <a href="#calc" class="hidden md:inline-flex px-5 py-3 rounded-full bg-ink text-white text-sm font-medium hover:bg-tang transition">Рассчитать норму</a>
+    <button class="md:hidden w-11 h-11 rounded-full bg-ink text-white grid place-items-center" aria-label="Открыть меню" aria-expanded="false" data-burger>
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-ic-open><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      <svg class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-ic-close><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="md:hidden hidden border-t border-black/5 bg-cream" data-menu>
+    <nav class="px-4 py-4 flex flex-col text-lg font-medium">
+      <a href="#calc" class="py-3 border-b border-black/5">Калькулятор</a><a href="#plans" class="py-3 border-b border-black/5">Планы питания</a><a href="#about" class="py-3 border-b border-black/5">Обо мне</a><a href="#reviews" class="py-3 border-b border-black/5">Результаты</a><a href="#faq" class="py-3">Вопросы</a>
+      <a href="#calc" class="mt-3 text-center py-4 rounded-2xl bg-tang text-white">Рассчитать норму</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section id="top" class="relative">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 pt-10 md:pt-16 pb-16 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-7 rv">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-leaf text-[13px] font-medium"><span class="w-2 h-2 rounded-full bg-carb"></span>Нутрициолог · 8 лет практики</div>
+      <h1 class="font-display font-semibold text-[38px] leading-[1.05] sm:text-6xl lg:text-[76px] tracking-[-0.03em] mt-6">Еда без запретов.<br><span class="text-tang">Результат</span> по&nbsp;цифрам.</h1>
+      <p class="mt-6 text-lg text-black/65 max-w-xl leading-relaxed">Посчитайте свою норму калорий и БЖУ за 30 секунд, а я соберу под неё меню из обычных продуктов из ближайшего магазина. Без голодовок, детоксов и «нельзя после шести».</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#calc" class="px-7 py-4 rounded-full bg-tang text-white font-medium hover:bg-tangDark transition inline-flex items-center gap-2">Рассчитать бесплатно <span aria-hidden="true">→</span></a>
+        <a href="#plans" class="px-7 py-4 rounded-full border-2 border-ink/15 font-medium hover:border-ink transition">Смотреть планы</a>
+      </div>
+      <div class="mt-12 flex flex-wrap gap-x-10 gap-y-5">
+        <div><div class="font-display text-3xl font-semibold">1 240+</div><div class="text-sm text-black/55">клиентов на ведении</div></div>
+        <div><div class="font-display text-3xl font-semibold">−5,8 кг</div><div class="text-sm text-black/55">в среднем за 3 месяца</div></div>
+        <div><div class="font-display text-3xl font-semibold">4,9 ★</div><div class="text-sm text-black/55">по 380 отзывам</div></div>
+      </div>
+    </div>
+    <div class="lg:col-span-5 relative rv">
+      <div class="relative rounded-[32px] overflow-hidden bg-lime">
+        <img class="w-full h-[440px] md:h-[560px] object-cover" src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=1200&q=80&auto=format&fit=crop" alt="Спортивная девушка после тренировки в зале">
+      </div>
+      <div class="absolute -left-3 md:-left-10 top-10 bg-white rounded-2xl shadow-xl p-4 w-[190px]">
+        <div class="text-xs text-black/50">Норма на сегодня</div>
+        <div class="font-display text-2xl font-semibold mt-1">1 840 <span class="text-sm font-normal">ккал</span></div>
+        <div class="mt-3 flex h-2 rounded-full overflow-hidden"><span class="bg-prot w-[30%]"></span><span class="bg-fat w-[28%]"></span><span class="bg-carb flex-1"></span></div>
+        <div class="mt-2 flex justify-between text-[11px] text-black/60"><span>Б 138</span><span>Ж 57</span><span>У 193</span></div>
+      </div>
+      <div class="absolute -right-2 md:-right-6 bottom-8 bg-ink text-white rounded-2xl shadow-xl px-5 py-4">
+        <div class="font-display text-2xl font-semibold text-lime">−6,4 кг</div>
+        <div class="text-xs text-white/70">Марина, 10 недель на плане</div>
+      </div>
+    </div>
+  </div>
+  <div class="border-y border-black/10 bg-white overflow-hidden py-4">
+    <div class="marq flex whitespace-nowrap gap-10 font-display text-sm md:text-base font-medium w-max">
+      <span>меню на 7 дней</span><span class="text-tang">✦</span><span>список покупок</span><span class="text-tang">✦</span><span>рецепты до 20 минут</span><span class="text-tang">✦</span><span>замены продуктов</span><span class="text-tang">✦</span><span>чат с нутрициологом</span><span class="text-tang">✦</span><span>без сахарозаменителей и БАДов</span><span class="text-tang">✦</span>
+      <span>меню на 7 дней</span><span class="text-tang">✦</span><span>список покупок</span><span class="text-tang">✦</span><span>рецепты до 20 минут</span><span class="text-tang">✦</span><span>замены продуктов</span><span class="text-tang">✦</span><span>чат с нутрициологом</span><span class="text-tang">✦</span><span>без сахарозаменителей и БАДов</span><span class="text-tang">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- Calculator -->
+<section id="calc" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 rv">
+      <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.02em] max-w-2xl">Калькулятор калорий и&nbsp;БЖУ</h2>
+      <p class="text-black/60 max-w-sm">Формула Миффлина — Сан Жеора: самая точная для людей без профессионального спорта. Погрешность около 10%.</p>
+    </div>
+
+    <div class="mt-10 grid lg:grid-cols-12 gap-4 rv">
+      <!-- inputs -->
+      <form class="lg:col-span-7 bg-ink text-white rounded-[28px] p-5 sm:p-8 md:p-10" data-calc onsubmit="return false">
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div>
+            <div class="text-sm text-white/60 mb-2">Пол</div>
+            <div class="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-white/5">
+              <label class="seg relative"><input type="radio" name="sex" value="f" checked><span>Женщина</span></label>
+              <label class="seg relative"><input type="radio" name="sex" value="m"><span>Мужчина</span></label>
+            </div>
+          </div>
+          <div>
+            <div class="text-sm text-white/60 mb-2">Цель</div>
+            <div class="grid grid-cols-3 gap-1 p-1 rounded-2xl bg-white/5">
+              <label class="seg relative"><input type="radio" name="goal" value="lose" checked><span>Похудеть</span></label>
+              <label class="seg relative"><input type="radio" name="goal" value="keep"><span>Держать</span></label>
+              <label class="seg relative"><input type="radio" name="goal" value="gain"><span>Набрать</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 space-y-7">
+          <div>
+            <div class="flex items-end justify-between"><label for="age" class="text-sm text-white/60">Возраст</label><span><input class="num" type="number" id="ageN" min="16" max="80" value="32" aria-label="Возраст числом"> <span class="text-white/50 text-sm">лет</span></span></div>
+            <input class="mt-3" type="range" id="age" min="16" max="80" value="32">
+          </div>
+          <div>
+            <div class="flex items-end justify-between"><label for="height" class="text-sm text-white/60">Рост</label><span><input class="num" type="number" id="heightN" min="140" max="210" value="168" aria-label="Рост числом"> <span class="text-white/50 text-sm">см</span></span></div>
+            <input class="mt-3" type="range" id="height" min="140" max="210" value="168">
+          </div>
+          <div>
+            <div class="flex items-end justify-between"><label for="weight" class="text-sm text-white/60">Вес</label><span><input class="num" type="number" id="weightN" min="40" max="160" value="72" aria-label="Вес числом"> <span class="text-white/50 text-sm">кг</span></span></div>
+            <input class="mt-3" type="range" id="weight" min="40" max="160" value="72">
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <div class="text-sm text-white/60 mb-3">Активность</div>
+          <div class="grid sm:grid-cols-2 gap-2 text-sm">
+            <label class="act relative"><input type="radio" name="act" value="1.2"><span><b class="font-medium">Минимальная</b><br><span class="text-white/50 text-xs">Офис, без тренировок</span></span></label>
+            <label class="act relative"><input type="radio" name="act" value="1.375" checked><span><b class="font-medium">Лёгкая</b><br><span class="text-white/50 text-xs">1–3 тренировки в неделю</span></span></label>
+            <label class="act relative"><input type="radio" name="act" value="1.55"><span><b class="font-medium">Средняя</b><br><span class="text-white/50 text-xs">3–5 тренировок, 8 000+ шагов</span></span></label>
+            <label class="act relative"><input type="radio" name="act" value="1.725"><span><b class="font-medium">Высокая</b><br><span class="text-white/50 text-xs">6–7 тренировок в неделю</span></span></label>
+            <label class="act relative sm:col-span-2"><input type="radio" name="act" value="1.9"><span><b class="font-medium">Экстремальная</b> <span class="text-white/50 text-xs">· физическая работа и ежедневный спорт</span></span></label>
+          </div>
+        </div>
+      </form>
+
+      <!-- result -->
+      <div class="lg:col-span-5 bg-white rounded-[28px] p-6 sm:p-8 md:p-10 border border-black/5 flex flex-col" data-result>
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-black/55">Ваша норма в день</div>
+          <div class="text-xs px-3 py-1.5 rounded-full bg-leaf font-medium" data-goal-chip>дефицит 15%</div>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2"><span class="font-display font-semibold text-6xl md:text-7xl tracking-[-0.04em] tabular-nums" data-kcal>0</span><span class="text-xl text-black/55">ккал</span></div>
+
+        <div class="mt-6 flex items-center gap-6">
+          <svg class="donut w-36 h-36 shrink-0 -rotate-90" viewBox="0 0 42 42" aria-hidden="true">
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="#F1ECE4" stroke-width="5"/>
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="#FF5A1F" stroke-width="5" stroke-dasharray="30 70" stroke-dashoffset="0" data-arc="p"/>
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="#F5B83D" stroke-width="5" stroke-dasharray="30 70" stroke-dashoffset="-30" data-arc="f"/>
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="#7BB662" stroke-width="5" stroke-dasharray="40 60" stroke-dashoffset="-60" data-arc="c"/>
+          </svg>
+          <div class="flex-1 space-y-3">
+            <div class="flex items-center justify-between"><span class="flex items-center gap-2 text-sm"><i class="w-3 h-3 rounded-full bg-prot"></i>Белки</span><span class="font-display font-medium tabular-nums"><span data-p>0</span> г</span></div>
+            <div class="flex items-center justify-between"><span class="flex items-center gap-2 text-sm"><i class="w-3 h-3 rounded-full bg-fat"></i>Жиры</span><span class="font-display font-medium tabular-nums"><span data-f>0</span> г</span></div>
+            <div class="flex items-center justify-between"><span class="flex items-center gap-2 text-sm"><i class="w-3 h-3 rounded-full bg-carb"></i>Углеводы</span><span class="font-display font-medium tabular-nums"><span data-c>0</span> г</span></div>
+          </div>
+        </div>
+
+        <div class="mt-7 grid grid-cols-3 gap-2 text-center">
+          <div class="rounded-2xl bg-cream p-3"><div class="text-[11px] text-black/50 leading-tight">Базовый обмен</div><div class="font-display font-medium mt-1 tabular-nums" data-bmr>0</div></div>
+          <div class="rounded-2xl bg-cream p-3"><div class="text-[11px] text-black/50 leading-tight">С активностью</div><div class="font-display font-medium mt-1 tabular-nums" data-tdee>0</div></div>
+          <div class="rounded-2xl bg-cream p-3"><div class="text-[11px] text-black/50 leading-tight">Вода в день</div><div class="font-display font-medium mt-1 tabular-nums" data-water>0</div></div>
+        </div>
+        <p class="mt-5 text-sm text-black/60 leading-relaxed" data-note></p>
+        <a href="#plans" class="mt-auto pt-6"><span class="block text-center py-4 rounded-2xl bg-tang text-white font-medium hover:bg-tangDark transition">Подобрать меню под <span data-kcal2>0</span> ккал ↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plans -->
+<section id="plans" class="pb-20 md:pb-28 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="rounded-[28px] bg-lime p-6 sm:p-10 md:p-14">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 rv">
+        <div>
+          <div class="text-sm font-medium">Планы питания</div>
+          <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.02em] mt-2 max-w-3xl">Меню, рассчитанное на&nbsp;<span class="underline decoration-tang decoration-4 underline-offset-8"><span data-kcal3>0</span>&nbsp;ккал</span></h2>
+        </div>
+        <p class="text-black/65 max-w-sm">Граммовки в каждом плане пересчитаны под вашу норму из калькулятора. Цель: <b data-goal-name>снижение веса</b>.</p>
+      </div>
+
+      <div class="mt-10 grid md:grid-cols-3 gap-4">
+        <article class="plan rv bg-white rounded-[24px] p-6 md:p-7 flex flex-col">
+          <img class="w-full h-44 object-cover rounded-2xl" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80&auto=format&fit=crop" alt="Тарелка с овощами, нутом и авокадо">
+          <div class="mt-5 flex items-center justify-between"><h3 class="font-display font-semibold text-xl">Старт</h3><span class="text-xs px-2.5 py-1 rounded-full bg-cream">14 дней</span></div>
+          <p class="mt-2 text-sm text-black/60">Чтобы попробовать и понять, как это работает.</p>
+          <ul class="mt-5 space-y-2 text-sm flex-1">
+            <li class="flex gap-2"><span class="text-tang">✓</span>Меню на 14 дней, 4 приёма пищи</li>
+            <li class="flex gap-2"><span class="text-tang">✓</span>Список покупок на каждую неделю</li>
+            <li class="flex gap-2"><span class="text-tang">✓</span>42 рецепта до 20 минут</li>
+          </ul>
+          <div class="mt-6 flex items-end justify-between">
+            <div><div class="font-display text-3xl font-semibold">1 490 ₽</div><div class="text-xs text-black/50">PDF + приложение</div></div>
+          </div>
+          <button class="mt-5 py-4 rounded-2xl bg-ink text-white font-medium hover:bg-tang transition" data-buy="Старт · 14 дней" data-price="1490">Купить</button>
+        </article>
+        <article class="plan rv bg-ink text-white rounded-[24px] p-6 md:p-7 flex flex-col relative" style="transition-delay:.1s">
+          <span class="absolute -top-3 left-7 text-xs font-medium px-3 py-1.5 rounded-full bg-tang">Хит · 68% выбирают</span>
+          <img class="w-full h-44 object-cover rounded-2xl" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80&auto=format&fit=crop" alt="Боул с яйцом, авокадо и зеленью">
+          <div class="mt-5 flex items-center justify-between"><h3 class="font-display font-semibold text-xl">Рацион</h3><span class="text-xs px-2.5 py-1 rounded-full bg-white/10">30 дней</span></div>
+          <p class="mt-2 text-sm text-white/60">Полный месяц, за который формируется привычка.</p>
+          <ul class="mt-5 space-y-2 text-sm flex-1 text-white/85">
+            <li class="flex gap-2"><span class="text-lime">✓</span>Меню на 30 дней без повторов</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span>Замены для 120 продуктов</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span>Меню для кафе и праздников</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span>Чат-поддержка 30 дней</li>
+          </ul>
+          <div class="mt-6"><div class="font-display text-3xl font-semibold">3 900 ₽ <span class="text-base line-through text-white/40 font-normal">5 200 ₽</span></div><div class="text-xs text-white/50">или 4 платежа по 975 ₽</div></div>
+          <button class="mt-5 py-4 rounded-2xl bg-tang text-white font-medium hover:bg-white hover:text-ink transition" data-buy="Рацион · 30 дней" data-price="3900">Купить</button>
+        </article>
+        <article class="plan rv bg-white rounded-[24px] p-6 md:p-7 flex flex-col" style="transition-delay:.2s">
+          <img class="w-full h-44 object-cover rounded-2xl" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&q=80&auto=format&fit=crop" alt="Тарелка с овощами, курицей и крупой">
+          <div class="mt-5 flex items-center justify-between"><h3 class="font-display font-semibold text-xl">Ведение</h3><span class="text-xs px-2.5 py-1 rounded-full bg-cream">в месяц</span></div>
+          <p class="mt-2 text-sm text-black/60">Персонально со мной, с разбором анализов.</p>
+          <ul class="mt-5 space-y-2 text-sm flex-1">
+            <li class="flex gap-2"><span class="text-tang">✓</span>Консультация 60 минут по видео</li>
+            <li class="flex gap-2"><span class="text-tang">✓</span>Индивидуальное меню и корректировки</li>
+            <li class="flex gap-2"><span class="text-tang">✓</span>Ежедневный дневник питания</li>
+            <li class="flex gap-2"><span class="text-tang">✓</span>Ответ в течение 3 часов</li>
+          </ul>
+          <div class="mt-6"><div class="font-display text-3xl font-semibold">9 900 ₽</div><div class="text-xs text-black/50">осталось 3 места на октябрь</div></div>
+          <button class="mt-5 py-4 rounded-2xl bg-ink text-white font-medium hover:bg-tang transition" data-buy="Ведение · 1 месяц" data-price="9900">Купить</button>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="pb-20 md:pb-28 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-10 items-center">
+    <div class="grid grid-cols-2 gap-3 rv">
+      <img class="w-full h-[300px] md:h-[440px] object-cover rounded-[24px]" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&auto=format&fit=crop" alt="Девушка делает упражнение на коврике">
+      <div class="grid gap-3">
+        <img class="w-full h-[144px] md:h-[214px] object-cover rounded-[24px]" src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=1200&q=80&auto=format&fit=crop" alt="Салат в банке с халуми и овощами">
+        <div class="rounded-[24px] bg-tang text-white p-5 flex flex-col justify-end h-[144px] md:h-[214px]">
+          <div class="font-display text-3xl md:text-4xl font-semibold">8 лет</div><div class="text-sm opacity-85">и ни одного запрещённого продукта</div>
+        </div>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="text-sm font-medium text-tang">Обо мне</div>
+      <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.02em] mt-2">Дарья Северина</h2>
+      <p class="mt-5 text-lg text-black/70 leading-relaxed">Нутрициолог и тренер по фитнесу. Сама сбросила 14 кг после второй беременности, без диет из интернета. Теперь помогаю тем, кто устал начинать с понедельника.</p>
+      <ul class="mt-8 grid sm:grid-cols-2 gap-3 text-sm">
+        <li class="rounded-2xl bg-white border border-black/5 p-4"><b class="font-medium block">Диплом диетолога</b><span class="text-black/55">профпереподготовка, 2018</span></li>
+        <li class="rounded-2xl bg-white border border-black/5 p-4"><b class="font-medium block">Персональный тренер</b><span class="text-black/55">сертификат, 2017</span></li>
+        <li class="rounded-2xl bg-white border border-black/5 p-4"><b class="font-medium block">Спортивное питание</b><span class="text-black/55">курс повышения квалификации, 2023</span></li>
+        <li class="rounded-2xl bg-white border border-black/5 p-4"><b class="font-medium block">Блог о питании</b><span class="text-black/55">86 тыс. читателей</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-20 md:py-28 bg-ink text-white scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.02em] rv">Результаты клиентов</h2>
+    <div class="mt-10 grid md:grid-cols-3 gap-4">
+      <figure class="rv rounded-[24px] bg-white/5 border border-white/10 p-7">
+        <div class="font-display text-4xl font-semibold text-lime">−9,2 кг</div><div class="text-xs text-white/50 mt-1">за 4 месяца · план «Ведение»</div>
+        <blockquote class="mt-5 text-white/80 leading-relaxed">Впервые худею и не ненавижу еду. Ела пасту и шоколад, просто в нужных граммах. Самое ценное: меню для кафе, я много езжу по работе.</blockquote>
+        <figcaption class="mt-6 text-sm"><b class="font-medium">Ольга, 38 лет</b> · Екатеринбург</figcaption>
+      </figure>
+      <figure class="rv rounded-[24px] bg-white/5 border border-white/10 p-7" style="transition-delay:.1s">
+        <div class="font-display text-4xl font-semibold text-lime">+4,1 кг</div><div class="text-xs text-white/50 mt-1">мышечной массы за 3 месяца · «Рацион»</div>
+        <blockquote class="mt-5 text-white/80 leading-relaxed">Не мог набрать вес лет пять. Оказалось, я просто недоедал на 700 ккал. Калькулятор показал цифру, меню помогло её добирать без перекусов фастфудом.</blockquote>
+        <figcaption class="mt-6 text-sm"><b class="font-medium">Андрей, 27 лет</b> · Казань</figcaption>
+      </figure>
+      <figure class="rv rounded-[24px] bg-white/5 border border-white/10 p-7" style="transition-delay:.2s">
+        <div class="font-display text-4xl font-semibold text-lime">−5,5 кг</div><div class="text-xs text-white/50 mt-1">за 2 месяца · «Рацион»</div>
+        <blockquote class="mt-5 text-white/80 leading-relaxed">Список покупок на неделю сэкономил мне кучу денег и времени. Готовлю по воскресеньям 2 часа, и всю неделю не думаю о еде.</blockquote>
+        <figcaption class="mt-6 text-sm"><b class="font-medium">Наталья, 44 года</b> · Москва</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ + contact -->
+<section id="faq" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 grid lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-7 rv">
+      <h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.02em]">Частые вопросы</h2>
+      <div class="mt-8 divide-y divide-black/10 border-y border-black/10">
+        <details class="faq group py-5" open><summary class="flex justify-between items-center gap-4 cursor-pointer font-medium text-lg">Насколько точен калькулятор?<span class="pl w-9 h-9 shrink-0 rounded-full bg-black/5 grid place-items-center transition">+</span></summary><p class="mt-3 text-black/65 leading-relaxed">Формула Миффлина — Сан Жеора даёт погрешность около 10%. Это хорошая точка старта: через 2–3 недели по динамике веса норму можно уточнить. В плане «Ведение» я делаю это за вас.</p></details>
+        <details class="faq group py-5"><summary class="flex justify-between items-center gap-4 cursor-pointer font-medium text-lg">Что если я не люблю какие-то продукты?<span class="pl w-9 h-9 shrink-0 rounded-full bg-black/5 grid place-items-center transition">+</span></summary><p class="mt-3 text-black/65 leading-relaxed">В каждом плане есть таблица замен: рыбу можно заменить птицей, творог тофу или йогуртом, гречку булгуром. Калорийность и БЖУ сохраняются.</p></details>
+        <details class="faq group py-5"><summary class="flex justify-between items-center gap-4 cursor-pointer font-medium text-lg">Подходит ли при диабете или беременности?<span class="pl w-9 h-9 shrink-0 rounded-full bg-black/5 grid place-items-center transition">+</span></summary><p class="mt-3 text-black/65 leading-relaxed">Готовые планы рассчитаны на здоровых взрослых. При заболеваниях, беременности и кормлении грудью подойдёт только «Ведение» и только после консультации с вашим врачом.</p></details>
+        <details class="faq group py-5"><summary class="flex justify-between items-center gap-4 cursor-pointer font-medium text-lg">Как я получу план после оплаты?<span class="pl w-9 h-9 shrink-0 rounded-full bg-black/5 grid place-items-center transition">+</span></summary><p class="mt-3 text-black/65 leading-relaxed">Ссылка придёт на почту в течение 5 минут: PDF для печати и доступ в веб-приложение со списком покупок, который можно отмечать прямо в магазине.</p></details>
+        <details class="faq group py-5"><summary class="flex justify-between items-center gap-4 cursor-pointer font-medium text-lg">Можно вернуть деньги?<span class="pl w-9 h-9 shrink-0 rounded-full bg-black/5 grid place-items-center transition">+</span></summary><p class="mt-3 text-black/65 leading-relaxed">Да, в течение 7 дней без объяснения причин, если план не подошёл.</p></details>
+      </div>
+    </div>
+    <div class="lg:col-span-5 rv">
+      <form class="rounded-[28px] bg-white border border-black/5 p-6 md:p-8 lg:sticky lg:top-24" novalidate data-form>
+        <h3 class="font-display font-semibold text-2xl">Бесплатная консультация 15 минут</h3>
+        <p class="mt-2 text-sm text-black/60">Разберу ваш расчёт и подскажу, какой план подойдёт.</p>
+        <div class="mt-6 space-y-3">
+          <input class="field" name="name" placeholder="Ваше имя" autocomplete="given-name">
+          <input class="field" name="contact" placeholder="Телефон или ник в Telegram">
+          <select class="field" name="goal"><option>Хочу похудеть</option><option>Хочу набрать массу</option><option>Хочу питаться правильно</option></select>
+        </div>
+        <button class="mt-5 w-full py-4 rounded-2xl bg-tang text-white font-medium hover:bg-tangDark transition">Записаться</button>
+        <p class="hidden mt-3 text-sm text-red-600" data-err>Укажите имя и телефон или Telegram.</p>
+        <div class="hidden mt-4 rounded-2xl bg-leaf p-4 text-sm" data-ok><b class="font-medium">Спасибо!</b> Это демо-версия сайта, заявка никуда не отправляется.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-black/10">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 pb-20 md:pb-10 flex flex-col md:flex-row gap-5 justify-between text-sm text-black/55">
+    <div class="font-display font-semibold text-ink text-lg">норма.</div>
+    <div>+7 (900) 000-00-00 · hello@example.ru</div>
+    <div>© 2026 Норма. Бренд вымышлен. Не является медицинской услугой.</div>
+  </div>
+</footer>
+
+<!-- Payment modal -->
+<div class="modal fixed inset-0 z-[60] bg-black/55 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4" data-modal role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="box bg-white w-full sm:max-w-md rounded-t-[28px] sm:rounded-[28px] p-6 md:p-8 max-h-[92vh] overflow-y-auto relative">
+    <button class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 text-xl" aria-label="Закрыть" data-mclose>&times;</button>
+    <div data-step="pay">
+      <div class="inline-flex text-xs font-medium px-3 py-1.5 rounded-full bg-lime">Демо-оплата</div>
+      <h3 id="mTitle" class="font-display font-semibold text-2xl mt-4" data-mname>План</h3>
+      <div class="mt-4 rounded-2xl bg-cream p-4 text-sm space-y-2">
+        <div class="flex justify-between"><span class="text-black/55">Норма в плане</span><b class="font-medium"><span data-mkcal></span> ккал</b></div>
+        <div class="flex justify-between"><span class="text-black/55">БЖУ</span><b class="font-medium" data-mmacro></b></div>
+        <div class="flex justify-between border-t border-black/10 pt-2"><span>К оплате</span><b class="font-display" data-mprice></b></div>
+      </div>
+      <form class="mt-5 space-y-4" novalidate data-payform>
+        <label class="block"><span class="text-sm text-black/60">E-mail для отправки плана</span><input class="field mt-1.5" name="email" type="email" placeholder="name@example.ru" autocomplete="email"></label>
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <label class="pm relative"><input type="radio" name="pm" value="card" checked><span><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></svg>Картой</span></label>
+          <label class="pm relative"><input type="radio" name="pm" value="sbp"><span><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2z"/></svg>По QR (СБП)</span></label>
+        </div>
+        <label class="flex gap-2 text-xs text-black/55"><input type="checkbox" name="agree" class="mt-0.5 accent-[#FF5A1F]" checked> Согласна(ен) с офертой и политикой конфиденциальности</label>
+        <p class="hidden text-sm text-red-600" data-perr>Проверьте e-mail и согласие с офертой.</p>
+        <button class="w-full py-4 rounded-2xl bg-tang text-white font-medium hover:bg-tangDark transition flex items-center justify-center gap-2" data-paybtn>Оплатить <span data-mprice2></span></button>
+        <p class="text-center text-xs text-black/45">Это демонстрация: никакие данные карты не запрашиваются и деньги не списываются.</p>
+      </form>
+    </div>
+    <div class="hidden text-center py-6" data-step="ok">
+      <div class="mx-auto w-16 h-16 rounded-full bg-lime grid place-items-center text-3xl">✓</div>
+      <h3 class="font-display font-semibold text-2xl mt-5">Спасибо!</h3>
+      <p class="mt-3 text-black/65">Это демо-версия сайта, заявка никуда не отправляется. Деньги не списаны.</p>
+      <button class="mt-6 px-8 py-3.5 rounded-2xl bg-ink text-white font-medium hover:bg-tang transition" data-mclose>Вернуться на сайт</button>
+    </div>
+  </div>
+</div>
+
+<a href="../../" class="fixed left-3 bottom-3 z-[70] px-3 py-1.5 rounded-full bg-ink/70 text-white/90 text-[11px] md:text-xs backdrop-blur hover:bg-ink transition">Демо-проект · портфолио Лианы</a>
+
+<script>
+const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const fmt = n=>Math.round(n).toLocaleString('ru-RU');
+const form = $('[data-calc]');
+const pairs = ['age','height','weight'];
+let R = {};
+
+function sync(id, from){ const r=$('#'+id), n=$('#'+id+'N');
+  let v = +(from==='n' ? n.value : r.value); if(from==='n'){ if(isNaN(v)) return; v=Math.min(+r.max, Math.max(+r.min, v)); r.value=v; } else n.value=v;
+  r.style.setProperty('--p', ((r.value-r.min)/(r.max-r.min)*100)+'%'); }
+pairs.forEach(id=>{ $('#'+id).addEventListener('input',()=>{ sync(id,'r'); calc(); });
+  $('#'+id+'N').addEventListener('input',()=>{ sync(id,'n'); calc(); });
+  $('#'+id+'N').addEventListener('blur',()=>{ $('#'+id+'N').value=$('#'+id).value; });
+  sync(id,'r'); });
+form.addEventListener('change', calc);
+
+let shown = 0, anim;
+let firstCalc = true;
+function countTo(v){ cancelAnimationFrame(anim);
+  if(firstCalc){ firstCalc=false; shown=v; $('[data-kcal]').textContent=fmt(v); return; } const from=shown, t0=performance.now();
+  const step=t=>{ const k=Math.min(1,(t-t0)/600), e=1-Math.pow(1-k,3); shown=from+(v-from)*e; $('[data-kcal]').textContent=fmt(shown); if(k<1) anim=requestAnimationFrame(step); };
+  anim=requestAnimationFrame(step); }
+
+function calc(){
+  const sex=form.sex.value, goal=form.goal.value, act=+form.act.value;
+  const a=+$('#age').value, h=+$('#height').value, w=+$('#weight').value;
+  const bmr = 10*w + 6.25*h - 5*a + (sex==='m'?5:-161);
+  const tdee = bmr*act;
+  const k = goal==='lose'?0.85 : goal==='gain'?1.12 : 1;
+  let kcal = Math.round(tdee*k/10)*10;
+  if(goal==='lose') kcal = Math.max(kcal, sex==='m'?1500:1200);
+  const pPerKg = goal==='lose'?1.8 : goal==='gain'?1.8 : 1.5;
+  const p = Math.round(w*pPerKg), f = Math.round(Math.max(w*(goal==='gain'?1:0.9), kcal*0.25/9)), c = Math.max(0, Math.round((kcal - p*4 - f*9)/4));
+  R = {kcal,p,f,c,goal};
+  countTo(kcal);
+  $('[data-kcal2]').textContent = fmt(kcal); $('[data-kcal3]').textContent = fmt(kcal);
+  $('[data-p]').textContent=p; $('[data-f]').textContent=f; $('[data-c]').textContent=c;
+  $('[data-bmr]').textContent=fmt(bmr); $('[data-tdee]').textContent=fmt(tdee); $('[data-water]').textContent=(w*0.03).toFixed(1).replace('.',',')+' л';
+  const tot=p*4+f*9+c*4, pp=p*4/tot*100, fp=f*9/tot*100, cp=100-pp-fp;
+  const set=(k,len,off)=>{ const el=$(`[data-arc="${k}"]`); el.setAttribute('stroke-dasharray',`${len} ${100-len}`); el.setAttribute('stroke-dashoffset', -off); };
+  set('p',pp,0); set('f',fp,pp); set('c',cp,pp+fp);
+  const chip={lose:'дефицит 15%',keep:'поддержание',gain:'профицит 12%'}[goal];
+  $('[data-goal-chip]').textContent=chip;
+  $('[data-goal-name]').textContent={lose:'снижение веса',keep:'поддержание формы',gain:'набор мышечной массы'}[goal];
+  const bmi = w/((h/100)**2);
+  const diff = Math.round(tdee-kcal);
+  $('[data-note]').innerHTML = goal==='lose'
+    ? `ИМТ ${bmi.toFixed(1).replace('.',',')}. Дефицит ${fmt(diff)} ккал в день даёт около <b>${(diff*7/7700).toFixed(1).replace('.',',')} кг в неделю</b>: комфортный темп без срывов.`
+    : goal==='gain' ? `ИМТ ${bmi.toFixed(1).replace('.',',')}. Профицит ${fmt(-diff)} ккал и ${p} г белка помогут набирать около 1 кг в месяц, в основном за счёт мышц.`
+    : `ИМТ ${bmi.toFixed(1).replace('.',',')}. Этой нормы хватит, чтобы держать вес и спокойно восстанавливаться после тренировок.`;
+}
+calc();
+
+// Modal
+const modal=$('[data-modal]'); let price=0;
+$$('[data-buy]').forEach(b=>b.addEventListener('click',()=>{
+  price=+b.dataset.price; $('[data-mname]').textContent=b.dataset.buy;
+  $('[data-mkcal]').textContent=fmt(R.kcal); $('[data-mmacro]').textContent=`${R.p} / ${R.f} / ${R.c} г`;
+  $('[data-mprice]').textContent=fmt(price)+' ₽'; $('[data-mprice2]').textContent=fmt(price)+' ₽';
+  $('[data-step="pay"]').classList.remove('hidden'); $('[data-step="ok"]').classList.add('hidden'); $('[data-perr]').classList.add('hidden');
+  modal.classList.add('open'); document.body.style.overflow='hidden'; setTimeout(()=>$('[data-payform]').email.focus(),300); }));
+const closeM=()=>{ modal.classList.remove('open'); document.body.style.overflow=''; };
+$$('[data-mclose]').forEach(b=>b.addEventListener('click',closeM));
+modal.addEventListener('click',e=>{ if(e.target===modal) closeM(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeM(); });
+$('[data-payform]').addEventListener('submit',e=>{ e.preventDefault(); const f=e.target;
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim()) && f.agree.checked;
+  f.email.classList.toggle('err',!ok); $('[data-perr]').classList.toggle('hidden',ok); if(!ok) return;
+  const btn=$('[data-paybtn]'); const html=btn.innerHTML; btn.disabled=true;
+  btn.innerHTML='<span class="w-5 h-5 border-2 border-white/40 border-t-white rounded-full" style="animation:spin .8s linear infinite"></span> Обработка…';
+  setTimeout(()=>{ btn.disabled=false; btn.innerHTML=html; $('[data-mprice2]').textContent=fmt(price)+' ₽';
+    $('[data-step="pay"]').classList.add('hidden'); $('[data-step="ok"]').classList.remove('hidden'); f.email.value=''; },1200); });
+
+// Contact form
+const cf=$('[data-form]');
+cf.addEventListener('submit',e=>{ e.preventDefault();
+  const n=cf.name.value.trim().length>=2, c=cf.contact.value.trim().length>=4;
+  cf.name.classList.toggle('err',!n); cf.contact.classList.toggle('err',!c);
+  $('[data-err]',cf).classList.toggle('hidden',n&&c); if(!(n&&c)) return;
+  $('[data-ok]',cf).classList.remove('hidden'); cf.reset(); });
+
+// Burger
+const menu=$('[data-menu]'), bg=$('[data-burger]');
+const setM=v=>{ menu.classList.toggle('hidden',!v); bg.setAttribute('aria-expanded',v); $('[data-ic-open]').classList.toggle('hidden',v); $('[data-ic-close]').classList.toggle('hidden',!v); };
+bg.onclick=()=>setM(menu.classList.contains('hidden')); $$('a',menu).forEach(a=>a.addEventListener('click',()=>setM(false)));
+
+// Reveal
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} }),{threshold:.12});
+  $$('.rv').forEach(el=>{ if(el.getBoundingClientRect().top<innerHeight) el.classList.add('in','now'); else io.observe(el); });
+} else $$('.rv').forEach(el=>el.classList.add('in'));
+</script>
+</body>
+</html>

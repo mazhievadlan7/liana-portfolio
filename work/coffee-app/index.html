@@ -2,7 +2,10 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Telegram Mini App — кофейня «Зерно»</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кофейня «Зерно» — заказ кофе в Telegram Mini App</title>
+<meta name="description" content="Предзаказ кофе внутри Telegram: меню, корзина, оплата и кешбэк 7%. Попробуйте рабочее демо Mini App кофейни «Зерно» прямо на странице.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -10,89 +13,430 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
   colors: { tg: '#2aabee', coffee: { 50:'#fbf6f1', 100:'#f2e6da', 500:'#a0673d', 700:'#6b3f22', 900:'#2a1a10' } } } } }
 </script>
 <style>
-  body { -webkit-font-smoothing: antialiased; }
-  .phone { width: 340px; height: 700px; border-radius: 48px; background: #111; padding: 12px; box-shadow: 0 40px 80px -20px rgba(42,26,16,.45); }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .phone { width: 340px; max-width: 100%; height: 700px; border-radius: 48px; background: #111; padding: 12px; box-shadow: 0 40px 80px -20px rgba(42,26,16,.45); flex-shrink: 0; }
   .screen { width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #fff; position: relative; }
   .notch { position:absolute; top:10px; left:50%; transform:translateX(-50%); width:110px; height:28px; background:#111; border-radius:20px; z-index:5; }
+  .scroll { overflow-y: auto; scrollbar-width: none; }
+  .scroll::-webkit-scrollbar { display: none; }
+  .bump { animation: bump .35s; }
+  @keyframes bump { 50% { transform: scale(1.04); } }
+  .pulse-ring { box-shadow: 0 0 0 0 rgba(42,171,238,.6); animation: ring 1.2s ease-out 2; }
+  @keyframes ring { to { box-shadow: 0 0 0 18px rgba(42,171,238,0); } }
+  @media (max-width: 1023px) { .phone-wrap[data-hidden="1"] { display: none; } }
 </style>
 </head>
 <body class="bg-coffee-50 font-sans text-coffee-900">
-<div class="max-w-[1440px] mx-auto px-20 py-16">
-  <div class="flex items-end justify-between">
+
+<header class="sticky top-0 z-40 bg-coffee-50/85 backdrop-blur border-b border-coffee-100">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5 font-extrabold text-lg"><span class="w-9 h-9 rounded-xl bg-coffee-700 text-white grid place-items-center">☕</span>Зерно</a>
+    <nav class="hidden lg:flex gap-8 text-sm font-medium text-coffee-700/80">
+      <a href="#demo" class="hover:text-coffee-900 transition">Демо</a><a href="#how" class="hover:text-coffee-900 transition">Как заказать</a><a href="#points" class="hover:text-coffee-900 transition">Кофейни</a><a href="#features" class="hover:text-coffee-900 transition">Технологии</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button data-open="tgModal" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-tg text-white text-sm font-semibold hover:brightness-110 transition"><span class="text-xs">➤</span>Открыть в Telegram</button>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-xl bg-white grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden px-5 pb-6">
+    <nav class="flex flex-col text-lg font-semibold divide-y divide-coffee-100">
+      <a href="#demo" class="py-3">Демо</a><a href="#how" class="py-3">Как заказать</a><a href="#points" class="py-3">Кофейни</a><a href="#features" class="py-3">Технологии</a>
+    </nav>
+    <button data-open="tgModal" class="mt-4 w-full py-4 rounded-2xl bg-tg text-white font-bold">Открыть в Telegram</button>
+  </div>
+</header>
+
+<section id="top" class="max-w-7xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16">
+  <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
     <div>
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-sm font-semibold"><span class="w-5 h-5 rounded-full bg-tg grid place-items-center text-white text-[10px]">➤</span>Telegram Mini App</div>
-      <h1 class="text-6xl font-extrabold mt-6 tracking-tight">Кофейня «Зерно»</h1>
-      <p class="mt-4 text-lg text-coffee-700/80 max-w-xl">Предзаказ кофе внутри Telegram: меню, корзина, оплата и программа лояльности — без установки приложения.</p>
+      <h1 class="text-[42px] leading-[1.05] sm:text-6xl font-extrabold mt-6 tracking-tight">Кофейня «Зерно»</h1>
+      <p class="mt-4 text-base sm:text-lg text-coffee-700/80 max-w-xl">Предзаказ кофе внутри Telegram: меню, корзина, оплата и программа лояльности без установки приложения. Попробуйте прямо здесь, демо ниже работает по-настоящему.</p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-3">
+        <a href="#demo" class="text-center px-7 py-4 rounded-2xl bg-coffee-900 text-white font-bold hover:bg-coffee-700 transition">Собрать заказ в демо</a>
+        <a href="#promo" class="text-center px-7 py-4 rounded-2xl bg-white font-bold hover:bg-coffee-100 transition">−20% на первый заказ</a>
+      </div>
     </div>
-    <div class="grid grid-cols-3 gap-8 text-center">
-      <div><div class="text-4xl font-extrabold">3</div><div class="text-sm text-coffee-700/70 mt-1">клика до заказа</div></div>
-      <div><div class="text-4xl font-extrabold">ЮKassa</div><div class="text-sm text-coffee-700/70 mt-1">оплата в приложении</div></div>
-      <div><div class="text-4xl font-extrabold">Бонусы</div><div class="text-sm text-coffee-700/70 mt-1">кешбэк 7%</div></div>
+    <div class="grid grid-cols-3 gap-4 sm:gap-8 text-center">
+      <div><div class="text-3xl sm:text-4xl font-extrabold">3</div><div class="text-xs sm:text-sm text-coffee-700/70 mt-1">клика до заказа</div></div>
+      <div><div class="text-3xl sm:text-4xl font-extrabold">1 мин</div><div class="text-xs sm:text-sm text-coffee-700/70 mt-1">оплата в приложении</div></div>
+      <div><div class="text-3xl sm:text-4xl font-extrabold">7%</div><div class="text-xs sm:text-sm text-coffee-700/70 mt-1">кешбэк бонусами</div></div>
     </div>
   </div>
+</section>
 
-  <div class="mt-16 flex justify-between items-start">
+<!-- Demo -->
+<section id="demo" class="max-w-7xl mx-auto px-5 sm:px-8 pt-14 pb-20">
+  <!-- Mobile tabs -->
+  <div class="lg:hidden sticky top-[76px] z-20 bg-coffee-50/90 backdrop-blur py-3 -mx-5 px-5">
+    <div id="tabs" class="grid grid-cols-3 gap-1 p-1 rounded-2xl bg-white text-sm font-semibold">
+      <button data-tab="0" class="py-2.5 rounded-xl bg-coffee-900 text-white">Меню</button>
+      <button data-tab="1" class="py-2.5 rounded-xl">Напиток</button>
+      <button data-tab="2" class="py-2.5 rounded-xl">Корзина <span class="cartCount"></span></button>
+    </div>
+  </div>
+  <div class="mt-4 lg:mt-0 flex flex-col lg:flex-row justify-between items-center lg:items-start gap-10">
     <!-- Screen 1: menu -->
-    <div class="phone"><div class="screen bg-coffee-50">
+    <div class="phone-wrap" data-screen="0"><div class="phone"><div class="screen bg-coffee-50">
       <div class="notch"></div>
-      <div class="pt-14 px-5">
-        <div class="flex justify-between items-center"><div><div class="text-xs text-coffee-700/60">Доброе утро, Алексей</div><div class="font-bold text-lg">Что будете пить?</div></div><span class="w-10 h-10 rounded-full bg-coffee-100 grid place-items-center">☕</span></div>
-        <div class="mt-4 rounded-2xl bg-coffee-900 text-white p-4 flex justify-between items-center"><div><div class="text-xs text-white/60">Ваши бонусы</div><div class="text-2xl font-bold">340 ₽</div></div><div class="flex gap-1">●●●●○</div></div>
-        <div class="mt-4 flex gap-2 text-sm"><span class="px-4 py-2 rounded-full bg-coffee-700 text-white">Кофе</span><span class="px-4 py-2 rounded-full bg-white">Чай</span><span class="px-4 py-2 rounded-full bg-white">Десерты</span></div>
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Капучино</div><div class="flex justify-between items-center px-1 mt-1"><b>220 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
-          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Айс латте</div><div class="flex justify-between items-center px-1 mt-1"><b>260 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
-          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Флэт уайт</div><div class="flex justify-between items-center px-1 mt-1"><b>240 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
-          <div class="bg-white rounded-2xl p-2"><img class="rounded-xl h-24 w-full object-cover" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80&auto=format&fit=crop"><div class="text-sm font-semibold mt-2 px-1">Американо</div><div class="flex justify-between items-center px-1 mt-1"><b>180 ₽</b><span class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center">+</span></div></div>
+      <div class="h-full flex flex-col">
+        <div class="pt-14 px-5">
+          <div class="flex justify-between items-center"><div><div class="text-xs text-coffee-700/60">Доброе утро, Алексей</div><div class="font-bold text-lg">Что будете пить?</div></div><span class="w-10 h-10 rounded-full bg-coffee-100 grid place-items-center">☕</span></div>
+          <div class="mt-4 rounded-2xl bg-coffee-900 text-white p-4 flex justify-between items-center"><div><div class="text-xs text-white/60">Ваши бонусы</div><div class="text-2xl font-bold"><span id="bonusTop">340</span> ₽</div></div><div class="text-right text-xs text-white/60">5-й кофе<br>в подарок <span class="text-white">●●●●○</span></div></div>
+          <div id="cats" class="mt-4 flex gap-2 text-sm"></div>
         </div>
+        <div id="menuGrid" class="scroll flex-1 mt-3 px-5 pb-24 grid grid-cols-2 gap-3 content-start"></div>
       </div>
-      <div class="absolute bottom-0 inset-x-0 p-4"><div class="rounded-2xl bg-tg text-white py-4 text-center font-semibold">Корзина · 2 позиции · 460 ₽</div></div>
-    </div></div>
+      <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-coffee-50 via-coffee-50/90"><button id="cartBar" class="w-full rounded-2xl bg-tg text-white py-4 text-center font-semibold hover:brightness-110 transition">Корзина пуста</button></div>
+    </div></div></div>
 
     <!-- Screen 2: product -->
-    <div class="phone mt-16"><div class="screen">
+    <div class="phone-wrap lg:mt-16" data-screen="1"><div class="phone"><div class="screen">
       <div class="notch"></div>
-      <img class="h-72 w-full object-cover" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=700&q=80&auto=format&fit=crop">
-      <div class="px-5 -mt-6 relative bg-white rounded-t-3xl pt-6">
-        <div class="flex justify-between"><h2 class="text-2xl font-bold">Капучино</h2><b class="text-xl">220 ₽</b></div>
-        <p class="text-sm text-coffee-700/70 mt-1">Двойной эспрессо и молочная пена</p>
-        <div class="mt-5 text-sm font-semibold">Объём</div>
-        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-coffee-50">250 мл</span><span class="py-2.5 rounded-xl bg-coffee-700 text-white">350 мл</span><span class="py-2.5 rounded-xl bg-coffee-50">450 мл</span></div>
-        <div class="mt-4 text-sm font-semibold">Молоко</div>
-        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-coffee-700 text-white">Обычное</span><span class="py-2.5 rounded-xl bg-coffee-50">Овсяное</span><span class="py-2.5 rounded-xl bg-coffee-50">Миндальное</span></div>
-        <div class="mt-4 text-sm font-semibold">Сироп</div>
-        <div class="mt-2 flex gap-2 text-sm"><span class="px-3 py-2 rounded-xl bg-coffee-50">Карамель</span><span class="px-3 py-2 rounded-xl bg-coffee-50">Ваниль</span><span class="px-3 py-2 rounded-xl bg-coffee-50">Орех</span></div>
+      <div class="h-full scroll pb-24">
+        <img id="pImg" class="h-64 w-full object-cover" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=700&q=80&auto=format&fit=crop" alt="Капучино">
+        <div class="px-5 -mt-6 relative bg-white rounded-t-3xl pt-6">
+          <div class="flex justify-between gap-3"><h2 id="pName" class="text-2xl font-bold">Капучино</h2><b id="pBase" class="text-xl whitespace-nowrap">220 ₽</b></div>
+          <p id="pDesc" class="text-sm text-coffee-700/70 mt-1">Двойной эспрессо и молочная пена</p>
+          <div id="optSize"><div class="mt-5 text-sm font-semibold">Объём</div><div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center" data-group="size"></div></div>
+          <div id="optMilk"><div class="mt-4 text-sm font-semibold">Молоко</div><div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center" data-group="milk"></div></div>
+          <div id="optSyrup"><div class="mt-4 text-sm font-semibold">Сироп <span class="font-normal text-coffee-700/50">+30 ₽</span></div><div class="mt-2 flex gap-2 text-sm" data-group="syrup"></div></div>
+        </div>
       </div>
-      <div class="absolute bottom-0 inset-x-0 p-4 flex gap-3 items-center"><div class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-coffee-50 font-bold">− 1 +</div><div class="flex-1 rounded-2xl bg-tg text-white py-4 text-center font-semibold">Добавить · 250 ₽</div></div>
-    </div></div>
+      <div class="absolute bottom-0 inset-x-0 p-4 flex gap-3 items-center bg-white"><div class="flex items-center gap-1 px-2 py-1.5 rounded-2xl bg-coffee-50 font-bold"><button id="qMinus" class="w-8 h-8 rounded-xl hover:bg-coffee-100" aria-label="Меньше">−</button><span id="qty" class="w-5 text-center">1</span><button id="qPlus" class="w-8 h-8 rounded-xl hover:bg-coffee-100" aria-label="Больше">+</button></div><button id="addBtn" class="flex-1 rounded-2xl bg-tg text-white py-4 text-center font-semibold hover:brightness-110 transition">Добавить · 250 ₽</button></div>
+    </div></div></div>
 
     <!-- Screen 3: checkout -->
-    <div class="phone"><div class="screen bg-coffee-50">
+    <div class="phone-wrap" data-screen="2"><div class="phone" id="phone3"><div class="screen bg-coffee-50">
       <div class="notch"></div>
-      <div class="pt-14 px-5">
+      <div id="checkout" class="h-full scroll pt-14 px-5 pb-24">
         <div class="font-bold text-lg">Оформление</div>
-        <div class="mt-4 bg-white rounded-2xl p-4 space-y-3 text-sm">
-          <div class="flex justify-between"><span>Капучино 350 мл</span><b>250 ₽</b></div>
-          <div class="flex justify-between"><span>Айс латте</span><b>260 ₽</b></div>
-          <div class="flex justify-between text-green-700"><span>Списать бонусы</span><b>−100 ₽</b></div>
-          <div class="pt-3 border-t flex justify-between text-base"><b>Итого</b><b>410 ₽</b></div>
-        </div>
+        <div id="cartList" class="mt-4 bg-white rounded-2xl p-4 space-y-3 text-sm"></div>
+        <label class="mt-3 bg-white rounded-2xl p-4 text-sm flex items-center justify-between cursor-pointer"><span>Списать бонусы <span class="text-coffee-700/50">(до 50% заказа)</span></span><input id="useBonus" type="checkbox" checked class="w-5 h-5 accent-[#6b3f22]"></label>
         <div class="mt-4 text-sm font-semibold">Когда забрать</div>
-        <div class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"><span class="py-2.5 rounded-xl bg-white">Сейчас</span><span class="py-2.5 rounded-xl bg-coffee-700 text-white">Через 15 мин</span><span class="py-2.5 rounded-xl bg-white">К 9:30</span></div>
+        <div id="pickup" class="mt-2 grid grid-cols-3 gap-2 text-sm text-center"></div>
         <div class="mt-4 text-sm font-semibold">Точка</div>
-        <div class="mt-2 bg-white rounded-2xl p-4 text-sm flex justify-between"><span>📍 ул. Пятницкая, 12</span><span class="text-coffee-700/60">350 м</span></div>
-        <div class="mt-4 bg-white rounded-2xl p-4 text-sm flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-green-100 grid place-items-center">✓</span><div><b>Заказ №248 готовится</b><div class="text-coffee-700/60 text-xs">Пришлём сообщение в чат, когда будет готов</div></div></div>
+        <select id="point" class="mt-2 w-full bg-white rounded-2xl p-4 text-sm outline-none">
+          <option>📍 ул. Садовая, 12 · 350 м</option><option>📍 пр. Мира, 48 · 1,2 км</option><option>📍 Лесная ул., 3 · 2 км</option>
+        </select>
+        <div id="orderDone" class="hidden mt-4 bg-white rounded-2xl p-4 text-sm flex items-center gap-3"><span class="w-9 h-9 shrink-0 rounded-full bg-green-100 grid place-items-center">✓</span><div><b id="orderNo">Заказ №248 готовится</b><div id="orderInfo" class="text-coffee-700/60 text-xs">Пришлём сообщение в чат, когда будет готов</div></div></div>
       </div>
-      <div class="absolute bottom-0 inset-x-0 p-4"><div class="rounded-2xl bg-tg text-white py-4 text-center font-semibold">Оплатить 410 ₽</div></div>
-    </div></div>
+      <div class="absolute bottom-0 inset-x-0 p-4 bg-coffee-50"><button id="payBtn" class="w-full rounded-2xl bg-tg text-white py-4 text-center font-semibold hover:brightness-110 transition disabled:opacity-50">Оплатить</button></div>
+    </div></div></div>
   </div>
+  <p class="mt-8 text-center text-sm text-coffee-700/60">Это интерактивное демо: добавляйте напитки, меняйте объём и молоко, оформляйте заказ. Оплата не проводится.</p>
+</section>
 
-  <div class="mt-16 grid grid-cols-4 gap-6 text-sm">
-    <div class="bg-white rounded-2xl p-6"><b>Frontend</b><p class="text-coffee-700/70 mt-1">React, Tailwind, Telegram WebApp SDK</p></div>
-    <div class="bg-white rounded-2xl p-6"><b>Backend</b><p class="text-coffee-700/70 mt-1">Python, FastAPI, PostgreSQL</p></div>
-    <div class="bg-white rounded-2xl p-6"><b>Оплата</b><p class="text-coffee-700/70 mt-1">ЮKassa, чек 54-ФЗ</p></div>
-    <div class="bg-white rounded-2xl p-6"><b>Бот</b><p class="text-coffee-700/70 mt-1">aiogram 3: уведомления о статусе заказа</p></div>
+<!-- How -->
+<section id="how" class="bg-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20">
+    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Как заказать</h2>
+    <div class="mt-10 grid md:grid-cols-3 gap-5">
+      <div data-reveal class="rounded-3xl bg-coffee-50 p-7"><div class="w-12 h-12 rounded-2xl bg-tg text-white grid place-items-center font-bold text-lg">1</div><h3 class="mt-5 text-xl font-bold">Откройте бота</h3><p class="mt-2 text-coffee-700/70">Нажмите «Меню» в чате кофейни. Регистрация не нужна, Telegram уже знает ваше имя.</p></div>
+      <div data-reveal class="rounded-3xl bg-coffee-50 p-7"><div class="w-12 h-12 rounded-2xl bg-tg text-white grid place-items-center font-bold text-lg">2</div><h3 class="mt-5 text-xl font-bold">Соберите заказ</h3><p class="mt-2 text-coffee-700/70">Выберите напиток, объём и молоко. Приложение запомнит ваш любимый вариант.</p></div>
+      <div data-reveal class="rounded-3xl bg-coffee-900 text-white p-7"><div class="w-12 h-12 rounded-2xl bg-white text-coffee-900 grid place-items-center font-bold text-lg">3</div><h3 class="mt-5 text-xl font-bold">Заберите без очереди</h3><p class="mt-2 text-white/70">Оплатите картой или по СБП. Бот напишет, когда кофе будет готов: обычно через 5–7 минут.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Points -->
+<section id="points" class="max-w-7xl mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-8 items-center">
+  <div data-reveal class="grid grid-cols-2 gap-4">
+    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80&auto=format&fit=crop" alt="Интерьер кофейни" class="col-span-2 h-56 sm:h-64 w-full object-cover rounded-3xl">
+    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80&auto=format&fit=crop" alt="Кофейные зёрна и чашка" class="h-40 sm:h-48 w-full object-cover rounded-3xl">
+    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80&auto=format&fit=crop" alt="Пачка зернового кофе" class="h-40 sm:h-48 w-full object-cover rounded-3xl">
+  </div>
+  <div data-reveal>
+    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Три кофейни в центре</h2>
+    <p class="mt-4 text-coffee-700/80">Обжариваем зерно сами раз в неделю. Заказ из Mini App готовят на отдельной стойке, чтобы вы не стояли в общей очереди.</p>
+    <ul class="mt-8 space-y-3">
+      <li class="bg-white rounded-2xl p-5 flex justify-between gap-4"><div><b>ул. Садовая, 12</b><div class="text-sm text-coffee-700/60">пн–пт 7:30–21:00, сб–вс 9:00–21:00</div></div><span class="text-sm text-coffee-500 font-semibold whitespace-nowrap">открыто</span></li>
+      <li class="bg-white rounded-2xl p-5 flex justify-between gap-4"><div><b>пр. Мира, 48</b><div class="text-sm text-coffee-700/60">ежедневно 8:00–22:00</div></div><span class="text-sm text-coffee-500 font-semibold whitespace-nowrap">открыто</span></li>
+      <li class="bg-white rounded-2xl p-5 flex justify-between gap-4"><div><b>Лесная ул., 3</b><div class="text-sm text-coffee-700/60">ежедневно 7:00–20:00, есть веранда</div></div><span class="text-sm text-coffee-500 font-semibold whitespace-nowrap">открыто</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="max-w-7xl mx-auto px-5 sm:px-8 pb-20">
+  <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Что под капотом</h2>
+  <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-sm">
+    <div data-reveal class="bg-white rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition"><b>Frontend</b><p class="text-coffee-700/70 mt-1">React, Tailwind, Telegram WebApp SDK</p></div>
+    <div data-reveal class="bg-white rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition"><b>Backend</b><p class="text-coffee-700/70 mt-1">Python, FastAPI, PostgreSQL</p></div>
+    <div data-reveal class="bg-white rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition"><b>Оплата</b><p class="text-coffee-700/70 mt-1">Онлайн-касса, чек по 54-ФЗ, СБП</p></div>
+    <div data-reveal class="bg-white rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition"><b>Бот</b><p class="text-coffee-700/70 mt-1">aiogram 3: уведомления о статусе заказа</p></div>
+  </div>
+</section>
+
+<!-- Promo -->
+<section id="promo" class="max-w-7xl mx-auto px-4 sm:px-8 pb-20">
+  <div data-reveal class="rounded-[32px] bg-coffee-900 text-white p-7 sm:p-12 grid lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">−20% на первый заказ</h2>
+      <p class="mt-3 text-white/70">Оставьте телефон, и мы пришлём промокод в Telegram. Действует 7 дней во всех трёх кофейнях.</p>
+    </div>
+    <form data-demo>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input required type="tel" name="phone" class="flex-1 min-w-0 px-5 py-4 rounded-2xl bg-white/10 border border-white/15 placeholder-white/40 outline-none focus:border-tg" placeholder="+7 (___) ___-__-__">
+        <button class="px-7 py-4 rounded-2xl bg-tg font-bold hover:brightness-110 transition">Получить промокод</button>
+      </div>
+      <p data-msg class="mt-3 text-sm text-coffee-100" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-coffee-100 pb-12 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-8 flex flex-col md:flex-row justify-between gap-3 text-sm text-coffee-700/60">
+    <span class="font-extrabold text-coffee-900">☕ Зерно</span><span>Кофейни и обжарка · Telegram Mini App</span><span><a href="tel:+79000000000" class="hover:text-coffee-900">+7 (900) 000-00-00</a> · <a href="mailto:hello@example.ru" class="hover:text-coffee-900">hello@example.ru</a></span><span>© 2026</span>
+  </div>
+</footer>
+
+<div id="tgModal" data-modal class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-coffee-900/60 backdrop-blur-sm sm:p-6">
+  <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-7 relative text-center">
+    <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-coffee-50 grid place-items-center text-xl">×</button>
+    <div class="mx-auto w-16 h-16 rounded-2xl bg-tg text-white grid place-items-center text-2xl">➤</div>
+    <h3 class="mt-5 text-2xl font-extrabold">Это демо-версия</h3>
+    <p class="mt-2 text-coffee-700/70">В настоящем проекте кнопка открывает бота в Telegram. Здесь бот не подключён, но всё приложение можно попробовать прямо на странице.</p>
+    <a href="#demo" data-close class="mt-6 block py-4 rounded-2xl bg-coffee-900 text-white font-bold hover:bg-coffee-700 transition">Перейти к демо</a>
   </div>
 </div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const U = (id, w = 400) => `https://images.unsplash.com/${id}?w=${w}&q=80&auto=format&fit=crop`;
+  const MENU = [
+    { id: 'cap', c: 'Кофе', n: 'Капучино', p: 220, d: 'Двойной эспрессо и молочная пена', img: 'photo-1509042239860-f550ce710b93', milk: true },
+    { id: 'ice', c: 'Кофе', n: 'Айс латте', p: 260, d: 'Эспрессо, холодное молоко и лёд', img: 'photo-1461023058943-07fcbe16d735', milk: true },
+    { id: 'flat', c: 'Кофе', n: 'Флэт уайт', p: 240, d: 'Двойной ристретто и тонкий слой молока', img: 'photo-1572442388796-11668a67e53d', milk: true },
+    { id: 'am', c: 'Кофе', n: 'Американо', p: 180, d: 'Эспрессо и горячая вода', img: 'photo-1495474472287-4d71bcdd2085', milk: false },
+    { id: 'oat', c: 'Кофе', n: 'Латте со льдом на овсяном', p: 290, d: 'Холодный латте на овсяном молоке', img: 'photo-1517701604599-bb29b565090c', milk: true },
+    { id: 'mat', c: 'Кофе', n: 'Матча латте', p: 280, d: 'Японский чай матча и молоко', img: 'photo-1515823064-d6e0c04616a7', milk: true },
+    { id: 'tea1', c: 'Чай', n: 'Чёрный с чабрецом', p: 190, d: 'Цейлонский чай и горный чабрец', img: 'photo-1544787219-7f47ccb76574', milk: false },
+    { id: 'tea2', c: 'Чай', n: 'Улун молочный', p: 230, d: 'Чайник 500 мл, мягкий сливочный вкус', img: 'photo-1564890369478-c89ca6d9cde9', milk: false },
+    { id: 'tea3', c: 'Чай', n: 'Облепиховый', p: 240, d: 'Облепиха, апельсин и мёд', img: 'photo-1571934811356-5cc061b6821f', milk: false },
+    { id: 'ds1', c: 'Десерты', n: 'Чизкейк ягодный', p: 290, d: 'Нежный сливочный, со свежей малиной', img: 'photo-1565958011703-44f9829ba187', dessert: true },
+    { id: 'ds2', c: 'Десерты', n: 'Панна-котта', p: 240, d: 'С клубничным соусом', img: 'photo-1488477181946-6428a0291777', dessert: true },
+    { id: 'ds3', c: 'Десерты', n: 'Пончик', p: 150, d: 'С глазурью и посыпкой', img: 'photo-1551024601-bec78aea704b', dessert: true }
+  ];
+  const SIZES = [['250 мл', 0], ['350 мл', 30], ['450 мл', 60]];
+  const MILKS = [['Обычное', 0], ['Овсяное', 50], ['Миндальное', 60]];
+  const SYRUPS = ['Карамель', 'Ваниль', 'Орех'];
+  const PICKUP = ['Сейчас', 'Через 15 мин', 'К 9:30'];
+  const BONUS = 340;
+  const fmt = n => n.toLocaleString('ru-RU');
+  const $ = id => document.getElementById(id);
+  const S = { cat: 'Кофе', item: MENU[0], size: 1, milk: 0, syrups: [], qty: 1, pickup: 1, cart: [], tab: 0, orderNo: 248 };
+
+  const linePrice = l => (l.item.p + (l.size != null ? SIZES[l.size][1] : 0) + (l.item.milk ? MILKS[l.milk][1] : 0) + l.syrups.length * 30);
+  const unit = () => linePrice({ item: S.item, size: S.item.dessert ? null : S.size, milk: S.milk, syrups: S.syrups });
+  const lineName = l => [l.item.n, l.item.dessert ? '' : SIZES[l.size][0], l.item.milk && l.milk ? MILKS[l.milk][0].toLowerCase() + ' молоко' : '', l.syrups.join(', ').toLowerCase()].filter(Boolean).join(' · ');
+
+  function renderMenu() {
+    $('cats').innerHTML = ['Кофе', 'Чай', 'Десерты'].map(c => `<button data-cat="${c}" class="px-4 py-2 rounded-full transition ${c === S.cat ? 'bg-coffee-700 text-white' : 'bg-white hover:bg-coffee-100'}">${c}</button>`).join('');
+    $('menuGrid').innerHTML = MENU.filter(m => m.c === S.cat).map(m => `
+      <div class="bg-white rounded-2xl p-2 cursor-pointer hover:shadow-md transition" data-open-item="${m.id}">
+        <img class="rounded-xl h-24 w-full object-cover" src="${U(m.img)}" alt="${m.n}">
+        <div class="text-sm font-semibold mt-2 px-1 leading-tight min-h-[2.5em]">${m.n}</div>
+        <div class="flex justify-between items-center px-1 mt-1"><b>${m.p} ₽</b><button data-add="${m.id}" aria-label="Добавить ${m.n}" class="w-7 h-7 rounded-full bg-coffee-700 text-white grid place-items-center hover:bg-coffee-900 transition">+</button></div>
+      </div>`).join('');
+  }
+  function renderProduct() {
+    const it = S.item;
+    $('pImg').src = U(it.img, 700); $('pImg').alt = it.n;
+    $('pName').textContent = it.n; $('pBase').textContent = it.p + ' ₽'; $('pDesc').textContent = it.d;
+    $('optSize').classList.toggle('hidden', !!it.dessert);
+    $('optMilk').classList.toggle('hidden', !it.milk);
+    $('optSyrup').classList.toggle('hidden', !!it.dessert);
+    const on = 'bg-coffee-700 text-white', off = 'bg-coffee-50 hover:bg-coffee-100';
+    document.querySelector('[data-group=size]').innerHTML = SIZES.map(([t, p], i) => `<button data-size="${i}" class="py-2.5 rounded-xl transition ${i === S.size ? on : off}">${t}${p ? `<span class="block text-[10px] opacity-70">+${p} ₽</span>` : ''}</button>`).join('');
+    document.querySelector('[data-group=milk]').innerHTML = MILKS.map(([t, p], i) => `<button data-milk="${i}" class="py-2.5 rounded-xl transition ${i === S.milk ? on : off}">${t}${p ? `<span class="block text-[10px] opacity-70">+${p} ₽</span>` : ''}</button>`).join('');
+    document.querySelector('[data-group=syrup]').innerHTML = SYRUPS.map(t => `<button data-syrup="${t}" class="px-3 py-2 rounded-xl transition ${S.syrups.includes(t) ? on : off}">${t}</button>`).join('');
+    $('qty').textContent = S.qty;
+    $('addBtn').textContent = `Добавить · ${fmt(unit() * S.qty)} ₽`;
+  }
+  function totals() {
+    const sum = S.cart.reduce((a, l) => a + linePrice(l) * l.q, 0);
+    const bonus = $('useBonus').checked ? Math.min(BONUS, Math.floor(sum * 0.5)) : 0;
+    return { sum, bonus, total: sum - bonus, count: S.cart.reduce((a, l) => a + l.q, 0) };
+  }
+  const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c;
+  function renderCart() {
+    const t = totals();
+    $('cartBar').textContent = t.count ? `Корзина · ${t.count} ${plural(t.count, 'позиция', 'позиции', 'позиций')} · ${fmt(t.sum)} ₽` : 'Корзина пуста';
+    document.querySelectorAll('.cartCount').forEach(e => e.textContent = t.count ? '· ' + t.count : '');
+    $('cartList').innerHTML = S.cart.length ? S.cart.map((l, i) => `
+      <div class="flex justify-between items-center gap-2"><div class="min-w-0"><div class="truncate">${lineName(l)}</div><div class="flex items-center gap-1 mt-1 text-xs"><button data-dec="${i}" class="w-6 h-6 rounded-lg bg-coffee-50 hover:bg-coffee-100" aria-label="Убрать одну">−</button><span class="w-5 text-center">${l.q}</span><button data-inc="${i}" class="w-6 h-6 rounded-lg bg-coffee-50 hover:bg-coffee-100" aria-label="Добавить ещё">+</button></div></div><b class="whitespace-nowrap">${fmt(linePrice(l) * l.q)} ₽</b></div>`).join('') +
+      (t.bonus ? `<div class="flex justify-between text-green-700"><span>Списать бонусы</span><b>−${fmt(t.bonus)} ₽</b></div>` : '') +
+      `<div class="pt-3 border-t flex justify-between text-base"><b>Итого</b><b>${fmt(t.total)} ₽</b></div><div class="text-xs text-coffee-700/50">Вернём ${fmt(Math.round(t.total * 0.07))} ₽ бонусами</div>`
+      : '<div class="text-center text-coffee-700/60 py-6">Корзина пуста.<br>Добавьте что-нибудь из меню ☕</div>';
+    $('pickup').innerHTML = PICKUP.map((p, i) => `<button data-pick="${i}" class="py-2.5 rounded-xl transition ${i === S.pickup ? 'bg-coffee-700 text-white' : 'bg-white hover:bg-coffee-100'}">${p}</button>`).join('');
+    $('payBtn').disabled = !t.count;
+    $('payBtn').textContent = t.count ? `Оплатить ${fmt(t.total)} ₽` : 'Добавьте напитки';
+    $('bonusTop').textContent = BONUS;
+  }
+  function addToCart(line) {
+    const key = JSON.stringify([line.item.id, line.size, line.milk, line.syrups]);
+    const ex = S.cart.find(l => JSON.stringify([l.item.id, l.size, l.milk, l.syrups]) === key);
+    if (ex) ex.q += line.q; else S.cart.push(line);
+    $('orderDone').classList.add('hidden');
+    renderCart();
+    $('cartBar').classList.remove('bump'); void $('cartBar').offsetWidth; $('cartBar').classList.add('bump');
+  }
+  function setTab(i) {
+    S.tab = i;
+    document.querySelectorAll('[data-screen]').forEach(s => s.dataset.hidden = s.dataset.screen == i ? '0' : '1');
+    document.querySelectorAll('#tabs [data-tab]').forEach(b => b.className = 'py-2.5 rounded-xl ' + (b.dataset.tab == i ? 'bg-coffee-900 text-white' : ''));
+  }
+  const isMobile = () => window.innerWidth < 1024;
+
+  $('cats').onclick = e => { const b = e.target.closest('[data-cat]'); if (b) { S.cat = b.dataset.cat; renderMenu(); } };
+  $('menuGrid').onclick = e => {
+    const add = e.target.closest('[data-add]');
+    if (add) { const it = MENU.find(m => m.id === add.dataset.add); addToCart({ item: it, size: it.dessert ? null : 1, milk: 0, syrups: [], q: 1 }); return; }
+    const card = e.target.closest('[data-open-item]');
+    if (card) { S.item = MENU.find(m => m.id === card.dataset.openItem); S.size = 1; S.milk = 0; S.syrups = []; S.qty = 1; renderProduct(); if (isMobile()) setTab(1); else { const p = document.querySelector('[data-screen="1"] .phone'); p.classList.remove('pulse-ring'); void p.offsetWidth; p.classList.add('pulse-ring'); } }
+  };
+  document.querySelector('[data-screen="1"]').addEventListener('click', e => {
+    const s = e.target.closest('[data-size]'), m = e.target.closest('[data-milk]'), y = e.target.closest('[data-syrup]');
+    if (s) S.size = +s.dataset.size;
+    if (m) S.milk = +m.dataset.milk;
+    if (y) { const t = y.dataset.syrup; S.syrups = S.syrups.includes(t) ? S.syrups.filter(x => x !== t) : [...S.syrups, t]; }
+    if (s || m || y) renderProduct();
+  });
+  $('qMinus').onclick = () => { S.qty = Math.max(1, S.qty - 1); renderProduct(); };
+  $('qPlus').onclick = () => { S.qty = Math.min(9, S.qty + 1); renderProduct(); };
+  $('addBtn').onclick = () => {
+    addToCart({ item: S.item, size: S.item.dessert ? null : S.size, milk: S.item.milk ? S.milk : 0, syrups: [...S.syrups], q: S.qty });
+    $('addBtn').textContent = 'Добавлено ✓'; setTimeout(renderProduct, 900);
+    if (isMobile()) setTimeout(() => setTab(2), 500);
+  };
+  $('cartBar').onclick = () => { if (isMobile()) setTab(2); else { const p = $('phone3'); p.classList.remove('pulse-ring'); void p.offsetWidth; p.classList.add('pulse-ring'); } };
+  $('cartList').onclick = e => {
+    const inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]');
+    if (inc) S.cart[+inc.dataset.inc].q++;
+    if (dec) { const l = S.cart[+dec.dataset.dec]; l.q--; if (l.q <= 0) S.cart.splice(+dec.dataset.dec, 1); }
+    if (inc || dec) renderCart();
+  };
+  $('useBonus').onchange = renderCart;
+  $('pickup').onclick = e => { const b = e.target.closest('[data-pick]'); if (b) { S.pickup = +b.dataset.pick; renderCart(); } };
+  $('payBtn').onclick = () => {
+    const t = totals(); if (!t.count) return;
+    S.orderNo++;
+    $('orderNo').textContent = `Заказ №${S.orderNo} готовится`;
+    $('orderInfo').textContent = `${PICKUP[S.pickup]} · ${$('point').value.replace('📍 ', '').split(' · ')[0]}. Это демо: оплата ${fmt(t.total)} ₽ не проводилась.`;
+    $('orderDone').classList.remove('hidden');
+    S.cart = []; renderCart();
+    $('payBtn').textContent = 'Оплачено ✓';
+    $('checkout').scrollTop = 9999;
+  };
+  document.querySelectorAll('#tabs [data-tab]').forEach(b => b.onclick = () => setTab(+b.dataset.tab));
+
+  // Стартовое состояние как на макете
+  S.cart = [
+    { item: MENU[0], size: 1, milk: 0, syrups: [], q: 1 },
+    { item: MENU[1], size: 0, milk: 0, syrups: [], q: 1 }
+  ];
+  renderMenu(); renderProduct(); renderCart(); setTab(0);
+</script>
 </body>
 </html>

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Клевер — детский развивающий центр: кружки от 1,5 до 12 лет</title>
+<meta name="description" content="Детский центр «Клевер»: подготовка к школе, английский, робототехника, изостудия, театр и ещё 9 кружков. Расписание на неделю, подбор по возрасту, бесплатное пробное занятие.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { display:['Rubik','sans-serif'], sans:['Nunito','system-ui','sans-serif'] },
+  colors: { milk:'#FFF8EE', ink:'#1F1D3D', coral:'#FF6B57', coraldk:'#E8503C', sun:'#FFC93C', teal:'#2BB3A3', lilac:'#A99BFF', leaf:'#5BBF6A' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#FFF8EE; color:#1F1D3D; -webkit-font-smoothing:antialiased; }
+  .js .rv { opacity:0; transform:translateY(26px) rotate(-.6deg); transition:opacity .7s ease, transform .7s cubic-bezier(.34,1.56,.64,1); }
+  .js .rv.in { opacity:1; transform:none; }
+  .blobmask { border-radius: 62% 38% 55% 45% / 48% 56% 44% 52%; }
+  .tab.on { background:#1F1D3D; color:#fff; }
+  .tab.on .dot { background:#FFC93C; }
+  .age.on { background:#FF6B57; color:#fff; border-color:#FF6B57; }
+  .cat.on { background:#1F1D3D; color:#fff; border-color:#1F1D3D; }
+  .wave { height:28px; background: radial-gradient(circle at 14px -6px, transparent 18px, currentColor 19px) 0 0/28px 28px repeat-x; }
+  @keyframes wob { 0%,100%{ transform:rotate(-6deg) } 50%{ transform:rotate(6deg) } }
+  .wob { animation:wob 4s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-10px) } }
+  .bob { animation:bob 4.5s ease-in-out infinite; }
+  .no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+  .lesson { transition: transform .25s ease, box-shadow .25s ease; }
+  .lesson:hover { transform: translateY(-3px); box-shadow: 0 16px 30px -18px rgba(31,29,61,.45); }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<header id="top" class="sticky top-0 z-40 bg-milk/90 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2">
+      <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><g fill="#5BBF6A"><circle cx="14" cy="14" r="8"/><circle cx="26" cy="14" r="8"/><circle cx="14" cy="26" r="8"/><circle cx="26" cy="26" r="8"/></g><circle cx="20" cy="20" r="4" fill="#FFC93C"/></svg>
+      <span class="font-display font-extrabold text-2xl tracking-tight">клевер</span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-1 font-bold text-[15px]">
+      <a href="#clubs" class="px-4 py-2 rounded-full hover:bg-white transition">Кружки</a>
+      <a href="#schedule" class="px-4 py-2 rounded-full hover:bg-white transition">Расписание</a>
+      <a href="#team" class="px-4 py-2 rounded-full hover:bg-white transition">Педагоги</a>
+      <a href="#prices" class="px-4 py-2 rounded-full hover:bg-white transition">Абонементы</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#trial" class="hidden sm:inline-flex px-5 py-3 rounded-full bg-coral text-white font-bold hover:bg-coraldk transition shadow-[0_6px_0_#C9432F] active:translate-y-1 active:shadow-none">Пробное бесплатно</a>
+      <button id="burger" aria-label="Открыть меню" class="lg:hidden w-12 h-12 rounded-full bg-sun grid place-items-center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F1D3D" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mmenu" class="fixed inset-0 z-50 bg-sun hidden flex-col">
+  <div class="px-5 h-[72px] flex items-center justify-between">
+    <span class="font-display font-extrabold text-2xl">клевер</span>
+    <button id="mclose" aria-label="Закрыть меню" class="w-12 h-12 rounded-full bg-white grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F1D3D" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <nav class="flex-1 px-6 pt-8 flex flex-col gap-3 font-display font-bold text-4xl">
+    <a href="#clubs" class="mlink">Кружки</a><a href="#schedule" class="mlink">Расписание</a><a href="#team" class="mlink">Педагоги</a><a href="#prices" class="mlink">Абонементы</a>
+  </nav>
+  <div class="p-6"><a href="#trial" class="mlink block text-center py-4 rounded-full bg-coral text-white font-bold text-lg">Записаться на пробное</a></div>
+</div>
+
+<main>
+<!-- Hero -->
+<section class="relative overflow-hidden">
+  <svg class="absolute left-[4%] top-10 w-10 h-10 text-sun wob hidden md:block" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+  <svg class="absolute right-[46%] bottom-16 w-8 h-8 text-lilac bob hidden lg:block" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 pt-8 md:pt-14 pb-16 md:pb-24 grid lg:grid-cols-2 gap-12 items-center">
+    <div class="rv">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white font-bold text-sm shadow-sm"><span class="w-2.5 h-2.5 rounded-full bg-leaf"></span>Набор на 2026/27 учебный год открыт</span>
+      <h1 class="mt-6 font-display font-extrabold text-[42px] leading-[1.02] sm:text-6xl lg:text-[76px] tracking-tight">Здесь дети <span class="text-coral">растут</span>, играя<svg class="inline-block w-12 h-12 sm:w-16 sm:h-16 -mt-2 ml-1 text-sun wob" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg></h1>
+      <p class="mt-6 text-lg md:text-xl text-ink/70 max-w-xl">14 кружков для детей от 1,5 до 12 лет: от первых шагов в Монтессори до робототехники и театра. Группы до 8 человек, рядом с домом, с понятной программой.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4">
+        <a href="#trial" class="inline-flex justify-center items-center px-8 py-4 rounded-full bg-coral text-white font-bold text-lg hover:bg-coraldk transition shadow-[0_6px_0_#C9432F] active:translate-y-1 active:shadow-none">Пробное занятие бесплатно</a>
+        <a href="#clubs" class="inline-flex justify-center items-center px-8 py-4 rounded-full bg-white font-bold text-lg border-2 border-ink hover:bg-sun transition">Подобрать кружок</a>
+      </div>
+      <div class="mt-10 flex items-center gap-4">
+        <div class="flex -space-x-3">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1200&q=80&auto=format&fit=crop" alt="Мама ученика" class="w-11 h-11 rounded-full object-cover border-[3px] border-milk">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80&auto=format&fit=crop" alt="Папа ученика" class="w-11 h-11 rounded-full object-cover border-[3px] border-milk">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&q=80&auto=format&fit=crop" alt="Мама ученицы" class="w-11 h-11 rounded-full object-cover border-[3px] border-milk">
+        </div>
+        <p class="text-sm"><b class="text-base">640 семей</b> уже с нами<br><span class="text-ink/60">★ 4,9 на картах по 380 отзывам</span></p>
+      </div>
+    </div>
+    <div class="relative rv">
+      <div class="absolute inset-6 blobmask bg-sun rotate-6"></div>
+      <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80&auto=format&fit=crop" alt="Счастливая девочка с краской на лице" class="relative w-full h-[380px] sm:h-[500px] object-cover blobmask">
+      <div class="absolute left-0 sm:-left-4 top-8 bg-white rounded-3xl px-5 py-3 shadow-lg rotate-[-6deg] bob"><div class="font-display font-extrabold text-3xl text-teal">1,5–12</div><div class="text-sm font-bold">лет</div></div>
+      <div class="absolute right-0 sm:-right-2 bottom-10 bg-lilac text-white rounded-3xl px-5 py-4 shadow-lg rotate-[5deg]"><div class="font-display font-extrabold text-3xl">до 8</div><div class="text-sm font-bold">детей в группе</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Values strip -->
+<section class="bg-ink text-white">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+    <div class="flex flex-col md:flex-row items-center gap-3"><span class="w-12 h-12 rounded-2xl bg-coral grid place-items-center text-2xl">🎨</span><span class="font-bold leading-tight">Творчество<br><span class="text-white/60 font-normal text-sm">изо, театр, музыка</span></span></div>
+    <div class="flex flex-col md:flex-row items-center gap-3"><span class="w-12 h-12 rounded-2xl bg-sun grid place-items-center text-2xl">🧠</span><span class="font-bold leading-tight">Интеллект<br><span class="text-white/60 font-normal text-sm">школа, логика, шахматы</span></span></div>
+    <div class="flex flex-col md:flex-row items-center gap-3"><span class="w-12 h-12 rounded-2xl bg-teal grid place-items-center text-2xl">🤖</span><span class="font-bold leading-tight">Технологии<br><span class="text-white/60 font-normal text-sm">LEGO, Scratch</span></span></div>
+    <div class="flex flex-col md:flex-row items-center gap-3"><span class="w-12 h-12 rounded-2xl bg-lilac grid place-items-center text-2xl">🌍</span><span class="font-bold leading-tight">Языки<br><span class="text-white/60 font-normal text-sm">английский с 4 лет</span></span></div>
+  </div>
+</section>
+
+<!-- Clubs -->
+<section id="clubs" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto rv">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-teal/15 text-teal font-bold text-sm">Кружки</span>
+      <h2 class="mt-4 font-display font-extrabold text-4xl md:text-6xl tracking-tight">Сколько лет ребёнку?</h2>
+      <p class="mt-4 text-lg text-ink/65">Выберите возраст, и мы покажем занятия, которые подойдут именно сейчас.</p>
+    </div>
+    <div class="mt-10 rv">
+      <div class="flex gap-2 justify-start md:justify-center overflow-x-auto no-scrollbar -mx-5 px-5 pb-2" id="ages"></div>
+      <div class="mt-3 flex gap-2 justify-start md:justify-center overflow-x-auto no-scrollbar -mx-5 px-5 pb-2" id="cats"></div>
+    </div>
+    <div id="clubGrid" class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <div class="mt-8 text-center"><button id="showAll" class="hidden px-6 py-3 rounded-full border-2 border-ink font-bold hover:bg-sun transition">Показать все кружки</button></div>
+    <p id="clubEmpty" class="hidden mt-10 text-center text-ink/60">В этой категории для выбранного возраста пока нет групп. Напишите нам, и мы предложим альтернативу.</p>
+  </div>
+</section>
+
+<!-- Schedule -->
+<section id="schedule" class="relative py-20 md:py-28 bg-white scroll-mt-16">
+  <div class="absolute -top-7 inset-x-0 wave text-white" aria-hidden="true"></div>
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 rv">
+      <div>
+        <span class="inline-block px-4 py-1.5 rounded-full bg-coral/15 text-coral font-bold text-sm">Расписание</span>
+        <h2 class="mt-4 font-display font-extrabold text-4xl md:text-6xl tracking-tight">Неделя в «Клевере»</h2>
+      </div>
+      <p class="text-ink/60 max-w-sm">Занятия идут с 1 сентября по 31 мая. Нажмите на занятие, чтобы записаться на пробное.</p>
+    </div>
+    <div class="mt-10 flex gap-2 overflow-x-auto no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 rv" role="tablist" id="tabs"></div>
+    <div id="dayList" class="mt-6 grid gap-3" role="tabpanel"></div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="py-16 md:py-20 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <img src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=1200&q=80&auto=format&fit=crop" alt="Детали конструктора LEGO" class="rv w-full h-44 md:h-64 object-cover rounded-[28px] rotate-[-2deg]">
+    <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=1200&q=80&auto=format&fit=crop" alt="Дети рисуют фломастерами" class="rv w-full h-44 md:h-64 object-cover rounded-[28px] md:translate-y-6 rotate-[2deg]">
+    <img src="https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=1200&q=80&auto=format&fit=crop" alt="Трое смеющихся детей" class="rv w-full h-44 md:h-64 object-cover rounded-[28px] rotate-[-1deg]">
+    <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=1200&q=80&auto=format&fit=crop" alt="Дети занимаются за столом" class="rv w-full h-44 md:h-64 object-cover rounded-[28px] md:translate-y-6 rotate-[2deg]">
+  </div>
+</section>
+
+<!-- Team -->
+<section id="team" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 rv">
+      <div>
+        <span class="inline-block px-4 py-1.5 rounded-full bg-lilac/20 text-[#6E5CE6] font-bold text-sm">Педагоги</span>
+        <h2 class="mt-4 font-display font-extrabold text-4xl md:text-6xl tracking-tight">Взрослые, которым доверяют</h2>
+      </div>
+      <p class="text-ink/60 max-w-sm">У всех педагогическое образование, медкнижка и справка об отсутствии судимости. Средний стаж 9 лет.</p>
+    </div>
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <article class="rv group bg-white rounded-[32px] p-3 pb-6 hover:-rotate-1 transition">
+        <div class="relative overflow-hidden rounded-[26px] bg-sun"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=1200&q=80&auto=format&fit=crop" alt="Педагог Ольга Романова" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"><span class="absolute left-3 bottom-3 px-3 py-1 rounded-full bg-white text-xs font-bold">12 лет стажа</span></div>
+        <div class="px-3 mt-5"><h3 class="font-display font-bold text-xl">Ольга Романова</h3><p class="text-coral font-bold text-sm mt-1">Подготовка к школе, скорочтение</p><p class="text-ink/60 text-sm mt-2">Бывший учитель начальных классов. Знает, чего ждут от первоклассника в сентябре.</p></div>
+      </article>
+      <article class="rv group bg-white rounded-[32px] p-3 pb-6 hover:rotate-1 transition">
+        <div class="relative overflow-hidden rounded-[26px] bg-teal"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=1200&q=80&auto=format&fit=crop" alt="Педагог Артём Белов" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"><span class="absolute left-3 bottom-3 px-3 py-1 rounded-full bg-white text-xs font-bold">7 лет стажа</span></div>
+        <div class="px-3 mt-5"><h3 class="font-display font-bold text-xl">Артём Белов</h3><p class="text-teal font-bold text-sm mt-1">Робототехника, Scratch</p><p class="text-ink/60 text-sm mt-2">Инженер-программист. Его ученики дважды брали призы городских олимпиад.</p></div>
+      </article>
+      <article class="rv group bg-white rounded-[32px] p-3 pb-6 hover:-rotate-1 transition">
+        <div class="relative overflow-hidden rounded-[26px] bg-lilac"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=1200&q=80&auto=format&fit=crop" alt="Педагог Дарья Ким" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"><span class="absolute left-3 bottom-3 px-3 py-1 rounded-full bg-white text-xs font-bold">9 лет стажа</span></div>
+        <div class="px-3 mt-5"><h3 class="font-display font-bold text-xl">Дарья Ким</h3><p class="text-[#6E5CE6] font-bold text-sm mt-1">Английский язык</p><p class="text-ink/60 text-sm mt-2">CELTA, три года преподавала в Лондоне. Ведёт занятия почти полностью на английском.</p></div>
+      </article>
+      <article class="rv group bg-white rounded-[32px] p-3 pb-6 hover:rotate-1 transition">
+        <div class="relative overflow-hidden rounded-[26px] bg-coral"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1200&q=80&auto=format&fit=crop" alt="Педагог Марина Светлова" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"><span class="absolute left-3 bottom-3 px-3 py-1 rounded-full bg-white text-xs font-bold">10 лет стажа</span></div>
+        <div class="px-3 mt-5"><h3 class="font-display font-bold text-xl">Марина Светлова</h3><p class="text-coral font-bold text-sm mt-1">Изостудия, театр</p><p class="text-ink/60 text-sm mt-2">Художник-иллюстратор и актриса детского театра. Каждый год ставит с детьми спектакль.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Prices -->
+<section id="prices" class="py-20 md:py-28 bg-ink text-white scroll-mt-16 relative overflow-hidden">
+  <svg class="absolute right-8 top-10 w-24 h-24 text-sun/90 wob" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+  <div class="relative max-w-7xl mx-auto px-5 md:px-8">
+    <div class="max-w-2xl rv">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-sun text-ink font-bold text-sm">Абонементы</span>
+      <h2 class="mt-4 font-display font-extrabold text-4xl md:text-6xl tracking-tight">Простые цены без вступительных взносов</h2>
+      <p class="mt-4 text-white/65 text-lg">Пропуск по болезни со справкой переносится. Второму ребёнку из семьи скидка 10%.</p>
+    </div>
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <article class="rv rounded-[32px] bg-white/5 border border-white/10 p-7 flex flex-col"><div class="text-4xl">🎈</div><h3 class="mt-4 font-display font-bold text-xl">Пробное</h3><p class="mt-1 text-white/60 text-sm flex-1">Знакомство с педагогом и группой. Одно на каждый кружок.</p><div class="mt-6 font-display font-extrabold text-4xl">0 ₽</div><button data-plan="Пробное занятие" class="plan mt-6 py-3.5 rounded-full bg-white/10 font-bold hover:bg-white hover:text-ink transition">Записаться</button></article>
+      <article class="rv rounded-[32px] bg-white/5 border border-white/10 p-7 flex flex-col"><div class="text-4xl">🎟️</div><h3 class="mt-4 font-display font-bold text-xl">Разовое</h3><p class="mt-1 text-white/60 text-sm flex-1">Когда хочется прийти без обязательств или на отработку.</p><div class="mt-6 font-display font-extrabold text-4xl">950 ₽</div><button data-plan="Разовое занятие" class="plan mt-6 py-3.5 rounded-full bg-white/10 font-bold hover:bg-white hover:text-ink transition">Выбрать</button></article>
+      <article class="rv rounded-[32px] bg-coral p-7 flex flex-col relative rotate-[-1.5deg]"><span class="absolute -top-3 right-6 px-3 py-1 rounded-full bg-sun text-ink text-xs font-extrabold">Выбирают 7 из 10</span><div class="text-4xl">⭐</div><h3 class="mt-4 font-display font-bold text-xl">8 занятий</h3><p class="mt-1 text-white/85 text-sm flex-1">Два раза в неделю, действует 5 недель. 800 ₽ за занятие.</p><div class="mt-6 font-display font-extrabold text-4xl">6 400 ₽</div><button data-plan="Абонемент 8 занятий" class="plan mt-6 py-3.5 rounded-full bg-white text-ink font-bold hover:bg-sun transition">Выбрать</button></article>
+      <article class="rv rounded-[32px] bg-white/5 border border-white/10 p-7 flex flex-col"><div class="text-4xl">🚀</div><h3 class="mt-4 font-display font-bold text-xl">Безлимит</h3><p class="mt-1 text-white/60 text-sm flex-1">Любые кружки по возрасту в течение месяца. Для самых любопытных.</p><div class="mt-6 font-display font-extrabold text-4xl">14 900 ₽</div><button data-plan="Безлимит на месяц" class="plan mt-6 py-3.5 rounded-full bg-white/10 font-bold hover:bg-white hover:text-ink transition">Выбрать</button></article>
+    </div>
+  </div>
+</section>
+
+<!-- Trial -->
+<section id="trial" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="rounded-[40px] bg-sun p-6 sm:p-10 md:p-14 grid lg:grid-cols-2 gap-10 relative overflow-hidden rv">
+      <div class="absolute -left-10 -bottom-10 w-48 h-48 rounded-full bg-white/30"></div>
+      <div class="relative">
+        <h2 class="font-display font-extrabold text-4xl md:text-5xl tracking-tight">Запишитесь на пробное занятие</h2>
+        <p class="mt-4 text-lg text-ink/75">Это бесплатно. Администратор перезвонит, подберёт группу по возрасту и расскажет, что взять с собой.</p>
+        <ul class="mt-8 space-y-3 font-bold">
+          <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white grid place-items-center">1</span>Оставляете заявку</li>
+          <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white grid place-items-center">2</span>Приходите на занятие, родители могут посмотреть</li>
+          <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white grid place-items-center">3</span>Педагог рассказывает, как прошло, и даёт рекомендации</li>
+        </ul>
+        <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=1200&q=80&auto=format&fit=crop" alt="Малыш с рюкзаком идёт на занятие" class="hidden lg:block mt-10 w-56 h-56 object-cover blobmask">
+      </div>
+      <form id="trialForm" novalidate class="relative bg-white rounded-[32px] p-6 sm:p-8 grid gap-4 self-start">
+        <div id="selBox" class="hidden px-4 py-3 rounded-2xl bg-milk text-sm flex items-center justify-between gap-3"><span><span class="text-ink/50">Вы выбрали:</span> <b id="selTxt"></b></span><button type="button" id="selClear" class="text-coral font-bold shrink-0">✕</button></div>
+        <div><label for="tParent" class="block text-sm font-bold mb-2">Имя родителя</label><input id="tParent" class="w-full px-4 py-3.5 rounded-2xl bg-milk border-2 border-transparent focus:border-coral outline-none" placeholder="Екатерина"></div>
+        <div><label for="tPhone" class="block text-sm font-bold mb-2">Телефон</label><input id="tPhone" type="tel" class="w-full px-4 py-3.5 rounded-2xl bg-milk border-2 border-transparent focus:border-coral outline-none" placeholder="+7 (900) 000-00-00"></div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label for="tAge" class="block text-sm font-bold mb-2">Возраст ребёнка</label><select id="tAge" class="w-full px-4 py-3.5 rounded-2xl bg-milk border-2 border-transparent focus:border-coral outline-none"><option value="">Выберите</option></select></div>
+          <div><label for="tClub" class="block text-sm font-bold mb-2">Кружок</label><select id="tClub" class="w-full px-4 py-3.5 rounded-2xl bg-milk border-2 border-transparent focus:border-coral outline-none"><option value="">Посоветуйте</option></select></div>
+        </div>
+        <p id="tErr" class="text-sm text-coraldk font-bold hidden"></p>
+        <button class="py-4 rounded-full bg-coral text-white font-bold text-lg hover:bg-coraldk transition shadow-[0_6px_0_#C9432F] active:translate-y-1 active:shadow-none">Записаться бесплатно</button>
+        <div id="tOk" class="hidden p-4 rounded-2xl bg-leaf/15 text-center font-bold">Спасибо! Это демо-версия сайта, заявка никуда не отправляется.</div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="bg-white pb-20 md:pb-8">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-14 grid md:grid-cols-4 gap-8 text-sm">
+    <div class="md:col-span-2"><div class="font-display font-extrabold text-2xl">клевер</div><p class="mt-3 text-ink/60 max-w-sm">Детский развивающий центр. Работаем с 2017 года, лицензия на образовательную деятельность.</p></div>
+    <div><div class="font-bold mb-3">Адрес и часы</div><p class="text-ink/60">Москва, 3 минуты от метро<br>Пн–Пт 9:00–20:30, Сб 10:00–16:00</p></div>
+    <div><div class="font-bold mb-3">Связаться</div><a href="tel:+79000000000" class="block text-ink/60 hover:text-coral">+7 (900) 000-00-00</a><a href="mailto:hello@example.ru" class="block text-ink/60 hover:text-coral mt-1">hello@example.ru</a></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 text-xs text-ink/40">© 2026 «Клевер». Демо-проект: педагоги, цены и расписание условные.</div>
+</footer>
+
+<a href="../../" class="fixed left-3 bottom-3 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/75 text-white text-[11px] md:text-xs backdrop-blur opacity-80 hover:opacity-100 transition">
+  <span class="w-1.5 h-1.5 rounded-full bg-sun"></span>Демо-проект<span class="hidden sm:inline"> · портфолио Лианы</span>
+</a>
+
+<script>
+const HL = /HeadlessChrome/.test(navigator.userAgent); // скриншоты: показываем всё сразу
+if (!HL) document.documentElement.classList.add('js');
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
+const observe = () => document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el));
+
+const mm = document.getElementById('mmenu');
+document.getElementById('burger').onclick = () => { mm.classList.remove('hidden'); mm.classList.add('flex'); document.body.style.overflow='hidden'; };
+const closeM = () => { mm.classList.add('hidden'); mm.classList.remove('flex'); document.body.style.overflow=''; };
+document.getElementById('mclose').onclick = closeM;
+document.querySelectorAll('.mlink').forEach(a => a.addEventListener('click', closeM));
+
+const CAT = { art:['Творчество','#FF6B57','🎨'], mind:['Интеллект','#E0A800','🧠'], tech:['Технологии','#2BB3A3','🤖'], lang:['Языки','#7B6CF0','🌍'], move:['Движение','#5BBF6A','🤸'] };
+const CLUBS = [
+  { n:'Монтессори-малыши', c:'mind', a:[1.5,3], d:'Занятие вместе с мамой: сенсорика, практическая жизнь, первые слова.', dur:'45 мин', p:850, t:'Ольга Романова' },
+  { n:'Музыкальная ритмика', c:'move', a:[2,5], d:'Песни, движение и простые инструменты. Развиваем слух и координацию.', dur:'40 мин', p:750, t:'Марина Светлова' },
+  { n:'Изостудия «Палитра»', c:'art', a:[3,12], d:'Акварель, гуашь, лепка и графика. Выставка работ раз в полгода.', dur:'60 мин', p:800, t:'Марина Светлова' },
+  { n:'Логопед', c:'mind', a:[3,7], d:'Индивидуальные занятия: постановка звуков и развитие речи.', dur:'30 мин', p:1400, t:'Ольга Романова' },
+  { n:'English Kids', c:'lang', a:[4,7], d:'Английский через игры, песни и мультфильмы. Без зубрёжки.', dur:'45 мин', p:900, t:'Дарья Ким' },
+  { n:'English Juniors', c:'lang', a:[8,12], d:'Грамматика, чтение и разговорная практика. Подготовка к экзаменам Cambridge.', dur:'60 мин', p:1000, t:'Дарья Ким' },
+  { n:'Подготовка к школе', c:'mind', a:[5,7], d:'Чтение, счёт, письмо и умение 30 минут слушать учителя.', dur:'2 × 30 мин', p:950, t:'Ольга Романова' },
+  { n:'Ментальная арифметика', c:'mind', a:[5,10], d:'Счёт на абакусе и в уме. Тренирует память и концентрацию.', dur:'60 мин', p:900, t:'Ольга Романова' },
+  { n:'Робототехника LEGO', c:'tech', a:[5,9], d:'Собираем и программируем роботов на наборах LEGO Education.', dur:'60 мин', p:950, t:'Артём Белов' },
+  { n:'Программирование Scratch', c:'tech', a:[8,12], d:'Свои игры и мультфильмы. Основы алгоритмов на понятных примерах.', dur:'90 мин', p:1100, t:'Артём Белов' },
+  { n:'Театральная студия', c:'art', a:[5,12], d:'Сценическая речь, пластика и один большой спектакль в мае.', dur:'60 мин', p:850, t:'Марина Светлова' },
+  { n:'Шахматы', c:'mind', a:[5,12], d:'От правил ходов до турниров. Учимся думать на несколько шагов вперёд.', dur:'60 мин', p:800, t:'Артём Белов' },
+  { n:'Скорочтение', c:'mind', a:[7,11], d:'Читать быстрее и понимать прочитанное. Плюс работа с текстом для школы.', dur:'60 мин', p:900, t:'Ольга Романова' },
+  { n:'Детская хореография', c:'move', a:[3,8], d:'Растяжка, осанка, танцы. Отчётный концерт в декабре и мае.', dur:'45 мин', p:750, t:'Марина Светлова' }
+];
+const AGES = [['all','Любой'],[2,'1,5–3 года'],[4,'3–5 лет'],[6,'5–7 лет'],[8,'7–9 лет'],[11,'9–12 лет']];
+let age = 'all', cat = 'all', showAll = false;
+const ageTxt = a => `${String(a[0]).replace('.',',')}–${a[1]} лет`;
+document.getElementById('ages').innerHTML = AGES.map(a => `<button data-v="${a[0]}" class="age shrink-0 px-5 py-3 rounded-full border-2 border-ink/10 bg-white font-bold transition hover:border-coral">${a[1]}</button>`).join('');
+document.getElementById('cats').innerHTML = `<button data-v="all" class="cat shrink-0 px-4 py-2 rounded-full border-2 border-ink/10 text-sm font-bold transition hover:border-ink">Все направления</button>` + Object.entries(CAT).map(([k,v]) => `<button data-v="${k}" class="cat shrink-0 px-4 py-2 rounded-full border-2 border-ink/10 text-sm font-bold transition hover:border-ink">${v[2]} ${v[0]}</button>`).join('');
+function renderClubs(){
+  document.querySelectorAll('.age').forEach(b => b.classList.toggle('on', b.dataset.v == age));
+  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.v === cat));
+  const lo = age==='all' ? null : (age==2?1.5:age==4?3:age==6?5:age==8?7:9), hi = age==='all'?null:(age==2?3:age==4?5:age==6?7:age==8?9:12);
+  const list = CLUBS.filter(c => (cat==='all'||c.c===cat) && (age==='all' || (c.a[0] < hi && c.a[1] > lo)));
+  const cut = !showAll && window.innerWidth < 640 && list.length > 6;
+  const sa = document.getElementById('showAll'); sa.classList.toggle('hidden', !cut); sa.textContent = `Показать все кружки (${list.length})`;
+  document.getElementById('clubGrid').innerHTML = (cut ? list.slice(0,6) : list).map((c,i) => { const k = CAT[c.c]; return `
+    <article class="rv bg-white rounded-[32px] p-6 flex flex-col border-2 border-transparent hover:border-ink transition" style="transition-delay:${(i%3)*60}ms">
+      <div class="flex items-center justify-between gap-3"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold" style="background:${k[1]}1f;color:${k[1]}">${k[2]} ${k[0]}</span><span class="px-3 py-1 rounded-full bg-milk text-sm font-extrabold">${ageTxt(c.a)}</span></div>
+      <h3 class="mt-5 font-display font-bold text-2xl leading-tight">${c.n}</h3>
+      <p class="mt-2 text-ink/65 flex-1">${c.d}</p>
+      <div class="mt-5 pt-5 border-t-2 border-dashed border-ink/10 flex items-center justify-between gap-3">
+        <div class="text-sm"><b class="text-base">${c.p} ₽</b> <span class="text-ink/50">/ ${c.dur}</span><div class="text-ink/50">${c.t}</div></div>
+        <button data-club="${c.n}" class="toTrial px-4 py-2.5 rounded-full bg-ink text-white text-sm font-bold hover:bg-coral transition">Пробное</button>
+      </div>
+    </article>`; }).join('');
+  document.getElementById('clubEmpty').classList.toggle('hidden', list.length > 0);
+  bindTrial(); observe();
+}
+document.getElementById('showAll').onclick = () => { showAll = true; renderClubs(); };
+document.getElementById('ages').onclick = e => { const b = e.target.closest('.age'); if (b) { age = b.dataset.v === 'all' ? 'all' : +b.dataset.v; renderClubs(); } };
+document.getElementById('cats').onclick = e => { const b = e.target.closest('.cat'); if (b) { cat = b.dataset.v; renderClubs(); } };
+
+// Schedule
+const DAYS = ['Пн','Вт','Ср','Чт','Пт','Сб'];
+const DAYS_FULL = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+const SCH = [
+  [['09:30','Монтессори-малыши','Солнечный'],['11:00','Музыкальная ритмика','Музыкальный'],['16:00','Подготовка к школе','Класс 1'],['17:00','Робототехника LEGO','Лаборатория'],['18:00','English Juniors','Класс 2'],['19:00','Театральная студия','Сцена']],
+  [['10:00','Детская хореография','Зал'],['16:30','Ментальная арифметика','Класс 1'],['17:00','English Kids','Класс 2'],['18:00','Программирование Scratch','Лаборатория'],['18:30','Изостудия «Палитра»','Мастерская']],
+  [['09:30','Монтессори-малыши','Солнечный'],['15:00','Логопед','Кабинет'],['16:00','Подготовка к школе','Класс 1'],['17:00','Шахматы','Класс 2'],['18:00','Скорочтение','Класс 1'],['19:00','Театральная студия','Сцена']],
+  [['11:00','Музыкальная ритмика','Музыкальный'],['16:30','Ментальная арифметика','Класс 1'],['17:00','Робототехника LEGO','Лаборатория'],['17:30','English Kids','Класс 2'],['18:30','Изостудия «Палитра»','Мастерская']],
+  [['10:00','Детская хореография','Зал'],['15:00','Логопед','Кабинет'],['16:00','Скорочтение','Класс 1'],['17:00','English Juniors','Класс 2'],['18:00','Программирование Scratch','Лаборатория']],
+  [['10:00','Изостудия «Палитра»','Мастерская'],['11:00','Шахматы','Класс 2'],['11:30','Робототехника LEGO','Лаборатория'],['12:30','English Kids','Класс 2'],['14:00','Театральная студия','Сцена']]
+];
+let day = (() => { const d = new Date().getDay(); return d === 0 ? 0 : Math.min(d-1, 5); })();
+document.getElementById('tabs').innerHTML = DAYS.map((d,i) => `<button role="tab" data-i="${i}" class="tab shrink-0 flex items-center gap-2 px-5 py-3 rounded-2xl bg-milk font-bold transition hover:bg-sun"><span class="dot w-2 h-2 rounded-full bg-ink/20"></span><span class="sm:hidden">${d}</span><span class="hidden sm:inline">${DAYS_FULL[i]}</span><span class="text-xs opacity-60">${SCH[i].length}</span></button>`).join('');
+function renderDay(){
+  document.querySelectorAll('.tab').forEach(b => { const on = +b.dataset.i === day; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+  document.getElementById('dayList').innerHTML = SCH[day].map((l,i) => { const c = CLUBS.find(x => x.n === l[1]); const k = CAT[c.c]; const seats = ((day*7 + i*3) % 5);
+    return `<button data-club="${c.n}" class="toTrial lesson w-full text-left grid grid-cols-[64px_1fr] sm:grid-cols-[90px_1fr_auto] items-center gap-4 p-4 sm:p-5 rounded-3xl bg-milk border-l-[6px]" style="border-color:${k[1]}">
+      <span class="font-display font-extrabold text-xl sm:text-2xl">${l[0]}</span>
+      <span><span class="block font-display font-bold text-lg leading-tight">${c.n}</span><span class="block text-sm text-ink/55 mt-0.5">${ageTxt(c.a)} · ${c.dur} · ${c.t} · ${l[2]}</span></span>
+      <span class="col-start-2 sm:col-start-auto flex items-center justify-between sm:justify-end gap-3"><span class="text-sm font-bold whitespace-nowrap ${seats===0?'text-coral':'text-leaf'}">${seats===0?'лист ожидания':'мест: '+seats}</span><span class="px-4 py-2 rounded-full bg-white text-sm font-bold whitespace-nowrap">Записаться →</span></span>
+    </button>`; }).join('');
+  bindTrial();
+}
+document.getElementById('tabs').onclick = e => { const b = e.target.closest('.tab'); if (b) { day = +b.dataset.i; renderDay(); } };
+
+// Trial form
+const tAge = document.getElementById('tAge'), tClub = document.getElementById('tClub');
+['1,5 года','2 года','3 года','4 года','5 лет','6 лет','7 лет','8 лет','9 лет','10 лет','11 лет','12 лет'].forEach(a => tAge.insertAdjacentHTML('beforeend', `<option>${a}</option>`));
+CLUBS.forEach(c => tClub.insertAdjacentHTML('beforeend', `<option>${c.n}</option>`));
+function select(txt, club){ const b = document.getElementById('selBox'); b.classList.remove('hidden'); b.classList.add('flex'); document.getElementById('selTxt').textContent = txt; if (club) tClub.value = club; document.getElementById('trial').scrollIntoView({behavior:'smooth'}); }
+document.getElementById('selClear').onclick = () => { const b = document.getElementById('selBox'); b.classList.add('hidden'); b.classList.remove('flex'); };
+function bindTrial(){ document.querySelectorAll('.toTrial').forEach(b => b.onclick = () => select(b.dataset.club + ' · пробное занятие', b.dataset.club)); }
+document.querySelectorAll('.plan').forEach(b => b.onclick = () => select(b.dataset.plan));
+document.getElementById('trialForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = document.getElementById('tErr'), ok = document.getElementById('tOk');
+  const n = document.getElementById('tParent').value.trim(), p = document.getElementById('tPhone').value.replace(/\D/g,'');
+  const m = n.length < 2 ? 'Как к вам обращаться?' : p.length < 10 ? 'Проверьте телефон: нужно минимум 10 цифр.' : !tAge.value ? 'Укажите возраст ребёнка, чтобы мы подобрали группу.' : '';
+  if (m) { err.textContent = m; err.classList.remove('hidden'); ok.classList.add('hidden'); return; }
+  err.classList.add('hidden'); ok.classList.remove('hidden'); ['tParent','tPhone'].forEach(id => document.getElementById(id).value='');
+});
+
+renderClubs(); renderDay(); observe();
+</script>
+</body>
+</html>

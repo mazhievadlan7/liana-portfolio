@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>КОНТУР — наружная реклама, вывески и световые короба</title>
+<meta name="description" content="Производство вывесок, световых коробов и неона, аренда билбордов и суперсайтов. Калькулятор стоимости вывески онлайн, карта рекламных поверхностей, монтаж и согласование.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Onest:wght@400;500;600&family=Marck+Script&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { head:['Oswald','sans-serif'], sans:['Onest','sans-serif'] },
+  colors: { coal:'#0E0E0E', panel:'#171717', line:'#262626', sig:'#FFD60A', sigDark:'#E6BF00', steel:'#9A9A9A' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#0E0E0E; color:#F2F2F2; -webkit-font-smoothing:antialiased; }
+  .rv { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity:1; transform:none; } .rv.now { transition:none; }
+  .grid-bg { background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:48px 48px; }
+  .nav a.act { color:#FFD60A; }
+  .nav a.act::after { transform:scaleX(1); }
+  .nav a { position:relative; }
+  .nav a::after { content:''; position:absolute; left:0; right:0; bottom:-26px; height:2px; background:#FFD60A; transform:scaleX(0); transition:transform .3s; }
+  .tab { border-bottom:2px solid transparent; transition:all .2s; }
+  .tab.on { color:#FFD60A; border-color:#FFD60A; }
+  .chip { border:1px solid #333; transition:all .2s; }
+  .chip:hover { border-color:#FFD60A; }
+  .chip.on { background:#FFD60A; color:#0E0E0E; border-color:#FFD60A; }
+  .opt input { position:absolute; opacity:0; }
+  .opt > span { display:block; border:1px solid #333; padding:.8rem .9rem; transition:all .2s; cursor:pointer; height:100%; }
+  .opt > span:hover { border-color:#666; }
+  .opt input:checked + span { border-color:#FFD60A; background:rgba(255,214,10,.08); }
+  .opt input:focus-visible + span { outline:2px solid #FFD60A; }
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:4px; background:linear-gradient(90deg,#FFD60A var(--p,50%),#333 var(--p,50%)); outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; background:#FFD60A; border:4px solid #0E0E0E; outline:1px solid #FFD60A; cursor:pointer; }
+  input[type=range]::-moz-range-thumb { width:16px; height:16px; background:#FFD60A; border:4px solid #0E0E0E; cursor:pointer; border-radius:0; }
+  .brick { background-color:#3a2a24; background-image:
+    linear-gradient(335deg, rgba(0,0,0,.25) 23px, transparent 23px),
+    linear-gradient(155deg, rgba(0,0,0,.2) 23px, transparent 23px),
+    linear-gradient(335deg, rgba(0,0,0,.25) 23px, transparent 23px),
+    linear-gradient(155deg, rgba(0,0,0,.2) 23px, transparent 23px);
+    background-size:58px 58px; background-position:0 2px, 4px 35px, 29px 31px, 34px 6px; }
+  .sign { transition:all .4s ease; max-width:100%; }
+  .pin { cursor:pointer; transition:transform .2s; transform-box:fill-box; transform-origin:50% 100%; }
+  .pin:hover, .pin.on { transform:scale(1.35); }
+  .pin.dim { opacity:.18; pointer-events:none; }
+  .scard { transition:all .2s; border:1px solid #262626; }
+  .scard:hover { border-color:#555; }
+  .scard.on { border-color:#FFD60A; background:#1d1b10; }
+  .field { width:100%; background:#171717; border:1px solid #2c2c2c; padding:.95rem 1rem; outline:none; font-size:16px; transition:border-color .2s; color:#F2F2F2; }
+  .field:focus { border-color:#FFD60A; } .field.err { border-color:#ff5d5d; }
+  .card-img img { transition:transform .8s cubic-bezier(.2,.7,.2,1); }
+  .card-img:hover img { transform:scale(1.06); }
+  .stripe { background:repeating-linear-gradient(-45deg,#FFD60A 0 14px,#0E0E0E 14px 28px); }
+  .fadein { animation:fi .45s ease both; } @keyframes fi { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-coal/90 backdrop-blur border-b border-line">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 h-[72px] flex items-center justify-between gap-6">
+    <a href="#top" class="flex items-center gap-2.5 shrink-0"><span class="w-9 h-9 bg-sig text-coal grid place-items-center font-head font-bold text-lg">К</span><span class="font-head font-semibold text-2xl tracking-[.08em]">КОНТУР</span></a>
+    <nav class="nav hidden lg:flex items-center gap-8 font-head uppercase tracking-[.12em] text-[14px] text-white/75" data-nav>
+      <a href="#services" class="hover:text-white transition">Услуги</a>
+      <a href="#portfolio" class="hover:text-white transition">Портфолио</a>
+      <a href="#prices" class="hover:text-white transition">Цены</a>
+      <a href="#surfaces" class="hover:text-white transition">Поверхности</a>
+      <a href="#contacts" class="hover:text-white transition">Контакты</a>
+    </nav>
+    <div class="hidden lg:flex items-center gap-5">
+      <a href="tel:+79000000000" class="text-sm text-white/80 hover:text-sig">+7 (900) 000-00-00</a>
+      <a href="#prices" class="px-5 py-3 bg-sig text-coal font-head uppercase tracking-[.1em] text-sm font-medium hover:bg-white transition">Рассчитать вывеску</a>
+    </div>
+    <button class="lg:hidden w-11 h-11 border border-line grid place-items-center" aria-label="Открыть меню" aria-expanded="false" data-burger>
+      <span class="block w-5 h-[2px] bg-white shadow-[0_6px_0_#fff,0_-6px_0_#fff]" data-bi></span>
+    </button>
+  </div>
+  <div class="lg:hidden hidden border-t border-line bg-coal" data-menu>
+    <nav class="px-4 py-3 font-head uppercase tracking-[.12em] text-xl">
+      <a href="#services" class="flex justify-between py-4 border-b border-line"><span>Услуги</span><span class="text-steel text-sm">01</span></a>
+      <a href="#portfolio" class="flex justify-between py-4 border-b border-line"><span>Портфолио</span><span class="text-steel text-sm">02</span></a>
+      <a href="#prices" class="flex justify-between py-4 border-b border-line"><span>Цены</span><span class="text-steel text-sm">03</span></a>
+      <a href="#surfaces" class="flex justify-between py-4 border-b border-line"><span>Поверхности</span><span class="text-steel text-sm">04</span></a>
+      <a href="#contacts" class="flex justify-between py-4"><span>Контакты</span><span class="text-steel text-sm">05</span></a>
+      <a href="#prices" class="block mt-2 mb-3 text-center py-4 bg-sig text-coal">Рассчитать вывеску</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section id="top" class="relative overflow-hidden">
+  <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=1200&q=80&auto=format&fit=crop" alt="Вечерняя улица с яркими рекламными экранами и вывесками">
+  <div class="absolute inset-0 bg-gradient-to-r from-coal via-coal/85 to-coal/30"></div>
+  <div class="absolute inset-0 grid-bg"></div>
+  <div class="relative max-w-7xl mx-auto px-4 md:px-8 pt-16 md:pt-24 pb-14 md:pb-20">
+    <div class="rv inline-flex items-center gap-3 text-xs md:text-sm font-head uppercase tracking-[.2em] text-sig"><span class="w-2 h-2 bg-sig animate-pulse"></span>Производство · монтаж · аренда поверхностей</div>
+    <h1 class="rv font-head font-semibold uppercase leading-[.92] tracking-[-0.01em] text-[52px] sm:text-[80px] lg:text-[124px] mt-6">Вас видно<br>с <span class="text-sig">300</span> метров</h1>
+    <p class="rv mt-7 max-w-xl text-base md:text-lg text-white/70 leading-relaxed">Делаем вывески, световые короба и неон на своём производстве за 7–14 дней. Сдаём в аренду 420 рекламных поверхностей по городу и сами согласовываем всё с администрацией.</p>
+    <div class="rv mt-9 flex flex-wrap gap-3">
+      <a href="#prices" class="px-7 py-4 bg-sig text-coal font-head uppercase tracking-[.1em] font-medium hover:bg-white transition">Рассчитать стоимость</a>
+      <a href="#surfaces" class="px-7 py-4 border border-white/30 font-head uppercase tracking-[.1em] hover:border-sig hover:text-sig transition">Карта поверхностей</a>
+    </div>
+    <div class="rv mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 border-t border-l border-white/15 max-w-4xl">
+      <div class="border-r border-b border-white/15 p-4 md:p-6"><div class="font-head text-3xl md:text-5xl font-semibold">14</div><div class="text-xs md:text-sm text-white/55 mt-1">лет на рынке</div></div>
+      <div class="border-r border-b border-white/15 p-4 md:p-6"><div class="font-head text-3xl md:text-5xl font-semibold">3 800</div><div class="text-xs md:text-sm text-white/55 mt-1">вывесок изготовлено</div></div>
+      <div class="border-r border-b border-white/15 p-4 md:p-6"><div class="font-head text-3xl md:text-5xl font-semibold">420</div><div class="text-xs md:text-sm text-white/55 mt-1">рекламных поверхностей</div></div>
+      <div class="border-r border-b border-white/15 p-4 md:p-6"><div class="font-head text-3xl md:text-5xl font-semibold text-sig">5 лет</div><div class="text-xs md:text-sm text-white/55 mt-1">гарантия на свет</div></div>
+    </div>
+  </div>
+  <div class="stripe h-3"></div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="rv flex items-baseline gap-4 font-head uppercase tracking-[.2em] text-sm text-steel"><span class="text-sig">01</span><span class="h-px w-12 bg-line"></span>Услуги</div>
+    <h2 class="rv font-head font-semibold uppercase text-4xl md:text-6xl mt-4 leading-[1.02]">Всё для наружной рекламы<br class="hidden md:block"> под одной крышей</h2>
+
+    <div class="rv mt-10 flex gap-6 md:gap-10 overflow-x-auto border-b border-line font-head uppercase tracking-[.08em] text-sm md:text-base whitespace-nowrap" role="tablist" data-tabs>
+      <button class="tab on pb-4" role="tab" data-t="0">Вывески</button>
+      <button class="tab pb-4" role="tab" data-t="1">Световые короба</button>
+      <button class="tab pb-4" role="tab" data-t="2">Неон</button>
+      <button class="tab pb-4" role="tab" data-t="3">Билборды и щиты</button>
+    </div>
+
+    <div class="mt-10" data-panels>
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center" data-p="0">
+        <img class="w-full h-[280px] md:h-[440px] object-cover" src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=1200&q=80&auto=format&fit=crop" alt="Фасад магазина с вывеской и витриной">
+        <div>
+          <h3 class="font-head uppercase text-3xl md:text-4xl">Объёмные буквы и вывески</h3>
+          <p class="mt-4 text-white/70 leading-relaxed">Буквы из акрила и композита с лицевой или контурной подсветкой. Делаем по брендбуку или разрабатываем дизайн с нуля, подбираем размер под требования дизайн-кода улицы.</p>
+          <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">7–10 дней</b>от замера до монтажа</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">IP65</b>диоды для улицы, −40…+50 °C</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">Дизайн-код</b>согласуем паспорт фасада</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">от 38 000 ₽</b>за м² готовой вывески</li>
+          </ul>
+          <a href="#prices" data-preset="letters" class="mt-8 inline-flex px-6 py-4 bg-sig text-coal font-head uppercase tracking-[.1em] hover:bg-white transition">Рассчитать вывеску →</a>
+        </div>
+      </div>
+      <div class="hidden grid lg:grid-cols-2 gap-8 lg:gap-14 items-center" data-p="1">
+        <img class="w-full h-[280px] md:h-[440px] object-cover" src="https://images.unsplash.com/photo-1554797589-7241bb691973?w=1200&q=80&auto=format&fit=crop" alt="Узкая улица со световыми коробами и фонарями">
+        <div>
+          <h3 class="font-head uppercase text-3xl md:text-4xl">Световые короба</h3>
+          <p class="mt-4 text-white/70 leading-relaxed">Односторонние и двусторонние короба, панель-кронштейны, лайтбоксы для меню. Алюминиевый профиль, равномерная засветка без пятен, сменные изображения.</p>
+          <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">5–7 дней</b>стандартный срок</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">до 6 м</b>длина цельного короба</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">Смена за 10 мин</b>клик-профиль</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">от 24 000 ₽</b>за м²</li>
+          </ul>
+          <a href="#prices" data-preset="box" class="mt-8 inline-flex px-6 py-4 bg-sig text-coal font-head uppercase tracking-[.1em] hover:bg-white transition">Рассчитать короб →</a>
+        </div>
+      </div>
+      <div class="hidden grid lg:grid-cols-2 gap-8 lg:gap-14 items-center" data-p="2">
+        <img class="w-full h-[280px] md:h-[440px] object-cover" src="https://images.unsplash.com/photo-1617575521317-d2974f3b56d2?w=1200&q=80&auto=format&fit=crop" alt="Неоновая надпись в окне на тёмном фасаде">
+        <div>
+          <h3 class="font-head uppercase text-3xl md:text-4xl">Гибкий неон</h3>
+          <p class="mt-4 text-white/70 leading-relaxed">Надписи и логотипы для витрин, интерьеров и фотозон. Силиконовый неон не бьётся, не греется и потребляет в 5 раз меньше стеклянного.</p>
+          <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">3–5 дней</b>изготовление</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">16 цветов</b>и RGB с пультом</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">12 В</b>безопасно в интерьере</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">от 32 000 ₽</b>за м²</li>
+          </ul>
+          <a href="#prices" data-preset="neon" class="mt-8 inline-flex px-6 py-4 bg-sig text-coal font-head uppercase tracking-[.1em] hover:bg-white transition">Рассчитать неон →</a>
+        </div>
+      </div>
+      <div class="hidden grid lg:grid-cols-2 gap-8 lg:gap-14 items-center" data-p="3">
+        <img class="w-full h-[280px] md:h-[440px] object-cover" src="https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=1200&q=80&auto=format&fit=crop" alt="Вечерний проспект с рекламными конструкциями">
+        <div>
+          <h3 class="font-head uppercase text-3xl md:text-4xl">Билборды, суперсайты, ситиборды</h3>
+          <p class="mt-4 text-white/70 leading-relaxed">420 собственных поверхностей на главных магистралях. Печать, поклейка и фотоотчёт входят в стоимость аренды. Медиаплан под бюджет за один день.</p>
+          <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">3×6 м</b>от 28 000 ₽/мес</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">5×15 м</b>от 95 000 ₽/мес</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">Фотоотчёт</b>в день поклейки</li>
+            <li class="border border-line p-4"><b class="font-head text-sig text-xl block">GRP и OTS</b>по каждой стороне</li>
+          </ul>
+          <a href="#surfaces" class="mt-8 inline-flex px-6 py-4 bg-sig text-coal font-head uppercase tracking-[.1em] hover:bg-white transition">Выбрать на карте →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="portfolio" class="py-20 md:py-28 bg-panel border-y border-line scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="rv flex items-baseline gap-4 font-head uppercase tracking-[.2em] text-sm text-steel"><span class="text-sig">02</span><span class="h-px w-12 bg-line"></span>Портфолио</div>
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mt-4">
+      <h2 class="rv font-head font-semibold uppercase text-4xl md:text-6xl leading-[1.02]">Работы, мимо которых<br class="hidden md:block"> не проходят</h2>
+      <div class="rv flex flex-wrap gap-2 font-head uppercase tracking-[.08em] text-sm" data-pf>
+        <button class="chip on px-4 py-2" data-v="all">Все</button><button class="chip px-4 py-2" data-v="Вывески">Вывески</button><button class="chip px-4 py-2" data-v="Неон">Неон</button><button class="chip px-4 py-2" data-v="Короба">Короба</button><button class="chip px-4 py-2" data-v="Билборды">Билборды</button>
+      </div>
+    </div>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-pgrid></div>
+  </div>
+</section>
+
+<!-- Prices + calculator -->
+<section id="prices" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="rv flex items-baseline gap-4 font-head uppercase tracking-[.2em] text-sm text-steel"><span class="text-sig">03</span><span class="h-px w-12 bg-line"></span>Цены</div>
+    <h2 class="rv font-head font-semibold uppercase text-4xl md:text-6xl mt-4 leading-[1.02]">Калькулятор вывески</h2>
+    <p class="rv mt-4 text-white/60 max-w-2xl">Предварительная цена за 30 секунд. Точную смету с замером пришлём в течение рабочего дня, она отличается от расчёта не больше чем на 10%.</p>
+
+    <div class="rv mt-10 grid lg:grid-cols-12 gap-4">
+      <form class="lg:col-span-7 bg-panel border border-line p-5 md:p-8" data-calc onsubmit="return false">
+        <div class="font-head uppercase tracking-[.12em] text-sm text-steel">1. Тип конструкции</div>
+        <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
+          <label class="opt relative"><input type="radio" name="type" value="letters" checked><span><b class="font-head uppercase tracking-wide text-base block">Объёмные буквы</b><span class="text-white/50 text-xs">38 000 ₽/м²</span></span></label>
+          <label class="opt relative"><input type="radio" name="type" value="box"><span><b class="font-head uppercase tracking-wide text-base block">Световой короб</b><span class="text-white/50 text-xs">24 000 ₽/м²</span></span></label>
+          <label class="opt relative"><input type="radio" name="type" value="neon"><span><b class="font-head uppercase tracking-wide text-base block">Гибкий неон</b><span class="text-white/50 text-xs">32 000 ₽/м²</span></span></label>
+          <label class="opt relative"><input type="radio" name="type" value="plate"><span><b class="font-head uppercase tracking-wide text-base block">Табличка / панель</b><span class="text-white/50 text-xs">14 000 ₽/м²</span></span></label>
+        </div>
+
+        <div class="mt-8 font-head uppercase tracking-[.12em] text-sm text-steel">2. Размер</div>
+        <div class="mt-4 space-y-6">
+          <div><div class="flex justify-between text-sm"><label for="w">Ширина</label><b class="font-head text-lg"><span data-wv>300</span> см</b></div><input id="w" class="mt-3" type="range" min="40" max="1200" step="10" value="300"></div>
+          <div><div class="flex justify-between text-sm"><label for="h">Высота</label><b class="font-head text-lg"><span data-hv>60</span> см</b></div><input id="h" class="mt-3" type="range" min="20" max="300" step="5" value="60"></div>
+        </div>
+
+        <div class="mt-8 font-head uppercase tracking-[.12em] text-sm text-steel">3. Подсветка</div>
+        <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+          <label class="opt relative"><input type="radio" name="light" value="none"><span>Без подсветки<br><span class="text-white/50 text-xs">−25%</span></span></label>
+          <label class="opt relative"><input type="radio" name="light" value="front" checked><span>Лицевая<br><span class="text-white/50 text-xs">базовая</span></span></label>
+          <label class="opt relative"><input type="radio" name="light" value="back"><span>Контражур<br><span class="text-white/50 text-xs">+15%</span></span></label>
+          <label class="opt relative"><input type="radio" name="light" value="rgb"><span>RGB-динамика<br><span class="text-white/50 text-xs">+35%</span></span></label>
+        </div>
+
+        <div class="mt-8 font-head uppercase tracking-[.12em] text-sm text-steel">4. Дополнительно</div>
+        <div class="mt-3 space-y-2 text-sm">
+          <label class="flex items-center justify-between gap-3 border border-line p-3.5 cursor-pointer hover:border-white/30"><span class="flex items-center gap-3"><input type="checkbox" name="mount" checked class="w-4 h-4 accent-[#FFD60A]">Монтаж на высоте до 6 м</span><span class="text-white/50">+12%, от 6 000 ₽</span></label>
+          <label class="flex items-center justify-between gap-3 border border-line p-3.5 cursor-pointer hover:border-white/30"><span class="flex items-center gap-3"><input type="checkbox" name="design" class="w-4 h-4 accent-[#FFD60A]">Дизайн-макет, 3 варианта</span><span class="text-white/50">+7 000 ₽</span></label>
+          <label class="flex items-center justify-between gap-3 border border-line p-3.5 cursor-pointer hover:border-white/30"><span class="flex items-center gap-3"><input type="checkbox" name="permit" class="w-4 h-4 accent-[#FFD60A]">Согласование с администрацией</span><span class="text-white/50">+18 000 ₽</span></label>
+        </div>
+      </form>
+
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        <div class="brick relative h-[230px] md:h-[260px] border border-line overflow-hidden flex items-center justify-center p-5" aria-label="Предпросмотр вывески">
+          <div class="absolute top-3 left-3 text-[10px] font-head uppercase tracking-[.2em] bg-coal/80 px-2 py-1">Предпросмотр</div>
+          <div class="sign flex items-center justify-center text-center" data-sign><span data-signtext>ЗЕРНО</span></div>
+        </div>
+        <label class="block"><span class="text-xs text-steel font-head uppercase tracking-[.15em]">Текст на вывеске</span><input class="field mt-2" maxlength="22" value="ЗЕРНО" data-txt></label>
+        <div class="bg-sig text-coal p-6 md:p-7">
+          <div class="flex items-center justify-between font-head uppercase tracking-[.15em] text-xs"><span>Предварительная стоимость</span><span data-area>1,80 м²</span></div>
+          <div class="font-head font-semibold text-5xl md:text-6xl mt-2 tabular-nums" data-price>0 ₽</div>
+          <div class="mt-4 space-y-1.5 text-sm" data-break></div>
+          <div class="mt-4 pt-4 border-t border-coal/20 flex justify-between text-sm"><span>Срок изготовления</span><b data-days>10 дней</b></div>
+          <button class="mt-5 w-full py-4 bg-coal text-white font-head uppercase tracking-[.12em] hover:bg-black transition" data-sendcalc>Получить точную смету</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv mt-16">
+      <h3 class="font-head uppercase text-2xl md:text-3xl">Прайс на аренду и услуги</h3>
+      <div class="mt-6 overflow-x-auto border border-line">
+        <table class="w-full text-sm min-w-[620px]">
+          <thead class="bg-panel font-head uppercase tracking-[.1em] text-xs text-steel text-left"><tr><th class="p-4">Позиция</th><th class="p-4">Формат</th><th class="p-4">Срок</th><th class="p-4 text-right">Цена</th></tr></thead>
+          <tbody class="divide-y divide-line">
+            <tr class="hover:bg-panel"><td class="p-4">Аренда билборда</td><td class="p-4 text-white/60">3×6 м, одна сторона</td><td class="p-4 text-white/60">от 1 месяца</td><td class="p-4 text-right font-head text-lg">28 000 ₽/мес</td></tr>
+            <tr class="hover:bg-panel"><td class="p-4">Аренда суперсайта</td><td class="p-4 text-white/60">5×15 м, подсветка</td><td class="p-4 text-white/60">от 1 месяца</td><td class="p-4 text-right font-head text-lg">95 000 ₽/мес</td></tr>
+            <tr class="hover:bg-panel"><td class="p-4">Ситиборд</td><td class="p-4 text-white/60">2,7×3,7 м, скроллер</td><td class="p-4 text-white/60">от 2 недель</td><td class="p-4 text-right font-head text-lg">19 000 ₽/мес</td></tr>
+            <tr class="hover:bg-panel"><td class="p-4">Печать баннера</td><td class="p-4 text-white/60">литой баннер, 720 dpi</td><td class="p-4 text-white/60">1 день</td><td class="p-4 text-right font-head text-lg">390 ₽/м²</td></tr>
+            <tr class="hover:bg-panel"><td class="p-4">Монтаж / демонтаж вывески</td><td class="p-4 text-white/60">автовышка до 18 м</td><td class="p-4 text-white/60">1 день</td><td class="p-4 text-right font-head text-lg">от 6 000 ₽</td></tr>
+            <tr class="hover:bg-panel"><td class="p-4">Сервисное обслуживание</td><td class="p-4 text-white/60">замена диодов, мойка</td><td class="p-4 text-white/60">выезд за 24 ч</td><td class="p-4 text-right font-head text-lg">2 500 ₽/мес</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Surfaces -->
+<section id="surfaces" class="py-20 md:py-28 bg-panel border-y border-line scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="rv flex items-baseline gap-4 font-head uppercase tracking-[.2em] text-sm text-steel"><span class="text-sig">04</span><span class="h-px w-12 bg-line"></span>Рекламные поверхности</div>
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mt-4">
+      <h2 class="rv font-head font-semibold uppercase text-4xl md:text-6xl leading-[1.02]">Карта поверхностей</h2>
+      <div class="rv text-sm text-white/60"><span class="text-sig font-head text-lg" data-scount>0</span> из 12 показаны · <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full bg-[#3ddc84] inline-block"></i>свободно</span> <span class="inline-flex items-center gap-1.5 ml-2"><i class="w-2.5 h-2.5 rounded-full bg-[#ff8a3d] inline-block"></i>занято</span></div>
+    </div>
+
+    <div class="rv mt-8 flex flex-col md:flex-row gap-3 md:items-center">
+      <div class="flex flex-wrap gap-2 font-head uppercase tracking-[.06em] text-sm" data-sf="type">
+        <button class="chip on px-3.5 py-2" data-v="all">Все типы</button><button class="chip px-3.5 py-2" data-v="Билборд">Билборд 3×6</button><button class="chip px-3.5 py-2" data-v="Суперсайт">Суперсайт</button><button class="chip px-3.5 py-2" data-v="Ситиборд">Ситиборд</button><button class="chip px-3.5 py-2" data-v="Медиафасад">Медиафасад</button>
+      </div>
+      <div class="flex gap-2 md:ml-auto">
+        <select class="field !py-2.5 !w-auto text-sm" data-sf-district aria-label="Район"><option value="all">Все районы</option><option>Центр</option><option>Север</option><option>Юг</option><option>Запад</option></select>
+        <label class="flex items-center gap-2 text-sm border border-[#2c2c2c] px-3 cursor-pointer whitespace-nowrap"><input type="checkbox" class="accent-[#FFD60A]" data-sf-free> Только свободные</label>
+      </div>
+    </div>
+
+    <div class="rv mt-6 grid lg:grid-cols-12 gap-4">
+      <div class="lg:col-span-7 relative border border-line bg-[#121212] overflow-hidden">
+        <svg viewBox="0 0 700 520" class="w-full h-auto block" role="img" aria-label="Схема города с рекламными поверхностями" data-map>
+          <rect width="700" height="520" fill="#141414"/>
+          <g fill="#1b1b1b">
+            <rect x="20" y="20" width="150" height="110"/><rect x="190" y="20" width="120" height="110"/><rect x="330" y="20" width="160" height="80"/><rect x="510" y="20" width="170" height="130"/>
+            <rect x="20" y="150" width="110" height="150"/><rect x="150" y="150" width="160" height="90"/><rect x="390" y="170" width="110" height="120"/><rect x="520" y="170" width="160" height="110"/>
+            <rect x="20" y="320" width="150" height="180"/><rect x="190" y="360" width="140" height="140"/><rect x="430" y="330" width="120" height="170"/><rect x="570" y="300" width="110" height="200"/>
+          </g>
+          <path d="M-10 270 C120 250 220 300 330 310 S520 280 710 300" stroke="#1f3340" stroke-width="34" fill="none"/>
+          <path d="M-10 270 C120 250 220 300 330 310 S520 280 710 300" stroke="#24404f" stroke-width="2" fill="none" stroke-dasharray="6 10"/>
+          <g stroke="#2e2e2e" stroke-width="12" fill="none">
+            <path d="M0 140 H700"/><path d="M180 0 V520"/><path d="M370 0 V520"/><path d="M0 350 H700"/><path d="M500 0 L560 520"/>
+          </g>
+          <g stroke="#FFD60A" stroke-opacity=".35" stroke-width="3" fill="none"><path d="M0 140 H700"/><path d="M370 0 V520"/></g>
+          <g font-family="Oswald" font-size="13" fill="#6b6b6b" letter-spacing="2">
+            <text x="30" y="133">ПР. МИРА</text><text x="378" y="60" transform="rotate(90 378 60)">УЛ. ЛЕНИНА</text><text x="30" y="343">ЗАВОДСКАЯ</text><text x="560" y="262" fill="#3c6274">РЕКА</text>
+            <text x="230" y="80" fill="#4a4a4a" font-size="18">ЦЕНТР</text><text x="560" y="90" fill="#4a4a4a" font-size="18">СЕВЕР</text><text x="230" y="450" fill="#4a4a4a" font-size="18">ЮГ</text><text x="40" y="230" fill="#4a4a4a" font-size="18">ЗАПАД</text>
+          </g>
+          <g data-pins></g>
+        </svg>
+        <div class="absolute left-3 bottom-3 text-[11px] text-white/50 font-head uppercase tracking-[.15em]">Схема · нажмите на точку</div>
+      </div>
+      <div class="lg:col-span-5 max-h-[520px] overflow-y-auto pr-1 space-y-2" data-slist></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contacts -->
+<section id="contacts" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 grid lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-5">
+      <div class="rv flex items-baseline gap-4 font-head uppercase tracking-[.2em] text-sm text-steel"><span class="text-sig">05</span><span class="h-px w-12 bg-line"></span>Контакты</div>
+      <h2 class="rv font-head font-semibold uppercase text-4xl md:text-6xl mt-4 leading-[1.02]">Обсудим проект</h2>
+      <p class="rv mt-5 text-white/60">Бесплатный выезд на замер в пределах города. Приезжайте на производство: покажем образцы букв, профилей и неона вживую.</p>
+      <div class="rv mt-8 grid sm:grid-cols-2 lg:grid-cols-1 gap-3 text-sm">
+        <a href="tel:+79000000000" class="border border-line p-5 hover:border-sig transition"><div class="text-steel text-xs font-head uppercase tracking-[.15em]">Телефон</div><div class="font-head text-2xl mt-1">+7 (900) 000-00-00</div></a>
+        <a href="mailto:hello@example.ru" class="border border-line p-5 hover:border-sig transition"><div class="text-steel text-xs font-head uppercase tracking-[.15em]">Почта</div><div class="font-head text-2xl mt-1">hello@example.ru</div></a>
+        <div class="border border-line p-5"><div class="text-steel text-xs font-head uppercase tracking-[.15em]">Производство и шоурум</div><div class="mt-1">ул. Заводская, 7, корпус 2<br>пн–пт 9:00–19:00, сб 10:00–16:00</div></div>
+      </div>
+    </div>
+    <form class="rv lg:col-span-7 bg-panel border border-line p-6 md:p-10 self-start" novalidate data-form>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <label class="block"><span class="text-xs text-steel font-head uppercase tracking-[.15em]">Имя *</span><input class="field mt-2" name="name" placeholder="Как к вам обращаться" autocomplete="name"></label>
+        <label class="block"><span class="text-xs text-steel font-head uppercase tracking-[.15em]">Телефон *</span><input class="field mt-2" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel"></label>
+        <label class="block sm:col-span-2"><span class="text-xs text-steel font-head uppercase tracking-[.15em]">Что нужно</span>
+          <select class="field mt-2" name="what"><option>Вывеска на фасад</option><option>Световой короб</option><option>Неон в интерьер</option><option>Аренда билборда</option><option>Комплексное оформление</option></select></label>
+        <label class="block sm:col-span-2"><span class="text-xs text-steel font-head uppercase tracking-[.15em]">Комментарий</span><textarea class="field mt-2 resize-none" rows="4" name="msg" placeholder="Адрес объекта, размеры, сроки" data-msg></textarea></label>
+      </div>
+      <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-4">
+        <button class="px-8 py-4 bg-sig text-coal font-head uppercase tracking-[.12em] hover:bg-white transition">Отправить заявку</button>
+        <span class="text-xs text-white/45">Ответим в течение 30 минут в рабочее время</span>
+      </div>
+      <p class="hidden mt-4 text-sm text-[#ff5d5d]" data-err>Укажите имя и телефон, чтобы мы могли связаться.</p>
+      <div class="hidden mt-5 border border-sig p-5 text-sm fadein" data-ok><b class="font-head uppercase tracking-wide text-sig text-lg block">Спасибо!</b>Это демо-версия сайта, заявка никуда не отправляется.</div>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-line">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 pb-20 md:pb-10 flex flex-col md:flex-row gap-5 md:items-center justify-between text-sm text-white/50">
+    <div class="flex items-center gap-2.5"><span class="w-7 h-7 bg-sig text-coal grid place-items-center font-head font-bold">К</span><span class="font-head text-white text-xl tracking-[.08em]">КОНТУР</span></div>
+    <div class="flex flex-wrap gap-5 font-head uppercase tracking-[.1em]"><a href="#services" class="hover:text-sig">Услуги</a><a href="#portfolio" class="hover:text-sig">Портфолио</a><a href="#prices" class="hover:text-sig">Цены</a><a href="#surfaces" class="hover:text-sig">Поверхности</a><a href="#contacts" class="hover:text-sig">Контакты</a></div>
+    <div>© 2026 КОНТУР. Бренд вымышлен.</div>
+  </div>
+</footer>
+
+<a href="../../" class="fixed left-3 bottom-3 z-[70] px-3 py-1.5 bg-black/70 border border-white/10 text-white/85 text-[11px] md:text-xs backdrop-blur hover:text-sig transition">Демо-проект · портфолио Лианы</a>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+const U=id=>`https://images.unsplash.com/photo-${id}?w=1200&q=80&auto=format&fit=crop`;
+
+// Tabs
+const tabs=$$('[data-tabs] .tab'), panels=$$('[data-panels] [data-p]');
+function tab(i){ tabs.forEach((t,k)=>{ t.classList.toggle('on',k==i); t.setAttribute('aria-selected',k==i); });
+  panels.forEach((p,k)=>{ p.classList.toggle('hidden',k!=i); if(k==i){ p.classList.remove('fadein'); void p.offsetWidth; p.classList.add('fadein'); } }); }
+tabs.forEach(t=>t.addEventListener('click',()=>tab(+t.dataset.t)));
+
+// Portfolio
+const P=[
+  {id:'1617575521317-d2974f3b56d2', c:'Неон', t:'Неон в витрине', cl:'Книжный бар «Сюжет»', d:'2,1 м · холодный белый'},
+  {id:'1528698827591-e19ccd7bc23d', c:'Вывески', t:'Вывеска и витрина', cl:'Лавка «Мастерская света»', d:'буквы 40 см, контражур'},
+  {id:'1555992336-03a23c7b20ee', c:'Неон', t:'Неон и короба в зале', cl:'Дайнер «Шоссе 66»', d:'14 элементов, RGB'},
+  {id:'1542051841857-5f90071e7989', c:'Билборды', t:'Медиафасады на перекрёстке', cl:'Сеть салонов «Гаджет»', d:'3 экрана, 2 месяца'},
+  {id:'1554797589-7241bb691973', c:'Короба', t:'Панель-кронштейны', cl:'Гастроулица «Рынок»', d:'22 короба за 9 дней'},
+  {id:'1533577116850-9cc66cad8a9b', c:'Вывески', t:'Вывески квартала', cl:'ТЦ «Восход»', d:'единый дизайн-код, 18 арендаторов'},
+  {id:'1503899036084-c55cdd92da26', c:'Короба', t:'Вертикальные короба', cl:'Ресторан «Токио-7»', d:'6 м, двусторонние'},
+  {id:'1519999482648-25049ddd37b1', c:'Билборды', t:'Суперсайты на въезде', cl:'Застройщик «Новый берег»', d:'6 сторон, 3 месяца'},
+  {id:'1540959733332-eab4deabeeaf', c:'Неон', t:'Неоновые акценты улицы', cl:'Фестиваль «Ночь города»', d:'40 инсталляций'},
+];
+const pg=$('[data-pgrid]');
+function renderP(f, anim){ pg.innerHTML=P.filter(p=>f==='all'||p.c===f).map((p,i)=>`
+  <article class="card-img group relative overflow-hidden bg-coal border border-line ${anim?'fadein':''}" style="${anim?`animation-delay:${i*.05}s`:''}">
+    <img class="w-full h-64 md:h-72 object-cover" src="${U(p.id)}" alt="${p.t}: ${p.cl}" loading="lazy">
+    <div class="absolute top-3 left-3 bg-sig text-coal text-[11px] font-head uppercase tracking-[.15em] px-2 py-1">${p.c}</div>
+    <div class="p-5"><div class="font-head uppercase text-xl">${p.t}</div><div class="text-sm text-white/55 mt-1">${p.cl} · ${p.d}</div></div>
+  </article>`).join(''); }
+renderP('all');
+$('[data-pf]').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; $$('[data-pf] button').forEach(x=>x.classList.toggle('on',x===b)); renderP(b.dataset.v,true); });
+
+// Calculator
+const cf=$('[data-calc]'), rates={letters:38000, box:24000, neon:32000, plate:14000}, names={letters:'Объёмные буквы', box:'Световой короб', neon:'Гибкий неон', plate:'Табличка / панель'};
+const lightK={none:.75, front:1, back:1.15, rgb:1.35}, lightN={none:'без подсветки', front:'лицевая подсветка', back:'контражур', rgb:'RGB-динамика'};
+const baseDays={letters:9, box:6, neon:4, plate:3};
+let lastCalc='';
+function rng(el){ el.style.setProperty('--p', ((el.value-el.min)/(el.max-el.min)*100)+'%'); }
+function calc(){
+  const t=cf.type.value, L=cf.light.value, w=+$('#w').value, h=+$('#h').value;
+  $('[data-wv]').textContent=w; $('[data-hv]').textContent=h; rng($('#w')); rng($('#h'));
+  const area=Math.max(.25, w*h/10000);
+  const base=area*rates[t]*lightK[L];
+  const mount=cf.mount.checked?Math.max(6000, base*.12):0, design=cf.design.checked?7000:0, permit=cf.permit.checked?18000:0;
+  const total=Math.max(9900, base+mount+design+permit);
+  $('[data-area]').textContent=area.toFixed(2).replace('.',',')+' м²';
+  $('[data-price]').textContent=fmt(Math.round(total/100)*100)+' ₽';
+  const rows=[[`${names[t]}, ${lightN[L]}`, base]]; if(mount) rows.push(['Монтаж',mount]); if(design) rows.push(['Дизайн-макет',design]); if(permit) rows.push(['Согласование',permit]);
+  $('[data-break]').innerHTML=rows.map(r=>`<div class="flex justify-between gap-3"><span class="opacity-75">${r[0]}</span><span class="font-medium whitespace-nowrap">${fmt(r[1])} ₽</span></div>`).join('');
+  const days=baseDays[t]+(area>4?3:0)+(L==='rgb'?2:0)+(permit?10:0);
+  const pl=n=>{const a=n%10,b=n%100; return (a===1&&b!==11)?'день':(a>=2&&a<=4&&(b<12||b>14))?'дня':'дней';};
+  $('[data-days]').textContent=`${days} ${pl(days)}`;
+  lastCalc=`Расчёт с сайта: ${names[t]}, ${w}×${h} см, ${lightN[L]}${mount?', с монтажом':''}${design?', с дизайном':''}${permit?', с согласованием':''}. Текст: «${$('[data-txt]').value}». Ориентир: ${$('[data-price]').textContent}`;
+  drawSign(t,L,w,h);
+}
+function drawSign(t,L,w,h){
+  const s=$('[data-sign]'), tx=$('[data-signtext]'); const ratio=w/h;
+  const box=s.parentElement.clientWidth-40, bw=Math.max(120, Math.min(box, 150+w*.25)), bh=Math.max(44, Math.min(180, bw/ratio));
+  s.style.cssText=''; tx.style.cssText=''; s.style.width=bw+'px'; s.style.height=bh+'px';
+  const fs=Math.max(16, Math.min(bh*.8, bw/Math.max(3,tx.textContent.length)*1.45));
+  tx.style.fontSize=fs+'px'; tx.style.fontFamily='Oswald'; tx.style.fontWeight=600; tx.style.letterSpacing='.04em'; tx.style.lineHeight=1;
+  const on=L!=='none';
+  if(t==='letters'){ tx.style.color=on?'#FFE680':'#d8d8d8';
+    tx.style.textShadow= L==='back' ? '0 0 18px rgba(255,214,10,.9), 0 0 40px rgba(255,214,10,.5)' : on ? '0 0 10px rgba(255,230,128,.8), 0 2px 0 #b38f00' : '0 3px 0 #777';
+    if(L==='back'){ tx.style.color='#2a2a2a'; } }
+  if(t==='box'){ s.style.background=on?'#fffdf2':'#e6e6e6'; s.style.boxShadow=on?'0 0 40px rgba(255,240,180,.55), inset 0 0 0 4px #c9c9c9':'inset 0 0 0 4px #999'; tx.style.color='#151515'; }
+  if(t==='neon'){ tx.style.fontFamily='"Marck Script", cursive'; tx.style.fontWeight=400; tx.style.letterSpacing='0'; tx.style.textTransform='none'; tx.style.fontSize=(fs*1.15)+'px';
+    tx.style.color= on?'#fff':'#c9a7d6'; tx.style.textShadow= on?'0 0 6px #fff, 0 0 14px #ff4fd8, 0 0 30px #ff4fd8, 0 0 60px #ff4fd8':'none'; }
+  if(t==='plate'){ s.style.background='#0E0E0E'; s.style.border='3px solid #FFD60A'; tx.style.color='#FFD60A'; tx.style.fontSize=Math.min(fs, bh*.45)+'px';
+    s.style.boxShadow= on?'0 0 30px rgba(255,214,10,.35)':'none'; }
+  if(L==='rgb'){ tx.style.animation='hue 4s linear infinite'; }
+}
+const st=document.createElement('style'); st.textContent='@keyframes hue{to{filter:hue-rotate(360deg)}}'; document.head.appendChild(st);
+cf.addEventListener('input',calc); cf.addEventListener('change',calc);
+$('[data-txt]').addEventListener('input',e=>{ $('[data-signtext]').textContent=e.target.value.trim()||'ВАШ ТЕКСТ'; calc(); });
+$$('[data-preset]').forEach(a=>a.addEventListener('click',()=>{ cf.type.value=a.dataset.preset; calc(); }));
+$('[data-sendcalc]').addEventListener('click',()=>{ $('[data-msg]').value=lastCalc; document.querySelector('#contacts').scrollIntoView({behavior:'smooth'}); });
+calc();
+
+// Surfaces
+const SF=[
+  {id:1, t:'Билборд', n:'пр. Мира, 42', d:'Центр', x:120,y:140, p:32000, ots:'48 тыс.', free:true},
+  {id:2, t:'Суперсайт', n:'Перекрёсток Мира / Ленина', d:'Центр', x:370,y:140, p:118000, ots:'96 тыс.', free:false},
+  {id:3, t:'Медиафасад', n:'ул. Ленина, 15, ТЦ «Восход»', d:'Центр', x:370,y:80, p:145000, ots:'120 тыс.', free:true},
+  {id:4, t:'Ситиборд', n:'ул. Ленина, 60', d:'Юг', x:370,y:420, p:19000, ots:'12 тыс.', free:true},
+  {id:5, t:'Билборд', n:'Заводская, 3', d:'Запад', x:90,y:350, p:26000, ots:'31 тыс.', free:true},
+  {id:6, t:'Билборд', n:'Набережная, у моста', d:'Юг', x:250,y:300, p:34000, ots:'52 тыс.', free:false},
+  {id:7, t:'Суперсайт', n:'Северный въезд', d:'Север', x:600,y:140, p:95000, ots:'80 тыс.', free:true},
+  {id:8, t:'Ситиборд', n:'пр. Мира, 118', d:'Север', x:640,y:200, p:21000, ots:'15 тыс.', free:true},
+  {id:9, t:'Билборд', n:'Восточная развязка', d:'Север', x:540,y:330, p:30000, ots:'44 тыс.', free:false},
+  {id:10,t:'Ситиборд', n:'Заводская, 40', d:'Юг', x:250,y:350, p:18000, ots:'11 тыс.', free:true},
+  {id:11,t:'Медиафасад', n:'Площадь Победы', d:'Центр', x:180,y:60, p:160000, ots:'135 тыс.', free:false},
+  {id:12,t:'Билборд', n:'Западное шоссе, км 2', d:'Запад', x:60,y:200, p:24000, ots:'27 тыс.', free:true},
+];
+const sf={type:'all', d:'all', free:false}; let selS=null;
+const pins=$('[data-pins]'), slist=$('[data-slist]');
+function vis(s){ return (sf.type==='all'||s.t===sf.type)&&(sf.d==='all'||s.d===sf.d)&&(!sf.free||s.free); }
+function renderS(){
+  pins.innerHTML=SF.map(s=>`<g class="pin ${vis(s)?'':'dim'} ${selS===s.id?'on':''}" data-sid="${s.id}" tabindex="0" role="button" aria-label="${s.t}, ${s.n}">
+    <path d="M${s.x} ${s.y} l-11 -18 a13 13 0 1 1 22 0 z" fill="${s.free?'#3ddc84':'#ff8a3d'}" stroke="#0E0E0E" stroke-width="2"/>
+    <text x="${s.x}" y="${s.y-21}" text-anchor="middle" font-family="Oswald" font-size="11" font-weight="600" fill="#0E0E0E">${s.id}</text></g>`).join('');
+  const L=SF.filter(vis); $('[data-scount]').textContent=L.length;
+  slist.innerHTML = L.length ? L.map(s=>`<div class="scard ${selS===s.id?'on':''} p-4 cursor-pointer bg-coal" data-sid="${s.id}">
+    <div class="flex items-start justify-between gap-3">
+      <div><div class="flex items-center gap-2"><span class="w-6 h-6 grid place-items-center text-xs font-head font-semibold text-coal" style="background:${s.free?'#3ddc84':'#ff8a3d'}">${s.id}</span><span class="font-head uppercase tracking-wide">${s.t}</span><span class="text-xs text-white/40">${s.d}</span></div>
+      <div class="text-sm text-white/70 mt-1.5">${s.n}</div><div class="text-xs text-white/40 mt-1">OTS ${s.ots} в сутки · ${s.free?'свободен с 1 ноября':'занят до 15 декабря'}</div></div>
+      <div class="text-right shrink-0"><div class="font-head text-xl">${fmt(s.p)} ₽</div><div class="text-[11px] text-white/40">в месяц</div></div>
+    </div>
+    ${selS===s.id?`<button class="mt-3 w-full py-3 ${s.free?'bg-sig text-coal hover:bg-white':'border border-white/20 hover:border-sig'} font-head uppercase tracking-[.1em] text-sm transition" data-book="${s.id}">${s.free?'Забронировать':'Встать в лист ожидания'}</button>`:''}
+  </div>`).join('') : '<div class="border border-dashed border-line p-8 text-center text-white/50">Нет поверхностей по выбранным фильтрам. Попробуйте другой район или снимите галочку «Только свободные».</div>';
+}
+function select(id, scroll){ selS=id; renderS(); if(scroll){ const c=slist.querySelector(`[data-sid="${id}"]`); if(c) slist.scrollTo({top:c.offsetTop-slist.offsetTop-4, behavior:'smooth'}); } }
+$('[data-map]').addEventListener('click',e=>{ const p=e.target.closest('.pin'); if(p) select(+p.dataset.sid,true); });
+$('[data-map]').addEventListener('keydown',e=>{ const p=e.target.closest('.pin'); if(p&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); select(+p.dataset.sid,true);} });
+slist.addEventListener('click',e=>{ const b=e.target.closest('[data-book]'); if(b){ const s=SF.find(x=>x.id==b.dataset.book);
+    cform.what.value='Аренда билборда'; $('[data-msg]').value=`${s.free?'Бронь':'Лист ожидания'}: поверхность №${s.id}, ${s.t}, ${s.n}, ${fmt(s.p)} ₽/мес.`; document.querySelector('#contacts').scrollIntoView({behavior:'smooth'}); return; }
+  const c=e.target.closest('[data-sid]'); if(c) select(+c.dataset.sid,false); });
+$('[data-sf="type"]').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; $$('[data-sf="type"] button').forEach(x=>x.classList.toggle('on',x===b)); sf.type=b.dataset.v; renderS(); });
+$('[data-sf-district]').addEventListener('change',e=>{ sf.d=e.target.value; renderS(); });
+$('[data-sf-free]').addEventListener('change',e=>{ sf.free=e.target.checked; renderS(); });
+renderS();
+
+// Form
+const cform=$('[data-form]');
+cform.addEventListener('submit',e=>{ e.preventDefault();
+  const n=cform.name.value.trim().length>=2, p=cform.phone.value.replace(/\D/g,'').length>=10;
+  cform.name.classList.toggle('err',!n); cform.phone.classList.toggle('err',!p);
+  $('[data-err]',cform).classList.toggle('hidden',n&&p); if(!(n&&p)) return;
+  $('[data-ok]',cform).classList.remove('hidden'); cform.reset(); });
+
+// Burger
+const menu=$('[data-menu]'), bg=$('[data-burger]');
+const setM=v=>{ menu.classList.toggle('hidden',!v); bg.setAttribute('aria-expanded',v); bg.setAttribute('aria-label', v?'Закрыть меню':'Открыть меню');
+  $('[data-bi]').style.cssText = v ? 'background:transparent;box-shadow:none' : ''; $('[data-bi]').innerHTML = v ? '<span style="display:block;margin-top:-9px;font-size:26px;line-height:1">&times;</span>' : ''; };
+bg.onclick=()=>setM(menu.classList.contains('hidden')); $$('a',menu).forEach(a=>a.addEventListener('click',()=>setM(false)));
+
+// Scrollspy
+const secs=['services','portfolio','prices','surfaces','contacts'].map(id=>document.getElementById(id));
+function spy(){ const y=scrollY+innerHeight*.35; let cur=null; secs.forEach(s=>{ if(s.offsetTop<=y) cur=s.id; });
+  $$('[data-nav] a').forEach(a=>a.classList.toggle('act', a.getAttribute('href')==='#'+cur)); }
+addEventListener('scroll',spy,{passive:true}); spy();
+
+// Reveal
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} }),{threshold:.1});
+  $$('.rv').forEach(el=>{ if(el.getBoundingClientRect().top<innerHeight) el.classList.add('in','now'); else io.observe(el); });
+} else $$('.rv').forEach(el=>el.classList.add('in'));
+</script>
+</body>
+</html>

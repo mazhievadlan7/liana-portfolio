@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ONYX Private Estate — элитная недвижимость Москвы</title>
+<meta name="description" content="Пентхаусы, резиденции и загородные дома премиум-класса. Каталог закрытых объектов с фильтром по району, комнатам и цене, ипотечный калькулятор и персональный брокер.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { display:['Prata','serif'], sans:['"Inter Tight"','sans-serif'] },
+  colors: { night:'#0B0B0C', onyx:'#131315', edge:'#26262A', gold:'#C8A97E', goldLight:'#E2C9A2', mist:'#8E8C88' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#0B0B0C; color:#EDEAE4; -webkit-font-smoothing:antialiased; }
+  .rv { opacity:0; transform:translateY(30px); transition:opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity:1; transform:none; } .rv.now { transition:none; }
+  .gold-line { background:linear-gradient(90deg, transparent, #C8A97E, transparent); height:1px; }
+  .chip { border:1px solid #2e2e33; transition:all .25s; }
+  .chip:hover { border-color:#C8A97E; }
+  .chip.on { background:#C8A97E; color:#0B0B0C; border-color:#C8A97E; }
+  .card img { transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .card:hover img { transform:scale(1.06); }
+  .card .more { transform:translateY(6px); opacity:0; transition:all .35s; }
+  .card:hover .more { transform:none; opacity:1; }
+  @media (hover:none){ .card .more { opacity:1; transform:none; } }
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:2px; background:linear-gradient(90deg,#C8A97E var(--p,50%),#333 var(--p,50%)); outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#0B0B0C; border:2px solid #C8A97E; cursor:pointer; }
+  input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:#0B0B0C; border:2px solid #C8A97E; cursor:pointer; }
+  .sel { background:#131315; border:1px solid #2e2e33; color:#EDEAE4; padding:.8rem 1rem; outline:none; font-size:15px; border-radius:0; }
+  .sel:focus { border-color:#C8A97E; }
+  .field { width:100%; background:transparent; border:0; border-bottom:1px solid #3a3a40; padding:.9rem 0; outline:none; font-size:16px; color:#EDEAE4; transition:border-color .2s; }
+  .field:focus { border-color:#C8A97E; } .field.err { border-color:#e0705c; }
+  .field option { background:#131315; }
+  .modal { opacity:0; pointer-events:none; transition:opacity .35s; }
+  .modal.open { opacity:1; pointer-events:auto; }
+  .modal .box { transform:translateY(24px); transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+  .modal.open .box { transform:none; }
+  .thumb { opacity:.5; transition:opacity .2s; } .thumb.on, .thumb:hover { opacity:1; }
+  .fadein { animation:fi .5s ease both; } @keyframes fi { from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none} }
+</style>
+</head>
+<body class="font-sans font-light overflow-x-hidden">
+
+<header class="fixed top-0 inset-x-0 z-40 transition-all duration-300" data-header>
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10 h-20 flex items-center justify-between">
+    <a href="#top" class="flex items-baseline gap-3"><span class="font-display text-2xl tracking-[.18em]">ONYX</span><span class="hidden sm:inline text-[10px] tracking-[.35em] uppercase text-mist">Private Estate</span></a>
+    <nav class="hidden lg:flex gap-10 text-[13px] tracking-[.12em] uppercase text-white/70">
+      <a href="#catalog" class="hover:text-gold transition">Объекты</a><a href="#mortgage" class="hover:text-gold transition">Ипотека</a><a href="#services" class="hover:text-gold transition">Услуги</a><a href="#about" class="hover:text-gold transition">О нас</a><a href="#contact" class="hover:text-gold transition">Контакты</a>
+    </nav>
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="tel:+79000000000" class="text-sm text-white/75 hover:text-gold">+7 (900) 000-00-00</a>
+      <a href="#contact" class="px-5 py-3 border border-gold text-gold text-[13px] tracking-[.12em] uppercase hover:bg-gold hover:text-night transition">Частный показ</a>
+    </div>
+    <button class="lg:hidden w-11 h-11 -mr-2 flex flex-col items-end justify-center gap-[7px]" aria-label="Открыть меню" data-burger><span class="w-7 h-px bg-white"></span><span class="w-5 h-px bg-gold"></span></button>
+  </div>
+</header>
+<div class="fixed inset-0 z-50 bg-night flex flex-col opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden" data-menu>
+  <div class="px-5 h-20 flex items-center justify-between"><span class="font-display text-2xl tracking-[.18em]">ONYX</span><button class="w-11 h-11 -mr-2 text-3xl text-gold" aria-label="Закрыть меню" data-close>&times;</button></div>
+  <nav class="flex-1 flex flex-col justify-center gap-6 px-8 font-display text-4xl">
+    <a href="#catalog">Объекты</a><a href="#mortgage">Ипотека</a><a href="#services">Услуги</a><a href="#about">О нас</a><a href="#contact" class="text-gold">Частный показ</a>
+  </nav>
+  <div class="px-8 pb-24 text-sm text-mist">+7 (900) 000-00-00 · hello@example.ru</div>
+</div>
+
+<!-- Hero -->
+<section id="top" class="relative min-h-[min(100vh,940px)] flex items-end overflow-hidden">
+  <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop" alt="Современный дом с панорамным остеклением в вечернем освещении">
+  <div class="absolute inset-0 bg-gradient-to-t from-night via-night/55 to-night/40"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-night/80 to-transparent"></div>
+  <div class="relative w-full max-w-[1360px] mx-auto px-5 md:px-10 pt-36 pb-12 md:pb-16">
+    <div class="rv text-[11px] tracking-[.4em] uppercase text-gold">Москва · Подмосковье · с 2009 года</div>
+    <h1 class="rv font-display text-[40px] leading-[1.08] sm:text-6xl lg:text-[84px] lg:leading-[1.04] mt-6 max-w-5xl">Недвижимость, о&nbsp;которой не&nbsp;пишут в&nbsp;объявлениях</h1>
+    <p class="rv mt-6 text-white/70 text-base md:text-lg max-w-xl leading-relaxed">62% наших объектов продаются закрыто, без публичной рекламы. Покажем их лично после короткого знакомства.</p>
+
+    <form class="rv mt-10 grid grid-cols-2 md:grid-cols-[1fr_1fr_1fr_auto] bg-night/80 backdrop-blur border border-edge max-w-4xl" data-quick>
+      <label class="p-4 border-r border-b md:border-b-0 border-edge"><span class="block text-[10px] tracking-[.25em] uppercase text-mist">Район</span>
+        <select class="w-full bg-transparent mt-1 outline-none text-[15px]" name="d"><option value="all">Любой</option><option>Хамовники</option><option>Патриаршие</option><option>Якиманка</option><option>Москва-Сити</option><option>Рублёвка</option></select></label>
+      <label class="p-4 md:border-r border-b md:border-b-0 border-edge"><span class="block text-[10px] tracking-[.25em] uppercase text-mist">Спальни</span>
+        <select class="w-full bg-transparent mt-1 outline-none text-[15px]" name="r"><option value="all">Любое число</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></label>
+      <label class="p-4 border-r border-edge"><span class="block text-[10px] tracking-[.25em] uppercase text-mist">Бюджет до</span>
+        <select class="w-full bg-transparent mt-1 outline-none text-[15px]" name="p"><option value="800">Без ограничений</option><option value="100">100 млн ₽</option><option value="200">200 млн ₽</option><option value="400">400 млн ₽</option></select></label>
+      <button class="bg-gold text-night px-8 text-[13px] tracking-[.15em] uppercase font-medium hover:bg-goldLight transition">Найти</button>
+    </form>
+
+    <div class="rv mt-12 flex flex-wrap gap-x-14 gap-y-6">
+      <div><div class="font-display text-3xl md:text-4xl">1 140</div><div class="text-xs text-mist mt-1 tracking-wide">сделок закрыто</div></div>
+      <div><div class="font-display text-3xl md:text-4xl">96 млрд ₽</div><div class="text-xs text-mist mt-1 tracking-wide">общий объём продаж</div></div>
+      <div><div class="font-display text-3xl md:text-4xl">48 ч</div><div class="text-xs text-mist mt-1 tracking-wide">на подборку под запрос</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Catalog -->
+<section id="catalog" class="py-24 md:py-32 scroll-mt-16">
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div class="rv">
+        <div class="text-[11px] tracking-[.4em] uppercase text-gold">Каталог</div>
+        <h2 class="font-display text-4xl md:text-6xl mt-4">Избранные объекты</h2>
+      </div>
+      <p class="rv text-mist max-w-md text-sm leading-relaxed">Показана часть портфеля. Полную подборку закрытых предложений брокер пришлёт после звонка.</p>
+    </div>
+
+    <div class="rv mt-10 border-y border-edge py-6 grid gap-6 lg:grid-cols-12 items-end">
+      <div class="lg:col-span-5">
+        <div class="text-[10px] tracking-[.25em] uppercase text-mist mb-3">Район</div>
+        <div class="flex flex-wrap gap-2 text-[13px]" data-fd>
+          <button class="chip on px-3.5 py-2" data-v="all">Все</button><button class="chip px-3.5 py-2" data-v="Хамовники">Хамовники</button><button class="chip px-3.5 py-2" data-v="Патриаршие">Патриаршие</button><button class="chip px-3.5 py-2" data-v="Якиманка">Якиманка</button><button class="chip px-3.5 py-2" data-v="Москва-Сити">Москва-Сити</button><button class="chip px-3.5 py-2" data-v="Рублёвка">Рублёвка</button>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <div class="text-[10px] tracking-[.25em] uppercase text-mist mb-3">Спальни</div>
+        <div class="flex gap-2 text-[13px]" data-fr>
+          <button class="chip on px-3.5 py-2" data-v="all">Все</button><button class="chip w-10 py-2" data-v="1">1</button><button class="chip w-10 py-2" data-v="2">2</button><button class="chip w-10 py-2" data-v="3">3</button><button class="chip w-10 py-2" data-v="4">4</button><button class="chip w-10 py-2" data-v="5">5+</button>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="flex justify-between text-[10px] tracking-[.25em] uppercase text-mist mb-4"><span>Цена до</span><span class="text-gold tracking-normal text-sm normal-case" data-pv>800 млн ₽</span></div>
+        <input type="range" min="50" max="800" step="10" value="800" data-fp aria-label="Максимальная цена">
+      </div>
+      <div class="lg:col-span-2">
+        <div class="text-[10px] tracking-[.25em] uppercase text-mist mb-3">Сортировка</div>
+        <select class="sel w-full" data-sort aria-label="Сортировка"><option value="new">Сначала новые</option><option value="asc">Дешевле</option><option value="desc">Дороже</option><option value="area">По площади</option></select>
+      </div>
+    </div>
+    <div class="mt-5 flex items-center justify-between text-sm text-mist"><span>Найдено: <b class="text-white font-normal" data-count>0</b></span><button class="hover:text-gold underline underline-offset-4" data-reset>Сбросить фильтры</button></div>
+
+    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12" data-grid></div>
+    <div class="hidden mt-8 border border-edge p-12 text-center" data-empty>
+      <div class="font-display text-2xl">Под эти параметры открытых объектов нет</div>
+      <p class="mt-3 text-mist text-sm">Но есть закрытые предложения. <a href="#contact" class="text-gold underline underline-offset-4">Оставьте запрос</a>, и брокер пришлёт подборку за 48 часов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mortgage -->
+<section id="mortgage" class="py-24 md:py-32 bg-onyx border-y border-edge scroll-mt-16">
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10 grid lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-4 rv">
+      <div class="text-[11px] tracking-[.4em] uppercase text-gold">Финансирование</div>
+      <h2 class="font-display text-4xl md:text-5xl mt-4 leading-tight">Ипотечный калькулятор</h2>
+      <p class="mt-5 text-mist leading-relaxed text-sm">Работаем с 11 банками и частными программами. Брокер согласует индивидуальную ставку и лимит до 300 млн ₽ без подтверждения дохода по 2-НДФЛ.</p>
+      <img class="mt-10 w-full h-60 object-cover" src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1200&q=80&auto=format&fit=crop" alt="Светлая гостиная с панорамными окнами и лестницей">
+    </div>
+    <div class="lg:col-span-8 rv grid md:grid-cols-2 border border-edge">
+      <form class="p-6 md:p-10 space-y-8 border-b md:border-b-0 md:border-r border-edge" data-mort onsubmit="return false">
+        <div><div class="flex justify-between text-sm"><label for="mp">Стоимость объекта</label><b class="font-normal text-gold" data-mpv></b></div><input id="mp" class="mt-4" type="range" min="10" max="800" step="1" value="168"></div>
+        <div><div class="flex justify-between text-sm"><label for="md">Первоначальный взнос</label><b class="font-normal text-gold" data-mdv></b></div><input id="md" class="mt-4" type="range" min="20" max="90" step="1" value="30"></div>
+        <div><div class="flex justify-between text-sm"><label for="mt">Срок</label><b class="font-normal text-gold" data-mtv></b></div><input id="mt" class="mt-4" type="range" min="1" max="30" step="1" value="15"></div>
+        <div>
+          <div class="flex justify-between text-sm"><span>Ставка</span><b class="font-normal text-gold" data-mrv></b></div>
+          <div class="mt-4 grid grid-cols-3 gap-2 text-[12px]" data-rates>
+            <button type="button" class="chip on py-2.5 px-1" data-r="17.9">Рыночная<br>17,9%</button>
+            <button type="button" class="chip py-2.5 px-1" data-r="12.5">Партнёрская<br>12,5%</button>
+            <button type="button" class="chip py-2.5 px-1" data-r="6">Семейная<br>6%*</button>
+          </div>
+          <p class="mt-3 text-[11px] text-mist leading-snug">*Семейная ипотека: лимит кредита 12 млн ₽, остаток по рыночной ставке.</p>
+        </div>
+      </form>
+      <div class="p-6 md:p-10 flex flex-col">
+        <div class="text-[10px] tracking-[.25em] uppercase text-mist">Ежемесячный платёж</div>
+        <div class="font-display text-4xl md:text-5xl mt-3 tabular-nums" data-pay>0 ₽</div>
+        <div class="mt-8 h-2 flex bg-edge overflow-hidden" aria-hidden="true"><span class="bg-gold transition-all duration-500" data-bar1></span><span class="bg-[#6d5b43] transition-all duration-500" data-bar2></span></div>
+        <div class="mt-3 flex justify-between text-xs text-mist"><span class="flex items-center gap-2"><i class="w-2 h-2 bg-gold"></i>Тело кредита</span><span class="flex items-center gap-2"><i class="w-2 h-2 bg-[#6d5b43]"></i>Проценты</span></div>
+        <dl class="mt-8 space-y-4 text-sm">
+          <div class="flex justify-between border-b border-edge pb-3"><dt class="text-mist">Сумма кредита</dt><dd data-loan></dd></div>
+          <div class="flex justify-between border-b border-edge pb-3"><dt class="text-mist">Первоначальный взнос</dt><dd data-down></dd></div>
+          <div class="flex justify-between border-b border-edge pb-3"><dt class="text-mist">Переплата</dt><dd data-over></dd></div>
+          <div class="flex justify-between"><dt class="text-mist">Рекомендуемый доход</dt><dd data-income></dd></div>
+        </dl>
+        <a href="#contact" class="mt-auto pt-8" data-mort-cta><span class="block text-center py-4 bg-gold text-night text-[13px] tracking-[.15em] uppercase font-medium hover:bg-goldLight transition">Получить одобрение</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-24 md:py-32 scroll-mt-16">
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10">
+    <div class="rv text-[11px] tracking-[.4em] uppercase text-gold">Услуги</div>
+    <h2 class="rv font-display text-4xl md:text-6xl mt-4 max-w-3xl">Сделка без единого лишнего звонка</h2>
+    <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-4 border-t border-l border-edge">
+      <div class="rv p-8 border-r border-b border-edge hover:bg-onyx transition"><div class="font-display text-gold text-3xl">I</div><h3 class="mt-6 text-xl font-normal">Закрытые продажи</h3><p class="mt-3 text-sm text-mist leading-relaxed">Объекты, которых нет на площадках. Владельцы доверяют их нам под NDA.</p></div>
+      <div class="rv p-8 border-r border-b border-edge hover:bg-onyx transition"><div class="font-display text-gold text-3xl">II</div><h3 class="mt-6 text-xl font-normal">Юридическая проверка</h3><p class="mt-3 text-sm text-mist leading-relaxed">История владения за 20 лет, обременения, наследники. Отчёт за 5 рабочих дней.</p></div>
+      <div class="rv p-8 border-r border-b border-edge hover:bg-onyx transition"><div class="font-display text-gold text-3xl">III</div><h3 class="mt-6 text-xl font-normal">Trade-in</h3><p class="mt-3 text-sm text-mist leading-relaxed">Выкупим или продадим вашу текущую квартиру параллельно с покупкой новой.</p></div>
+      <div class="rv p-8 border-r border-b border-edge hover:bg-onyx transition"><div class="font-display text-gold text-3xl">IV</div><h3 class="mt-6 text-xl font-normal">Управление арендой</h3><p class="mt-3 text-sm text-mist leading-relaxed">Найдём арендатора, возьмём на себя договор, сервис и отчётность. Доходность 5–7% годовых.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="pb-24 md:pb-32 scroll-mt-16">
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10 grid lg:grid-cols-2 gap-12 items-center">
+    <div class="rv relative">
+      <img class="w-full h-[380px] md:h-[560px] object-cover" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80&auto=format&fit=crop" alt="Белая вилла с бассейном и деревянным навесом">
+      <div class="absolute -bottom-6 left-6 md:-right-10 md:left-auto bg-gold text-night p-6 md:p-8 max-w-[260px]">
+        <div class="font-display text-4xl">17 лет</div><div class="text-sm mt-2">на рынке премиальной недвижимости Москвы</div>
+      </div>
+    </div>
+    <div class="rv lg:pl-10 pt-6">
+      <div class="text-[11px] tracking-[.4em] uppercase text-gold">О нас</div>
+      <blockquote class="font-display text-3xl md:text-4xl leading-snug mt-6">«Мы продаём не квадратные метры, а&nbsp;спокойствие. Клиент должен узнать о&nbsp;проблеме объекта от нас, а&nbsp;не после сделки».</blockquote>
+      <div class="mt-8 flex items-center gap-4"><span class="w-12 h-px bg-gold"></span><div><div>Михаил Ветров</div><div class="text-xs text-mist">управляющий партнёр</div></div></div>
+      <div class="mt-12 grid grid-cols-3 gap-6 border-t border-edge pt-8">
+        <div><div class="font-display text-3xl">24</div><div class="text-xs text-mist mt-1">брокера в команде</div></div>
+        <div><div class="font-display text-3xl">11</div><div class="text-xs text-mist mt-1">банков-партнёров</div></div>
+        <div><div class="font-display text-3xl">0</div><div class="text-xs text-mist mt-1">сорванных сделок в 2025</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="relative py-24 md:py-32 scroll-mt-16 overflow-hidden">
+  <img class="absolute inset-0 w-full h-full object-cover opacity-25" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80&auto=format&fit=crop" alt="Стеклянные башни делового квартала снизу">
+  <div class="absolute inset-0 bg-gradient-to-b from-night via-night/80 to-night"></div>
+  <div class="relative max-w-[1360px] mx-auto px-5 md:px-10 grid lg:grid-cols-2 gap-12">
+    <div class="rv">
+      <div class="text-[11px] tracking-[.4em] uppercase text-gold">Частный показ</div>
+      <h2 class="font-display text-4xl md:text-6xl mt-4 leading-tight">Покажем лично, в&nbsp;удобное вам время</h2>
+      <p class="mt-6 text-mist leading-relaxed max-w-md">Брокер перезвонит в течение 15 минут, уточнит пожелания и согласует показ. Конфиденциальность гарантируем договором.</p>
+      <div class="mt-10 space-y-2 text-sm"><div>+7 (900) 000-00-00</div><div>hello@example.ru</div><div class="text-mist">Пресненская наб., офис по предварительной записи</div></div>
+    </div>
+    <form class="rv bg-night/70 backdrop-blur border border-edge p-6 md:p-10" novalidate data-form>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+        <label class="block"><span class="text-[10px] tracking-[.25em] uppercase text-mist">Имя *</span><input class="field" name="name" placeholder="Как к вам обращаться" autocomplete="name"></label>
+        <label class="block"><span class="text-[10px] tracking-[.25em] uppercase text-mist">Телефон *</span><input class="field" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel"></label>
+        <label class="block sm:col-span-2"><span class="text-[10px] tracking-[.25em] uppercase text-mist">Интересующий объект</span><input class="field" name="obj" placeholder="Например, пентхаус с террасой" data-obj></label>
+        <label class="block"><span class="text-[10px] tracking-[.25em] uppercase text-mist">Бюджет</span><select class="field" name="budget"><option>до 100 млн ₽</option><option selected>100–300 млн ₽</option><option>300–600 млн ₽</option><option>от 600 млн ₽</option></select></label>
+        <label class="block"><span class="text-[10px] tracking-[.25em] uppercase text-mist">Как связаться</span><select class="field" name="how"><option>Звонок</option><option>Telegram</option><option>WhatsApp</option></select></label>
+      </div>
+      <button class="mt-8 w-full py-4 bg-gold text-night text-[13px] tracking-[.15em] uppercase font-medium hover:bg-goldLight transition">Запросить показ</button>
+      <p class="hidden mt-4 text-sm text-[#e0705c]" data-err>Пожалуйста, укажите имя и телефон.</p>
+      <div class="hidden mt-5 border border-gold/50 p-5 text-sm fadein" data-ok><span class="font-display text-xl text-gold block mb-1">Спасибо!</span>Это демо-версия сайта, заявка никуда не отправляется.</div>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-edge">
+  <div class="max-w-[1360px] mx-auto px-5 md:px-10 py-10 pb-20 md:pb-10 flex flex-col md:flex-row md:items-center justify-between gap-5 text-sm text-mist">
+    <span class="font-display text-xl tracking-[.18em] text-white">ONYX</span>
+    <div class="flex flex-wrap gap-6"><a href="#catalog" class="hover:text-gold">Объекты</a><a href="#mortgage" class="hover:text-gold">Ипотека</a><a href="#services" class="hover:text-gold">Услуги</a><a href="#contact" class="hover:text-gold">Контакты</a></div>
+    <div>© 2026 ONYX Private Estate. Бренд вымышлен.</div>
+  </div>
+</footer>
+
+<!-- Object modal -->
+<div class="modal fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-start md:items-center justify-center overflow-y-auto md:p-6" data-modal role="dialog" aria-modal="true" aria-labelledby="oTitle">
+  <div class="box relative bg-onyx border border-edge w-full max-w-6xl grid lg:grid-cols-12 min-h-screen md:min-h-0">
+    <button class="absolute top-3 right-3 z-10 w-11 h-11 bg-night/80 border border-edge text-2xl hover:text-gold" aria-label="Закрыть" data-mclose>&times;</button>
+    <div class="lg:col-span-7">
+      <img class="w-full h-[300px] md:h-[480px] object-cover" alt="" data-mimg>
+      <div class="flex gap-2 p-3" data-mthumbs></div>
+    </div>
+    <div class="lg:col-span-5 p-6 md:p-10 flex flex-col">
+      <div class="text-[11px] tracking-[.3em] uppercase text-gold" data-mdistrict></div>
+      <h3 id="oTitle" class="font-display text-3xl md:text-4xl mt-3 leading-tight" data-mtitle></h3>
+      <div class="font-display text-3xl text-gold mt-5" data-mprice></div>
+      <div class="text-xs text-mist mt-1" data-mppm></div>
+      <div class="mt-6 grid grid-cols-3 border-t border-l border-edge text-center" data-mspecs></div>
+      <p class="mt-6 text-sm text-white/75 leading-relaxed" data-mdesc></p>
+      <ul class="mt-4 flex flex-wrap gap-2 text-xs" data-mfeat></ul>
+      <div class="mt-8 grid sm:grid-cols-2 gap-2 pb-12 md:pb-0">
+        <button class="py-4 bg-gold text-night text-[12px] tracking-[.15em] uppercase font-medium hover:bg-goldLight transition" data-mview>Записаться на показ</button>
+        <button class="py-4 border border-gold text-gold text-[12px] tracking-[.15em] uppercase hover:bg-gold hover:text-night transition" data-mcalc>Рассчитать ипотеку</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="../../" class="fixed left-3 bottom-3 z-[70] px-3 py-1.5 bg-black/60 border border-gold/30 text-goldLight/90 text-[11px] md:text-xs backdrop-blur hover:bg-black transition">Демо-проект · портфолио Лианы</a>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const U=id=>`https://images.unsplash.com/photo-${id}?w=1200&q=80&auto=format&fit=crop`;
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+const mln=n=>(n%1? n.toFixed(1).replace('.',',') : n)+' млн ₽';
+const O=[
+  {t:'Пентхаус с террасой', d:'Хамовники', a:'Остоженка', r:4, s:236, f:'9/9', p:485, y:2024, img:['1600607687939-ce8a6c25118c','1616594039964-ae9021a400a0','1600210492486-724fe5c67fb0'], ds:'Двухуровневый пентхаус в клубном доме на 18 квартир. Терраса 90 м² с видом на храм Христа Спасителя, камин, винная комната, два машино-места.', ft:['Терраса 90 м²','Камин','Винная комната','2 машино-места']},
+  {t:'Резиденция у Патриарших', d:'Патриаршие', a:'Малая Бронная', r:3, s:142, f:'5/7', p:298, y:2023, img:['1600210492486-724fe5c67fb0','1600121848594-d8644e57abab','1522708323590-d24dbb6b0267'], ds:'Квартира с дизайнерским ремонтом в историческом особняке после реконструкции. Потолки 3,6 м, окна на тихий двор, консьерж-сервис 24/7.', ft:['Потолки 3,6 м','Ремонт под ключ','Консьерж','Тихий двор']},
+  {t:'Апартаменты с видом на Кремль', d:'Якиманка', a:'Софийская набережная', r:2, s:96, f:'12/14', p:168, y:2025, img:['1600121848594-d8644e57abab','1600573472550-8090b5e0745e'], ds:'Панорамные окна от пола до потолка с прямым видом на Кремль и реку. Спа-зона в доме, подземный паркинг, закрытая территория.', ft:['Вид на Кремль','Спа в доме','Паркинг']},
+  {t:'Лофт в доходном доме', d:'Патриаршие', a:'Спиридоньевский пер.', r:1, s:64, f:'3/5', p:89, y:2022, img:['1600573472550-8090b5e0745e','1522708323590-d24dbb6b0267'], ds:'Лофт с антресолью и сохранённой кирпичной кладкой 1912 года. Подходит для жизни или сдачи: средняя ставка аренды в доме 420 000 ₽ в месяц.', ft:['Антресоль','Кладка 1912 г.','Доходность 5,6%']},
+  {t:'Квартира на 58 этаже', d:'Москва-Сити', a:'Пресненская наб.', r:3, s:128, f:'58/75', p:142, y:2024, img:['1486406146926-c627a92ad1ab','1616594039964-ae9021a400a0','1600121848594-d8644e57abab'], ds:'Угловая квартира с остеклением на две стороны света. Фитнес и бассейн на 60 этаже, ресторан в лобби, выход в метро не выходя на улицу.', ft:['Угловая','Бассейн в доме','Вид на реку']},
+  {t:'Апартаменты в башне', d:'Москва-Сити', a:'1-й Красногвардейский пр.', r:1, s:52, f:'41/62', p:54, y:2023, img:['1616594039964-ae9021a400a0','1486406146926-c627a92ad1ab'], ds:'Компактные апартаменты с готовым интерьером и мебелью. Под управлением отеля: можно жить или получать пассивный доход.', ft:['С мебелью','Под управлением','Готово к заезду']},
+  {t:'Вилла с бассейном', d:'Рублёвка', a:'Жуковка', r:6, s:640, f:'32 сот.', p:720, y:2025, img:['1613490493576-7fde63acd811','1613977257363-707ba9348227','1600596542815-ffad4c1539a9'], ds:'Вилла архитектурного бюро в современном стиле. Бассейн 18 м с подогревом, гостевой дом, СПА, зрелые сосны на участке.', ft:['Бассейн 18 м','Гостевой дом','СПА','Охрана']},
+  {t:'Дом в стиле минимализм', d:'Рублёвка', a:'Барвиха', r:5, s:410, f:'24 сот.', p:395, y:2024, img:['1600047509807-ba8f99d2cdde','1600585154340-be6161a56a0c','1600607687939-ce8a6c25118c'], ds:'Дом с панорамным остеклением и плоской эксплуатируемой кровлей. Умный дом, гараж на 3 машины, ландшафтный дизайн.', ft:['Умный дом','Гараж на 3 авто','Ландшафт']},
+  {t:'Особняк в сосновом лесу', d:'Рублёвка', a:'Горки-2', r:5, s:520, f:'40 сот.', p:560, y:2023, img:['1600566753190-17f0baa2a6c3','1580587771525-78b9dba3b914','1564013799919-ab600027ffc6'], ds:'Особняк в закрытом посёлке на 12 домов. Лесной участок с выходом к реке, отдельный дом для персонала, кинозал.', ft:['Лесной участок','Выход к реке','Кинозал']},
+  {t:'Семейная квартира у парка', d:'Хамовники', a:'Усачёва', r:4, s:168, f:'6/10', p:245, y:2025, img:['1522708323590-d24dbb6b0267','1600210492486-724fe5c67fb0'], ds:'Просторная квартира в новом клубном доме у Нескучного сада. Три спальни с гардеробными, кухня-гостиная 54 м², детский клуб во дворе.', ft:['3 гардеробные','Кухня 54 м²','Детский клуб']},
+];
+O.forEach((o,i)=>o.i=i);
+const F={d:'all', r:'all', p:800, sort:'new'};
+const grid=$('[data-grid]'); let first=true;
+function spl(n){ return n===1?'спальня':n<5?'спальни':'спален'; }
+function render(){
+  let L=O.filter(o=>(F.d==='all'||o.d===F.d)&&(F.r==='all'||(F.r==='5'?o.r>=5:o.r==F.r))&&o.p<=F.p);
+  if(F.sort==='asc') L.sort((a,b)=>a.p-b.p); else if(F.sort==='desc') L.sort((a,b)=>b.p-a.p); else if(F.sort==='area') L.sort((a,b)=>b.s-a.s); else L.sort((a,b)=>b.y-a.y||a.i-b.i);
+  $('[data-count]').textContent=L.length;
+  grid.innerHTML=L.map((o,k)=>`
+    <button class="card text-left group ${first?'':'fadein'}" style="${first?'':`animation-delay:${k*.05}s`}" data-o="${o.i}">
+      <div class="relative overflow-hidden"><img class="w-full h-[280px] md:h-[340px] object-cover" src="${U(o.img[0])}" alt="${o.t}, ${o.d}" loading="lazy">
+        <div class="absolute top-4 left-4 text-[10px] tracking-[.25em] uppercase bg-night/80 backdrop-blur px-3 py-1.5">${o.d}</div>
+        ${o.y>=2025?'<div class="absolute top-4 right-4 text-[10px] tracking-[.25em] uppercase bg-gold text-night px-3 py-1.5">Новинка</div>':''}
+        <div class="more absolute inset-x-4 bottom-4 text-center py-3 bg-night/85 backdrop-blur text-[11px] tracking-[.2em] uppercase text-gold">Смотреть объект</div></div>
+      <div class="mt-5 flex items-start justify-between gap-4">
+        <div><h3 class="font-display text-xl md:text-2xl leading-snug group-hover:text-gold transition">${o.t}</h3><div class="text-sm text-mist mt-1">${o.a}</div></div>
+        <div class="text-right shrink-0"><div class="font-display text-xl text-gold">${mln(o.p)}</div><div class="text-[11px] text-mist mt-1">${fmt(o.p*1e6/o.s)} ₽/м²</div></div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-edge flex gap-6 text-sm text-white/70"><span>${o.s} м²</span><span>${o.r} ${spl(o.r)}</span><span>${o.d==='Рублёвка'?'участок '+o.f:'этаж '+o.f}</span></div>
+    </button>`).join('');
+  $('[data-empty]').classList.toggle('hidden',L.length>0);
+  first=false;
+}
+function setChips(sel,v){ $$(sel+' button').forEach(b=>b.classList.toggle('on',b.dataset.v==v)); }
+$('[data-fd]').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; F.d=b.dataset.v; setChips('[data-fd]',F.d); render(); });
+$('[data-fr]').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; F.r=b.dataset.v; setChips('[data-fr]',F.r); render(); });
+const fp=$('[data-fp]');
+function rng(el){ el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%'); }
+fp.addEventListener('input',()=>{ F.p=+fp.value; $('[data-pv]').textContent=F.p>=800?'без ограничений':mln(F.p); rng(fp); render(); });
+$('[data-sort]').addEventListener('change',e=>{ F.sort=e.target.value; render(); });
+$('[data-reset]').addEventListener('click',()=>{ F.d='all';F.r='all';F.p=800;F.sort='new'; setChips('[data-fd]','all'); setChips('[data-fr]','all'); fp.value=800; rng(fp); $('[data-pv]').textContent='без ограничений'; $('[data-sort]').value='new'; render(); });
+$('[data-pv]').textContent='без ограничений'; rng(fp); render();
+
+// Quick search in hero
+$('[data-quick]').addEventListener('submit',e=>{ e.preventDefault(); const f=e.target;
+  F.d=f.d.value; F.r=f.r.value; F.p=+f.p.value; setChips('[data-fd]',F.d); setChips('[data-fr]',F.r); fp.value=F.p; rng(fp);
+  $('[data-pv]').textContent=F.p>=800?'без ограничений':mln(F.p); render(); $('#catalog').scrollIntoView({behavior:'smooth'}); });
+
+// Modal
+const modal=$('[data-modal]'); let cur=null;
+function openO(i){ const o=O[i]; cur=o;
+  const img=$('[data-mimg]'); img.src=U(o.img[0]); img.alt=o.t;
+  $('[data-mthumbs]').innerHTML=o.img.map((id,k)=>`<button class="thumb ${k?'':'on'} w-20 h-14 md:w-24 md:h-16 overflow-hidden" data-k="${k}" aria-label="Фото ${k+1}"><img class="w-full h-full object-cover" src="${U(id)}" alt="${o.t}, фото ${k+1}"></button>`).join('');
+  $('[data-mdistrict]').textContent=`${o.d} · ${o.a}`; $('[data-mtitle]').textContent=o.t;
+  $('[data-mprice]').textContent=mln(o.p); $('[data-mppm]').textContent=`${fmt(o.p*1e6/o.s)} ₽ за м² · ${o.y>=2025?'сдача 2025':'дом сдан'}`;
+  const sp=[[o.s+' м²','площадь'],[o.r,spl(o.r)],[o.f, o.d==='Рублёвка'?'участок':'этаж']];
+  $('[data-mspecs]').innerHTML=sp.map(s=>`<div class="py-4 border-r border-b border-edge"><div class="font-display text-xl">${s[0]}</div><div class="text-[11px] text-mist mt-1">${s[1]}</div></div>`).join('');
+  $('[data-mdesc]').textContent=o.ds;
+  $('[data-mfeat]').innerHTML=o.ft.map(f=>`<li class="border border-edge px-3 py-1.5">${f}</li>`).join('');
+  modal.classList.add('open'); modal.scrollTop=0; document.body.style.overflow='hidden'; }
+const closeO=()=>{ modal.classList.remove('open'); document.body.style.overflow=''; };
+grid.addEventListener('click',e=>{ const c=e.target.closest('[data-o]'); if(c) openO(+c.dataset.o); });
+$('[data-mthumbs]').addEventListener('click',e=>{ const t=e.target.closest('[data-k]'); if(!t) return; $('[data-mimg]').src=U(cur.img[+t.dataset.k]); $$('[data-mthumbs] .thumb').forEach(x=>x.classList.toggle('on',x===t)); });
+$('[data-mclose]').onclick=closeO; modal.addEventListener('click',e=>{ if(e.target===modal) closeO(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeO(); });
+$('[data-mview]').onclick=()=>{ $('[data-obj]').value=`${cur.t}, ${cur.a} (${mln(cur.p)})`; closeO(); $('#contact').scrollIntoView({behavior:'smooth'}); };
+$('[data-mcalc]').onclick=()=>{ $('#mp').value=Math.min(800,cur.p); mort(); closeO(); $('#mortgage').scrollIntoView({behavior:'smooth'}); };
+
+// Mortgage
+let rate=17.9;
+function mort(){ const P=+$('#mp').value*1e6, dp=+$('#md').value, n=+$('#mt').value*12;
+  ['#mp','#md','#mt'].forEach(s=>rng($(s)));
+  $('[data-mpv]').textContent=mln(+$('#mp').value); $('[data-mdv]').textContent=`${dp}% · ${fmt(P*dp/100)} ₽`;
+  const yrs=+$('#mt').value; $('[data-mtv]').textContent=`${yrs} ${yrs%10===1&&yrs!==11?'год':(yrs%10>=2&&yrs%10<=4&&(yrs<12||yrs>14))?'года':'лет'}`;
+  $('[data-mrv]').textContent=String(rate).replace('.',',')+'%';
+  const loan=P*(1-dp/100);
+  const ann=(L,r)=>{ const i=r/1200; return i? L*i/(1-Math.pow(1+i,-n)) : L/n; };
+  let pay;
+  if(rate===6){ const fam=Math.min(loan,12e6); pay=ann(fam,6)+ann(loan-fam,17.9); } else pay=ann(loan,rate);
+  const total=pay*n, over=total-loan;
+  $('[data-pay]').textContent=fmt(pay)+' ₽'; $('[data-loan]').textContent=fmt(loan)+' ₽'; $('[data-down]').textContent=fmt(P*dp/100)+' ₽';
+  $('[data-over]').textContent=fmt(over)+' ₽'; $('[data-income]').textContent='от '+fmt(pay/0.5)+' ₽/мес';
+  const p1=loan/total*100; $('[data-bar1]').style.width=p1+'%'; $('[data-bar2]').style.width=(100-p1)+'%'; }
+$('[data-mort]').addEventListener('input',mort);
+$('[data-rates]').addEventListener('click',e=>{ const b=e.target.closest('[data-r]'); if(!b) return; rate=+b.dataset.r; $$('[data-rates] button').forEach(x=>x.classList.toggle('on',x===b)); mort(); });
+mort();
+$('[data-mort-cta]').addEventListener('click',()=>{ $('[data-obj]').value=`Ипотека: объект ${$('[data-mpv]').textContent}, взнос ${$('#md').value}%, ${$('[data-mtv]').textContent}`; });
+
+// Form
+const form=$('[data-form]');
+form.addEventListener('submit',e=>{ e.preventDefault();
+  const n=form.name.value.trim().length>=2, p=form.phone.value.replace(/\D/g,'').length>=10;
+  form.name.classList.toggle('err',!n); form.phone.classList.toggle('err',!p);
+  $('[data-err]',form).classList.toggle('hidden',n&&p); if(!(n&&p)) return;
+  $('[data-ok]',form).classList.remove('hidden'); form.reset(); });
+
+// Menu
+const menu=$('[data-menu]'); const setM=v=>{ menu.style.opacity=v?1:0; menu.style.pointerEvents=v?'auto':'none'; document.body.style.overflow=v?'hidden':''; };
+$('[data-burger]').onclick=()=>setM(true); $('[data-close]').onclick=()=>setM(false); $$('a',menu).forEach(a=>a.addEventListener('click',()=>setM(false)));
+
+// Header
+const hd=$('[data-header]'); const onS=()=>{ const s=scrollY>40; hd.classList.toggle('bg-night/90',s); hd.classList.toggle('backdrop-blur',s); hd.classList.toggle('border-b',s); hd.classList.toggle('border-edge',s); };
+addEventListener('scroll',onS,{passive:true}); onS();
+
+// Reveal
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} }),{threshold:.1});
+  $$('.rv').forEach(el=>{ if(el.getBoundingClientRect().top<innerHeight) el.classList.add('in','now'); else io.observe(el); });
+} else $$('.rv').forEach(el=>el.classList.add('in'));
+</script>
+</body>
+</html>

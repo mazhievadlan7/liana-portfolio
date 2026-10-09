@@ -2,58 +2,283 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Право и Дело — юридическая компания</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Право и Дело — юридическая защита бизнеса</title>
+<meta name="description" content="Юридическая компания «Право и Дело»: арбитражные споры, корпоративное право и банкротство. Бесплатная оценка дела онлайн и фиксированная стоимость этапов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{serif:['"Playfair Display"','serif'],sans:['Inter','sans-serif']},colors:{navy:{800:'#132238',900:'#0b1626'},gold:{300:'#e4c98f',500:'#c9a45c'},paper:'#f6f3ee'}}}}</script>
-<style>body{-webkit-font-smoothing:antialiased}</style>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  details summary::-webkit-details-marker { display:none; }
+  details[open] .faq-ico { transform: rotate(45deg); }
+  .faq-ico { transition: transform .25s; }
+  .opt { transition: all .2s; }
+</style>
 </head>
 <body class="bg-paper text-navy-900 font-sans">
-<header class="bg-navy-900 text-white">
-  <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-    <div class="font-serif text-2xl">Право <span class="text-gold-500">&amp;</span> Дело</div>
-    <nav class="hidden lg:flex gap-10 text-sm text-white/70"><a>Практики</a><a>Команда</a><a>Кейсы</a><a>Стоимость</a></nav>
-    <a class="px-6 py-3 border border-gold-500 text-gold-300 text-sm">+7 (900) 000-00-00</a>
+<header class="sticky top-0 z-40 bg-navy-900 text-white border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-5 flex justify-between items-center">
+    <a href="#top" class="font-serif text-2xl">Право <span class="text-gold-500">&amp;</span> Дело</a>
+    <nav class="hidden lg:flex gap-10 text-sm text-white/70"><a href="#practices" class="hover:text-gold-300 transition">Практики</a><a href="#team" class="hover:text-gold-300 transition">Команда</a><a href="#cases" class="hover:text-gold-300 transition">Кейсы</a><a href="#cost" class="hover:text-gold-300 transition">Стоимость</a></nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+79000000000" class="hidden sm:inline-block px-6 py-3 border border-gold-500 text-gold-300 text-sm hover:bg-gold-500 hover:text-navy-900 transition">+7 (900) 000-00-00</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 border border-white/20 grid place-items-center">
+        <svg data-ico="open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"/></svg>
+        <svg data-ico="close" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4c98f" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden px-5 pb-7 border-t border-white/10">
+    <nav class="flex flex-col font-serif text-2xl gap-1 pt-4"><a href="#practices" class="py-2">Практики</a><a href="#check" class="py-2">Оценить дело</a><a href="#team" class="py-2">Команда</a><a href="#cases" class="py-2">Кейсы</a><a href="#cost" class="py-2">Стоимость</a></nav>
+    <a href="tel:+79000000000" class="mt-5 block text-center py-4 border border-gold-500 text-gold-300">+7 (900) 000-00-00</a>
+    <a href="#consult" class="mt-3 block text-center py-4 bg-gold-500 text-navy-900 font-semibold">Получить консультацию</a>
   </div>
 </header>
-<section class="bg-navy-900 text-white">
-  <div class="max-w-7xl mx-auto px-6 pt-16 pb-24 grid lg:grid-cols-12 gap-12 items-center">
+
+<section id="top" class="bg-navy-900 text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 pt-12 sm:pt-16 pb-24 grid lg:grid-cols-12 gap-12 items-center">
     <div class="lg:col-span-7">
       <p class="text-gold-500 uppercase tracking-[.25em] text-xs">Юридическая компания · с 2009 года</p>
-      <h1 class="font-serif text-6xl leading-[1.08] mt-6">Защищаем бизнес<br>в судах и сделках</h1>
-      <p class="mt-7 text-lg text-white/65 max-w-xl">Арбитражные споры, корпоративное право и банкротство. Оцениваем перспективы дела до подписания договора и честно говорим, если шансов нет.</p>
-      <div class="mt-10 flex gap-4"><a class="px-8 py-4 bg-gold-500 text-navy-900 font-semibold">Получить консультацию</a><a class="px-8 py-4 border border-white/25">Наши кейсы</a></div>
+      <h1 class="font-serif text-[40px] sm:text-5xl lg:text-6xl leading-[1.08] mt-6">Защищаем бизнес<br>в судах и сделках</h1>
+      <p class="mt-7 text-base sm:text-lg text-white/65 max-w-xl">Арбитражные споры, корпоративное право и банкротство. Оцениваем перспективы дела до подписания договора и честно говорим, если шансов нет.</p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4"><a href="#check" class="text-center px-8 py-4 bg-gold-500 text-navy-900 font-semibold hover:bg-gold-300 transition">Оценить дело за 1 минуту</a><a href="#cases" class="text-center px-8 py-4 border border-white/25 hover:border-gold-500 hover:text-gold-300 transition">Наши кейсы</a></div>
     </div>
     <div class="lg:col-span-5 relative">
-      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1000&q=80&auto=format&fit=crop" class="h-[460px] w-full object-cover" alt="">
-      <div class="absolute -bottom-8 -left-8 bg-paper text-navy-900 p-7 w-64 shadow-2xl"><div class="font-serif text-5xl text-gold-500">87%</div><div class="text-sm mt-2">дел выиграно в арбитраже за последние 3 года</div></div>
+      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1000&q=80&auto=format&fit=crop" class="h-80 sm:h-[460px] w-full object-cover" alt="Рукопожатие после подписания договора">
+      <div class="absolute -bottom-8 left-4 sm:-left-8 bg-paper text-navy-900 p-6 sm:p-7 w-60 sm:w-64 shadow-2xl"><div class="font-serif text-5xl text-gold-500">87%</div><div class="text-sm mt-2">дел выиграно в арбитраже за последние 3 года</div></div>
     </div>
   </div>
 </section>
-<section class="max-w-7xl mx-auto px-6 py-24">
-  <div class="flex justify-between items-end"><h2 class="font-serif text-5xl">Практики</h2><span class="text-sm text-navy-900/50">Фиксированная стоимость этапов</span></div>
+
+<section id="practices" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3"><h2 class="font-serif text-4xl sm:text-5xl">Практики</h2><span class="text-sm text-navy-900/50">Фиксированная стоимость этапов</span></div>
   <div class="mt-12 grid md:grid-cols-3 border-t border-navy-900/15">
-    <div class="py-10 pr-10 border-b md:border-b-0 md:border-r border-navy-900/15"><div class="font-serif text-gold-500 text-xl">01</div><h3 class="font-serif text-2xl mt-4">Арбитражные споры</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Взыскание долгов, споры по договорам поставки и подряда, защита от необоснованных претензий.</p><p class="mt-6 font-semibold">от 60 000 ₽ за инстанцию</p></div>
-    <div class="py-10 md:px-10 border-b md:border-b-0 md:border-r border-navy-900/15"><div class="font-serif text-gold-500 text-xl">02</div><h3 class="font-serif text-2xl mt-4">Корпоративное право</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Регистрация и реорганизация компаний, корпоративные договоры, выход участника из ООО.</p><p class="mt-6 font-semibold">от 25 000 ₽</p></div>
-    <div class="py-10 md:pl-10"><div class="font-serif text-gold-500 text-xl">03</div><h3 class="font-serif text-2xl mt-4">Банкротство</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Сопровождение процедур, защита от субсидиарной ответственности, включение в реестр кредиторов.</p><p class="mt-6 font-semibold">от 90 000 ₽</p></div>
+    <div data-reveal class="py-10 md:pr-10 border-b md:border-b-0 md:border-r border-navy-900/15"><div class="font-serif text-gold-500 text-xl">01</div><h3 class="font-serif text-2xl mt-4">Арбитражные споры</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Взыскание долгов, споры по договорам поставки и подряда, защита от необоснованных претензий.</p><p class="mt-6 font-semibold">от 60 000 ₽ за инстанцию</p></div>
+    <div data-reveal class="py-10 md:px-10 border-b md:border-b-0 md:border-r border-navy-900/15"><div class="font-serif text-gold-500 text-xl">02</div><h3 class="font-serif text-2xl mt-4">Корпоративное право</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Регистрация и реорганизация компаний, корпоративные договоры, выход участника из ООО.</p><p class="mt-6 font-semibold">от 25 000 ₽</p></div>
+    <div data-reveal class="py-10 md:pl-10"><div class="font-serif text-gold-500 text-xl">03</div><h3 class="font-serif text-2xl mt-4">Банкротство</h3><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Сопровождение процедур, защита от субсидиарной ответственности, включение в реестр кредиторов.</p><p class="mt-6 font-semibold">от 90 000 ₽</p></div>
   </div>
 </section>
+
+<!-- Case check quiz -->
+<section id="check" class="bg-navy-800 text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24 grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16">
+    <div class="lg:col-span-2">
+      <p class="text-gold-500 uppercase tracking-[.25em] text-xs">Экспресс-оценка</p>
+      <h2 class="font-serif text-4xl sm:text-5xl mt-4 leading-tight">Оцените ситуацию за&nbsp;минуту</h2>
+      <p class="mt-5 text-white/60">Ответьте на три вопроса. Покажем, какая практика нужна, сколько это стоит и что подготовить к консультации.</p>
+      <div class="mt-8 flex gap-2" id="qDots"></div>
+    </div>
+    <div class="lg:col-span-3 min-w-0" id="quiz"></div>
+  </div>
+</section>
+
 <section class="bg-white">
-  <div class="max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16">
-    <div><h2 class="font-serif text-5xl leading-tight">Как мы работаем</h2><p class="mt-5 text-navy-900/60">Каждый этап закреплён в договоре, отчёт по делу приходит раз в неделю.</p></div>
-    <ol class="space-y-8">
-      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500">I</span><div><b>Бесплатная оценка дела</b><p class="text-sm text-navy-900/60 mt-1">Изучаем документы за 2 рабочих дня</p></div></li>
-      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500">II</span><div><b>Стратегия и смета</b><p class="text-sm text-navy-900/60 mt-1">Прогноз сроков, рисков и итоговой стоимости</p></div></li>
-      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500">III</span><div><b>Ведение дела</b><p class="text-sm text-navy-900/60 mt-1">Персональный юрист на связи в рабочее время</p></div></li>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24 grid lg:grid-cols-2 gap-12 lg:gap-16">
+    <div data-reveal><h2 class="font-serif text-4xl sm:text-5xl leading-tight">Как мы работаем</h2><p class="mt-5 text-navy-900/60">Каждый этап закреплён в договоре, отчёт по делу приходит раз в неделю.</p></div>
+    <ol class="space-y-8" data-reveal>
+      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500 w-10 shrink-0">I</span><div><b>Бесплатная оценка дела</b><p class="text-sm text-navy-900/60 mt-1">Изучаем документы за 2 рабочих дня</p></div></li>
+      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500 w-10 shrink-0">II</span><div><b>Стратегия и смета</b><p class="text-sm text-navy-900/60 mt-1">Прогноз сроков, рисков и итоговой стоимости</p></div></li>
+      <li class="flex gap-6"><span class="font-serif text-3xl text-gold-500 w-10 shrink-0">III</span><div><b>Ведение дела</b><p class="text-sm text-navy-900/60 mt-1">Персональный юрист на связи в рабочее время</p></div></li>
     </ol>
   </div>
 </section>
-<section class="max-w-7xl mx-auto px-6 py-24">
-  <div class="bg-navy-800 text-white p-14 grid lg:grid-cols-2 gap-10 items-center">
-    <h2 class="font-serif text-4xl leading-tight">Расскажите о ситуации — оценим перспективы бесплатно</h2>
-    <div class="space-y-3"><input class="w-full px-5 py-4 bg-white/10 border border-white/15 placeholder-white/40" placeholder="Имя"><input class="w-full px-5 py-4 bg-white/10 border border-white/15 placeholder-white/40" placeholder="Телефон"><button class="w-full py-4 bg-gold-500 text-navy-900 font-semibold">Отправить заявку</button></div>
+
+<section id="cases" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <h2 class="font-serif text-4xl sm:text-5xl">Кейсы</h2>
+  <div class="mt-12 grid md:grid-cols-3 gap-6">
+    <article data-reveal class="bg-white p-8 border-t-4 border-gold-500 hover:shadow-xl transition"><div class="text-xs uppercase tracking-[.2em] text-navy-900/50">Арбитраж · поставка</div><div class="font-serif text-4xl mt-4">14,2 млн ₽</div><p class="mt-3 text-sm text-navy-900/60 leading-relaxed">Взыскали долг с поставщика стройматериалов вместе с неустойкой. Решение устояло в апелляции, деньги получены через 5 месяцев.</p></article>
+    <article data-reveal class="bg-white p-8 border-t-4 border-gold-500 hover:shadow-xl transition"><div class="text-xs uppercase tracking-[.2em] text-navy-900/50">Банкротство</div><div class="font-serif text-4xl mt-4">0 ₽</div><p class="mt-3 text-sm text-navy-900/60 leading-relaxed">Отбили требование о субсидиарной ответственности бывшего директора на 38 млн ₽: доказали, что он действовал добросовестно.</p></article>
+    <article data-reveal class="bg-white p-8 border-t-4 border-gold-500 hover:shadow-xl transition"><div class="text-xs uppercase tracking-[.2em] text-navy-900/50">Корпоративный спор</div><div class="font-serif text-4xl mt-4">21 день</div><p class="mt-3 text-sm text-navy-900/60 leading-relaxed">Провели выход участника из ООО с выплатой действительной стоимости доли без суда, через медиацию и корпоративный договор.</p></article>
   </div>
 </section>
-<footer class="border-t border-navy-900/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-navy-900/50"><span class="font-serif text-lg text-navy-900">Право &amp; Дело</span><span>Юридическая компания</span><span>© 2026</span></div></footer>
+
+<section id="team" class="bg-navy-900 text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <h2 class="font-serif text-4xl sm:text-5xl">Команда</h2>
+    <div class="mt-12 grid sm:grid-cols-3 gap-8">
+      <div data-reveal><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="Управляющий партнёр Олег Северин" class="w-full h-80 object-cover object-top grayscale hover:grayscale-0 transition duration-500"><h3 class="font-serif text-2xl mt-5">Олег Северин</h3><p class="text-sm text-gold-300">Управляющий партнёр · 22 года практики</p></div>
+      <div data-reveal><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80&auto=format&fit=crop" alt="Партнёр Ирина Власова" class="w-full h-80 object-cover object-top grayscale hover:grayscale-0 transition duration-500"><h3 class="font-serif text-2xl mt-5">Ирина Власова</h3><p class="text-sm text-gold-300">Партнёр, банкротство · 15 лет</p></div>
+      <div data-reveal><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80&auto=format&fit=crop" alt="Старший юрист Андрей Глебов" class="w-full h-80 object-cover object-top grayscale hover:grayscale-0 transition duration-500"><h3 class="font-serif text-2xl mt-5">Андрей Глебов</h3><p class="text-sm text-gold-300">Старший юрист, арбитраж · 11 лет</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cost" class="max-w-5xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <h2 class="font-serif text-4xl sm:text-5xl">Стоимость</h2>
+  <p class="mt-4 text-navy-900/60">Фиксируем цену этапа в договоре. Гонорар успеха обсуждаем отдельно и только по желанию клиента.</p>
+  <div class="mt-10 divide-y divide-navy-900/15 border-y border-navy-900/15" data-reveal>
+    <div class="py-5 flex flex-col sm:flex-row sm:justify-between gap-1"><span>Устная консультация и оценка перспектив</span><b>бесплатно</b></div>
+    <div class="py-5 flex flex-col sm:flex-row sm:justify-between gap-1"><span>Претензия и досудебное урегулирование</span><b>от 15 000 ₽</b></div>
+    <div class="py-5 flex flex-col sm:flex-row sm:justify-between gap-1"><span>Ведение дела в арбитраже, первая инстанция</span><b>от 60 000 ₽</b></div>
+    <div class="py-5 flex flex-col sm:flex-row sm:justify-between gap-1"><span>Апелляция и кассация</span><b>от 45 000 ₽ за инстанцию</b></div>
+    <div class="py-5 flex flex-col sm:flex-row sm:justify-between gap-1"><span>Сопровождение процедуры банкротства</span><b>от 90 000 ₽</b></div>
+  </div>
+  <div class="mt-12 divide-y divide-navy-900/15" data-reveal>
+    <details class="py-5"><summary class="cursor-pointer list-none flex justify-between gap-4 font-semibold">Можно ли работать удалённо, если мы в другом городе?<span class="faq-ico text-gold-500 text-2xl leading-none">+</span></summary><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Да. Документы принимаем в электронном виде, участвуем в заседаниях по видеосвязи, а в арбитражные суды других регионов выезжаем.</p></details>
+    <details class="py-5"><summary class="cursor-pointer list-none flex justify-between gap-4 font-semibold">Что, если дело проиграно?<span class="faq-ico text-gold-500 text-2xl leading-none">+</span></summary><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Мы заранее говорим о рисках и не берём дела без перспектив. Если суд всё же отказал, апелляцию по этому делу готовим со скидкой 50%.</p></details>
+    <details class="py-5"><summary class="cursor-pointer list-none flex justify-between gap-4 font-semibold">Подписываете ли NDA?<span class="faq-ico text-gold-500 text-2xl leading-none">+</span></summary><p class="mt-3 text-navy-900/60 text-sm leading-relaxed">Да, до передачи документов. Адвокатская тайна защищает вас и без этого, но соглашение даёт дополнительную уверенность.</p></details>
+  </div>
+</section>
+
+<section id="consult" class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 sm:pb-24">
+  <div data-reveal class="bg-navy-800 text-white p-7 sm:p-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+    <div><h2 class="font-serif text-3xl sm:text-4xl leading-tight">Расскажите о ситуации — оценим перспективы бесплатно</h2><p id="quizNote" class="mt-4 text-gold-300 text-sm hidden"></p></div>
+    <form data-demo class="space-y-3 min-w-0">
+      <input required name="name" autocomplete="name" class="w-full px-5 py-4 bg-white/10 border border-white/15 placeholder-white/40 outline-none focus:border-gold-500" placeholder="Имя">
+      <input required type="tel" name="phone" autocomplete="tel" class="w-full px-5 py-4 bg-white/10 border border-white/15 placeholder-white/40 outline-none focus:border-gold-500" placeholder="Телефон">
+      <textarea id="situation" name="text" rows="3" class="w-full px-5 py-4 bg-white/10 border border-white/15 placeholder-white/40 outline-none focus:border-gold-500 resize-none" placeholder="Коротко о ситуации (необязательно)"></textarea>
+      <button class="w-full py-4 bg-gold-500 text-navy-900 font-semibold hover:bg-gold-300 transition">Отправить заявку</button>
+      <p data-msg class="text-sm text-gold-300" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-navy-900/10 pb-12 sm:pb-0"><div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 flex flex-col md:flex-row justify-between gap-3 text-sm text-navy-900/50"><span class="font-serif text-lg text-navy-900">Право &amp; Дело</span><span>Юридическая компания · пн–пт 9:00–19:00</span><span><a href="tel:+79000000000" class="hover:text-navy-900">+7 (900) 000-00-00</a> · <a href="mailto:hello@example.ru" class="hover:text-navy-900">hello@example.ru</a></span><span>© 2026</span></div></footer>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const Q = [
+    { q: 'Что произошло?', a: [['Контрагент не платит или не поставляет', 'debt'], ['Спор между участниками компании', 'corp'], ['У компании долги, грозит банкротство', 'bank'], ['Нужно оформить сделку или реорганизацию', 'deal']] },
+    { q: 'О какой сумме идёт речь?', a: [['До 1 млн ₽', 1], ['1–10 млн ₽', 2], ['Больше 10 млн ₽', 3]] },
+    { q: 'Есть ли подтверждающие документы?', a: [['Да: договор, акты, переписка', 2], ['Частично', 1], ['Почти ничего нет', 0]] }
+  ];
+  const R = {
+    debt: { t: 'Арбитражный спор о взыскании', p: [60000, 90000, 140000], d: 'Начнём с претензии: каждый третий должник платит уже на этом этапе. Если нет, через 30 дней идём в суд.', need: 'договор, акты или накладные, переписку, расчёт долга' },
+    corp: { t: 'Корпоративный спор', p: [40000, 75000, 120000], d: 'Сначала попробуем договориться через медиацию. Это быстрее суда и сохраняет бизнес.', need: 'устав, корпоративный договор, протоколы собраний' },
+    bank: { t: 'Банкротство и защита от субсидиарки', p: [90000, 150000, 250000], d: 'Важно действовать до подачи заявления: проверим сделки за 3 года и выстроим позицию директора.', need: 'бухгалтерскую отчётность, список кредиторов, крупные сделки' },
+    deal: { t: 'Корпоративное сопровождение', p: [25000, 45000, 80000], d: 'Подготовим документы и проведём сделку под ключ, включая регистрацию изменений.', need: 'устав, выписку ЕГРЮЛ, проект сделки' }
+  };
+  let step = 0, ans = [];
+  const box = document.getElementById('quiz'), dots = document.getElementById('qDots');
+  const fmt = n => n.toLocaleString('ru-RU');
+  function render() {
+    dots.innerHTML = Q.map((_, i) => `<span class="h-1 w-12 ${i < step ? 'bg-gold-500' : i === step ? 'bg-gold-300' : 'bg-white/15'} transition"></span>`).join('');
+    if (step < Q.length) {
+      box.innerHTML = `<div class="text-sm text-white/50">Вопрос ${step + 1} из ${Q.length}</div><h3 class="font-serif text-2xl sm:text-3xl mt-2">${Q[step].q}</h3><div class="mt-6 grid gap-3">` +
+        Q[step].a.map(([t, v], i) => `<button data-i="${i}" class="opt text-left px-5 py-4 border border-white/15 hover:border-gold-500 hover:bg-white/5 flex justify-between items-center gap-4"><span>${t}</span><span class="text-gold-500">→</span></button>`).join('') + '</div>' +
+        (step ? '<button id="qBack" class="mt-5 text-sm text-white/50 hover:text-gold-300">← Назад</button>' : '');
+      const back = document.getElementById('qBack'); if (back) back.onclick = () => { step--; ans.pop(); render(); };
+      return;
+    }
+    const r = R[ans[0]], size = ans[1], docs = ans[2];
+    const chance = docs === 2 ? 'высокие' : docs === 1 ? 'средние, нужно усилить позицию' : 'пока низкие, начнём со сбора доказательств';
+    box.innerHTML = `<div class="bg-paper text-navy-900 p-6 sm:p-8">
+      <div class="text-xs uppercase tracking-[.2em] text-navy-900/50">Предварительная оценка</div>
+      <h3 class="font-serif text-2xl sm:text-3xl mt-3">${r.t}</h3>
+      <div class="mt-5 grid sm:grid-cols-2 gap-4">
+        <div class="border-l-2 border-gold-500 pl-4"><div class="text-sm text-navy-900/50">Стоимость этапа</div><div class="font-serif text-2xl">от ${fmt(r.p[size - 1])} ₽</div></div>
+        <div class="border-l-2 border-gold-500 pl-4"><div class="text-sm text-navy-900/50">Перспективы</div><div class="font-semibold">${chance}</div></div>
+      </div>
+      <p class="mt-5 text-navy-900/70 text-sm leading-relaxed">${r.d}</p>
+      <p class="mt-3 text-sm"><b>Что подготовить:</b> ${r.need}.</p>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3"><a href="#consult" id="qGo" class="text-center px-6 py-3.5 bg-navy-900 text-white font-semibold hover:bg-navy-800 transition">Обсудить с юристом</a><button id="qAgain" class="px-6 py-3.5 border border-navy-900/20 hover:border-navy-900 transition">Пройти заново</button></div>
+    </div>`;
+    document.getElementById('qAgain').onclick = () => { step = 0; ans = []; render(); };
+    document.getElementById('qGo').onclick = () => {
+      const n = document.getElementById('quizNote'); n.textContent = `Ваша оценка: ${r.t.toLowerCase()}, от ${fmt(r.p[size - 1])} ₽. Юрист перезвонит и уточнит детали.`; n.classList.remove('hidden');
+      document.getElementById('situation').value = `${Q[0].a.find(a => a[1] === ans[0])[0]}; сумма: ${Q[1].a[size - 1][0].toLowerCase()}`;
+    };
+  }
+  box.addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (!b) return; ans.push(Q[step].a[+b.dataset.i][1]); step++; render(); });
+  render();
+</script>
 </body>
 </html>

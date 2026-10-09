@@ -2,56 +2,263 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Гараж 77 — автосервис</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гараж 77 — автосервис с гарантией до 1 года</title>
+<meta name="description" content="Автосервис «Гараж 77»: диагностика, ТО, ремонт двигателя и ходовой. Онлайн-калькулятор стоимости ремонта, фотоотчёт и гарантия до 1 года.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{display:['Unbounded','sans-serif'],sans:['Inter','sans-serif']},colors:{fire:'#ff6a1a',steel:{800:'#1c1f24',900:'#131518'}}}}}</script>
-<style>body{-webkit-font-smoothing:antialiased}</style>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .svc input:checked + span { border-color:#ff6a1a; background:rgba(255,106,26,.1); }
+  .svc input:checked + span .chk { background:#ff6a1a; border-color:#ff6a1a; }
+  .svc input:checked + span .chk svg { opacity:1; }
+  input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.2); }
+</style>
 </head>
 <body class="bg-steel-900 text-white font-sans">
-<header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-  <div class="font-display text-xl">ГАРАЖ<span class="text-fire">77</span></div>
-  <nav class="hidden lg:flex gap-9 text-sm text-white/65"><a>Услуги</a><a>Цены</a><a>Гарантия</a><a>Контакты</a></nav>
-  <a class="px-5 py-3 rounded-xl bg-fire font-semibold text-sm">Записаться онлайн</a>
-</header>
-<section class="max-w-7xl mx-auto px-6 pt-8 pb-20 grid lg:grid-cols-2 gap-10 items-center">
-  <div>
-    <span class="px-3 py-1.5 rounded-lg bg-white/10 text-sm">🔧 Работаем с 8:00 до 22:00 без выходных</span>
-    <h1 class="font-display text-5xl md:text-6xl leading-[1.08] mt-6">Ремонт авто<br>с гарантией<br><span class="text-fire">до 1 года</span></h1>
-    <p class="mt-6 text-lg text-white/60 max-w-lg">Диагностика, ТО, ремонт двигателя и ходовой. Согласуем каждую работу до начала и присылаем фото и видео замены деталей в мессенджер.</p>
-    <div class="mt-9 flex gap-3"><a class="px-7 py-4 rounded-xl bg-fire font-bold">Рассчитать ремонт</a><a class="px-7 py-4 rounded-xl bg-white/10 font-bold">Прайс-лист</a></div>
+<header class="sticky top-0 z-40 bg-steel-900/90 backdrop-blur border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-4 flex justify-between items-center">
+    <a href="#top" class="font-display text-xl">ГАРАЖ<span class="text-fire">77</span></a>
+    <nav class="hidden lg:flex gap-9 text-sm text-white/65"><a href="#services" class="hover:text-fire transition">Услуги</a><a href="#calc" class="hover:text-fire transition">Цены</a><a href="#warranty" class="hover:text-fire transition">Гарантия</a><a href="#contacts" class="hover:text-fire transition">Контакты</a></nav>
+    <div class="flex items-center gap-2">
+      <a href="#booking" class="hidden sm:inline-block px-5 py-3 rounded-xl bg-fire font-semibold text-sm hover:brightness-110 transition">Записаться онлайн</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-xl bg-white/10 grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
   </div>
-  <div class="grid grid-cols-5 grid-rows-2 gap-4 h-[480px]">
-    <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=900&q=80&auto=format&fit=crop" class="col-span-3 row-span-2 h-full w-full object-cover rounded-3xl" alt="">
-    <img src="https://images.unsplash.com/photo-1645445522156-9ac06bc7a767?w=600&q=80&auto=format&fit=crop" class="col-span-2 h-full w-full object-cover rounded-3xl" alt="">
-    <div class="col-span-2 rounded-3xl bg-fire p-6 flex flex-col justify-between"><span class="font-display text-4xl">−20%</span><span class="text-sm font-medium">на первое ТО при записи через сайт</span></div>
+  <div data-menu class="hidden lg:hidden px-5 pb-6">
+    <nav class="flex flex-col text-lg font-semibold divide-y divide-white/10"><a href="#services" class="py-3">Услуги</a><a href="#calc" class="py-3">Цены и калькулятор</a><a href="#warranty" class="py-3">Гарантия</a><a href="#contacts" class="py-3">Контакты</a></nav>
+    <a href="#booking" class="mt-4 block text-center py-4 rounded-xl bg-fire font-bold">Записаться онлайн</a>
+  </div>
+</header>
+
+<section id="top" class="max-w-7xl mx-auto px-5 sm:px-6 pt-8 pb-20 grid lg:grid-cols-2 gap-10 items-center">
+  <div>
+    <span class="inline-block px-3 py-1.5 rounded-lg bg-white/10 text-sm">🔧 Работаем с 8:00 до 22:00 без выходных</span>
+    <h1 class="font-display text-[34px] sm:text-5xl md:text-6xl leading-[1.12] sm:leading-[1.08] mt-6">Ремонт авто<br>с гарантией<br><span class="text-fire">до 1 года</span></h1>
+    <p class="mt-6 text-base sm:text-lg text-white/60 max-w-lg">Диагностика, ТО, ремонт двигателя и ходовой. Согласуем каждую работу до начала и присылаем фото и видео замены деталей в мессенджер.</p>
+    <div class="mt-9 flex flex-col sm:flex-row gap-3"><a href="#calc" class="text-center px-7 py-4 rounded-xl bg-fire font-bold hover:brightness-110 transition">Рассчитать ремонт</a><a href="#services" class="text-center px-7 py-4 rounded-xl bg-white/10 font-bold hover:bg-white/20 transition">Прайс-лист</a></div>
+  </div>
+  <div class="grid grid-cols-5 grid-rows-2 gap-3 sm:gap-4 h-[340px] sm:h-[480px]">
+    <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=900&q=80&auto=format&fit=crop" class="col-span-3 row-span-2 h-full w-full object-cover rounded-3xl" alt="Автомобиль на подъёмнике в сервисе">
+    <img src="https://images.unsplash.com/photo-1645445522156-9ac06bc7a767?w=600&q=80&auto=format&fit=crop" class="col-span-2 h-full w-full object-cover rounded-3xl" alt="Мастер за работой">
+    <a href="#calc" class="col-span-2 rounded-3xl bg-fire p-4 sm:p-6 flex flex-col justify-between hover:brightness-110 transition"><span class="font-display text-3xl sm:text-4xl">−20%</span><span class="text-xs sm:text-sm font-medium">на первое ТО при записи через сайт</span></a>
   </div>
 </section>
-<section class="bg-steel-800">
-  <div class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="font-display text-4xl">Популярные услуги</h2>
+
+<section id="services" class="bg-steel-800">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+    <h2 class="font-display text-3xl sm:text-4xl">Популярные услуги</h2>
     <div class="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Компьютерная диагностика</b><p class="text-sm text-white/50 mt-1">30 минут</p></div><span class="font-display text-fire">1 200 ₽</span></div>
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Замена масла и фильтра</b><p class="text-sm text-white/50 mt-1">40 минут</p></div><span class="font-display text-fire">900 ₽</span></div>
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Шиномонтаж R16</b><p class="text-sm text-white/50 mt-1">4 колеса, балансировка</p></div><span class="font-display text-fire">2 400 ₽</span></div>
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Замена тормозных колодок</b><p class="text-sm text-white/50 mt-1">одна ось</p></div><span class="font-display text-fire">1 500 ₽</span></div>
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Развал-схождение</b><p class="text-sm text-white/50 mt-1">3D-стенд</p></div><span class="font-display text-fire">2 000 ₽</span></div>
-      <div class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center"><div><b>Заправка кондиционера</b><p class="text-sm text-white/50 mt-1">с проверкой на утечки</p></div><span class="font-display text-fire">2 500 ₽</span></div>
+      <a href="#calc" data-pre="0" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Компьютерная диагностика</b><p class="text-sm text-white/50 mt-1">30 минут</p></div><span class="font-display text-fire whitespace-nowrap">1 200 ₽</span></a>
+      <a href="#calc" data-pre="1" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Замена масла и фильтра</b><p class="text-sm text-white/50 mt-1">40 минут</p></div><span class="font-display text-fire whitespace-nowrap">900 ₽</span></a>
+      <a href="#calc" data-pre="2" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Шиномонтаж R16</b><p class="text-sm text-white/50 mt-1">4 колеса, балансировка</p></div><span class="font-display text-fire whitespace-nowrap">2 400 ₽</span></a>
+      <a href="#calc" data-pre="3" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Замена тормозных колодок</b><p class="text-sm text-white/50 mt-1">одна ось</p></div><span class="font-display text-fire whitespace-nowrap">1 500 ₽</span></a>
+      <a href="#calc" data-pre="4" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Развал-схождение</b><p class="text-sm text-white/50 mt-1">3D-стенд</p></div><span class="font-display text-fire whitespace-nowrap">2 000 ₽</span></a>
+      <a href="#calc" data-pre="5" data-reveal class="rounded-2xl bg-steel-900 p-6 flex justify-between items-center gap-4 border border-transparent hover:border-fire/50 transition"><div><b>Заправка кондиционера</b><p class="text-sm text-white/50 mt-1">с проверкой на утечки</p></div><span class="font-display text-fire whitespace-nowrap">2 500 ₽</span></a>
     </div>
   </div>
 </section>
-<section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-4 gap-6">
-  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">📸</div><b class="block mt-4">Фотоотчёт</b><p class="text-sm text-white/55 mt-2">Видите старые и новые детали</p></div>
-  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">🧾</div><b class="block mt-4">Цена до работ</b><p class="text-sm text-white/55 mt-2">Без доп. работ без согласования</p></div>
-  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">🛡️</div><b class="block mt-4">Гарантия 1 год</b><p class="text-sm text-white/55 mt-2">На работы и наши запчасти</p></div>
-  <div class="rounded-3xl border border-white/10 p-7"><div class="text-3xl">☕</div><b class="block mt-4">Зона ожидания</b><p class="text-sm text-white/55 mt-2">Кофе, Wi-Fi и вид на подъёмник</p></div>
-</section>
-<section class="max-w-7xl mx-auto px-6 pb-20">
-  <div class="rounded-[32px] bg-fire p-12 grid lg:grid-cols-2 gap-8 items-center">
-    <h2 class="font-display text-4xl leading-tight">Запишитесь на удобное время</h2>
-    <div class="grid sm:grid-cols-2 gap-3"><input class="px-5 py-4 rounded-xl text-steel-900" placeholder="Марка и модель"><input class="px-5 py-4 rounded-xl text-steel-900" placeholder="Телефон"><button class="sm:col-span-2 py-4 rounded-xl bg-steel-900 font-bold">Записаться</button></div>
+
+<!-- Calculator -->
+<section id="calc" class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <div class="lg:col-span-3 min-w-0">
+      <h2 class="font-display text-3xl sm:text-4xl">Калькулятор ремонта</h2>
+      <p class="mt-3 text-white/55">Выберите класс машины и работы. Цена с учётом работы мастера, запчасти считаем отдельно по вашему выбору.</p>
+      <div class="mt-8 text-sm text-white/60">Класс автомобиля</div>
+      <div id="classes" class="mt-3 grid grid-cols-3 gap-2 text-sm"></div>
+      <div class="mt-8 text-sm text-white/60">Работы</div>
+      <div id="works" class="mt-3 grid sm:grid-cols-2 gap-2"></div>
+    </div>
+    <div class="lg:col-span-2">
+      <div class="lg:sticky lg:top-24 rounded-3xl bg-steel-800 border border-white/10 p-6 sm:p-8">
+        <div class="text-sm text-white/50">Ваш заказ-наряд</div>
+        <ul id="order" class="mt-4 space-y-2 text-sm"></ul>
+        <label class="mt-5 flex items-center gap-3 text-sm cursor-pointer"><input id="first" type="checkbox" checked class="w-4 h-4 accent-[#ff6a1a]">Первый визит: −20% на работы</label>
+        <div class="mt-6 pt-6 border-t border-white/10 flex items-end justify-between gap-4">
+          <div><div class="text-sm text-white/50">Итого за работы</div><div id="total" class="font-display text-3xl sm:text-4xl text-fire">0 ₽</div><div id="old" class="text-sm text-white/40 line-through"></div></div>
+          <div class="text-right text-sm text-white/50">Время<br><b id="time" class="text-white text-lg">0 мин</b></div>
+        </div>
+        <a href="#booking" id="toBooking" class="mt-6 block text-center py-4 rounded-xl bg-fire font-bold hover:brightness-110 transition">Записаться с этим расчётом</a>
+      </div>
+    </div>
   </div>
 </section>
-<footer class="border-t border-white/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-white/45"><span class="font-display text-white">ГАРАЖ<span class="text-fire">77</span></span><span>Автосервис полного цикла</span><span>© 2026</span></div></footer>
+
+<section id="warranty" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+  <div data-reveal class="rounded-3xl border border-white/10 p-6 sm:p-7 hover:border-fire/50 transition"><div class="text-3xl">📸</div><b class="block mt-4">Фотоотчёт</b><p class="text-sm text-white/55 mt-2">Видите старые и новые детали</p></div>
+  <div data-reveal class="rounded-3xl border border-white/10 p-6 sm:p-7 hover:border-fire/50 transition"><div class="text-3xl">🧾</div><b class="block mt-4">Цена до работ</b><p class="text-sm text-white/55 mt-2">Без доп. работ без согласования</p></div>
+  <div data-reveal class="rounded-3xl border border-fire/40 bg-fire/10 p-6 sm:p-7"><div class="text-3xl">🛡️</div><b class="block mt-4">Гарантия 1 год</b><p class="text-sm text-white/55 mt-2">На работы и наши запчасти</p></div>
+  <div data-reveal class="rounded-3xl border border-white/10 p-6 sm:p-7 hover:border-fire/50 transition"><div class="text-3xl">☕</div><b class="block mt-4">Зона ожидания</b><p class="text-sm text-white/55 mt-2">Кофе, Wi-Fi и вид на подъёмник</p></div>
+</section>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 grid md:grid-cols-3 gap-4">
+  <img data-reveal src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=900&q=80&auto=format&fit=crop" alt="Замена масла в двигателе" class="h-56 sm:h-64 w-full object-cover rounded-3xl">
+  <img data-reveal src="https://images.unsplash.com/photo-1599256872237-5dcc0fbe9668?w=900&q=80&auto=format&fit=crop" alt="Мастер ремонтирует подвеску" class="h-56 sm:h-64 w-full object-cover rounded-3xl">
+  <img data-reveal src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=900&q=80&auto=format&fit=crop" alt="Бокс автосервиса" class="h-56 sm:h-64 w-full object-cover rounded-3xl">
+</section>
+
+<section id="booking" class="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+  <div data-reveal class="rounded-[32px] bg-fire p-7 sm:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div><h2 class="font-display text-3xl sm:text-4xl leading-tight">Запишитесь на удобное время</h2><p class="mt-4 text-white/85">Подтвердим запись звонком в течение 15 минут.</p><p id="calcNote" class="mt-4 text-sm font-semibold bg-steel-900/20 rounded-xl p-3 hidden"></p></div>
+    <form data-demo class="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+      <input required name="car" class="min-w-0 px-5 py-4 rounded-xl text-steel-900 outline-none focus:ring-2 focus:ring-steel-900" placeholder="Марка и модель">
+      <input required type="tel" name="phone" class="min-w-0 px-5 py-4 rounded-xl text-steel-900 outline-none focus:ring-2 focus:ring-steel-900" placeholder="Телефон">
+      <input required type="date" id="date" name="date" class="min-w-0 px-5 py-4 rounded-xl text-steel-900 outline-none focus:ring-2 focus:ring-steel-900">
+      <select name="time" class="min-w-0 px-5 py-4 rounded-xl text-steel-900 outline-none focus:ring-2 focus:ring-steel-900"><option>09:00</option><option>11:00</option><option>13:00</option><option>15:00</option><option>17:00</option><option>19:00</option></select>
+      <button class="sm:col-span-2 py-4 rounded-xl bg-steel-900 font-bold hover:bg-black transition">Записаться</button>
+      <p data-msg class="sm:col-span-2 text-sm text-steel-900" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer id="contacts" class="border-t border-white/10 pb-12 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm text-white/50">
+    <div><span class="font-display text-white text-lg">ГАРАЖ<span class="text-fire">77</span></span><p class="mt-2">Автосервис полного цикла · © 2026</p></div>
+    <div><b class="text-white">Адрес</b><p class="mt-2">Промышленная ул., 7, бокс 3<br>въезд со двора</p></div>
+    <div><b class="text-white">Часы работы</b><p class="mt-2">Ежедневно 8:00–22:00</p></div>
+    <div><b class="text-white">Связаться</b><p class="mt-2"><a href="tel:+79000000000" class="hover:text-fire">+7 (900) 000-00-00</a><br><a href="mailto:hello@example.ru" class="hover:text-fire">hello@example.ru</a></p></div>
+  </div>
+</footer>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const CLS = [['Легковой', 1], ['Кроссовер', 1.2], ['Премиум', 1.5]];
+  const WORKS = [
+    ['Компьютерная диагностика', 1200, 30], ['Замена масла и фильтра', 900, 40], ['Шиномонтаж R16', 2400, 60],
+    ['Замена тормозных колодок', 1500, 50], ['Развал-схождение', 2000, 45], ['Заправка кондиционера', 2500, 40],
+    ['Замена ремня ГРМ', 6500, 180], ['Замена амортизаторов (ось)', 3800, 120]
+  ];
+  let cls = 0; const sel = new Set([0, 1]);
+  const fmt = n => n.toLocaleString('ru-RU');
+  const $ = id => document.getElementById(id);
+  function render() {
+    $('classes').innerHTML = CLS.map(([n, k], i) => `<button data-c="${i}" class="py-3 rounded-xl transition ${i === cls ? 'bg-fire font-bold' : 'bg-white/5 border border-white/10 hover:border-fire/50'}">${n}${k > 1 ? `<span class="block text-[11px] opacity-70">×${String(k).replace('.', ',')}</span>` : '<span class="block text-[11px] opacity-70">базовая цена</span>'}</button>`).join('');
+    const k = CLS[cls][1];
+    $('works').innerHTML = WORKS.map(([n, p, t], i) => `<label class="svc cursor-pointer"><input type="checkbox" class="sr-only" data-w="${i}" ${sel.has(i) ? 'checked' : ''}><span class="flex items-center gap-3 p-4 rounded-xl border border-white/10 bg-white/[.03] hover:border-fire/50 transition"><span class="chk w-5 h-5 shrink-0 rounded-md border-2 border-white/30 grid place-items-center transition"><svg class="opacity-0" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg></span><span class="flex-1 text-sm">${n}</span><span class="text-sm text-white/60 whitespace-nowrap">${fmt(Math.round(p * k / 10) * 10)} ₽</span></span></label>`).join('');
+    const items = WORKS.map((w, i) => [w, i]).filter(([, i]) => sel.has(i));
+    const sum = items.reduce((a, [w]) => a + Math.round(w[1] * k / 10) * 10, 0);
+    const disc = $('first').checked ? Math.round(sum * 0.2) : 0;
+    $('order').innerHTML = items.length ? items.map(([w]) => `<li class="flex justify-between gap-3"><span>${w[0]}</span><span class="whitespace-nowrap">${fmt(Math.round(w[1] * k / 10) * 10)} ₽</span></li>`).join('') + (disc ? `<li class="flex justify-between gap-3 text-fire"><span>Скидка первого визита</span><span>−${fmt(disc)} ₽</span></li>` : '') : '<li class="text-white/40">Отметьте работы слева</li>';
+    $('total').textContent = fmt(sum - disc) + ' ₽';
+    $('old').textContent = disc ? fmt(sum) + ' ₽' : '';
+    const mins = items.reduce((a, [w]) => a + w[2], 0);
+    $('time').textContent = mins >= 60 ? `${Math.floor(mins / 60)} ч ${mins % 60 ? mins % 60 + ' мин' : ''}`.trim() : mins + ' мин';
+  }
+  $('classes').onclick = e => { const b = e.target.closest('[data-c]'); if (b) { cls = +b.dataset.c; render(); } };
+  $('works').onchange = e => { const i = +e.target.dataset.w; e.target.checked ? sel.add(i) : sel.delete(i); render(); };
+  $('first').onchange = render;
+  document.querySelectorAll('[data-pre]').forEach(a => a.addEventListener('click', () => { sel.add(+a.dataset.pre); render(); }));
+  $('toBooking').addEventListener('click', () => {
+    const n = $('calcNote'); const names = WORKS.filter((_, i) => sel.has(i)).map(w => w[0][0].toLowerCase() + w[0].slice(1));
+    n.textContent = names.length ? `Ваш расчёт: ${names.join(', ')}. ${CLS[cls][0]}, итого ${$('total').textContent}, около ${$('time').textContent}.` : '';
+    n.classList.toggle('hidden', !names.length);
+  });
+  // Дата записи: от завтра
+  const d = new Date(); d.setDate(d.getDate() + 1); const iso = d.toISOString().slice(0, 10);
+  $('date').min = iso; $('date').value = iso;
+  render();
+</script>
 </body>
 </html>

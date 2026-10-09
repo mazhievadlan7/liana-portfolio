@@ -2,54 +2,273 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>PULSE — фитнес-клуб</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PULSE — фитнес-клуб 24/7</title>
+<meta name="description" content="Фитнес-клуб PULSE: тренажёрный зал, бассейн 25 метров и 60 групповых программ, открыт круглосуточно. Расписание онлайн и бесплатная пробная тренировка.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{display:['Oswald','sans-serif'],sans:['Inter','sans-serif']},colors:{neon:'#c6ff3d',coal:'#0e0f10'}}}}</script>
-<style>body{-webkit-font-smoothing:antialiased;background:#0e0f10}.stroke{-webkit-text-stroke:2px #c6ff3d;color:transparent}</style>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  body { background:#0e0f10; }
+  .stroke { -webkit-text-stroke: 2px #c6ff3d; color: transparent; }
+  .btn-neon { transition: transform .2s, box-shadow .2s; }
+  .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(198,255,61,.6); }
+</style>
 </head>
 <body class="text-white font-sans">
-<section class="relative min-h-[720px] overflow-hidden">
-  <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=2000&q=80&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50" alt="">
+<section id="top" class="relative min-h-[640px] sm:min-h-[720px] overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=2000&q=80&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Тренировка в зале PULSE">
   <div class="absolute inset-0 bg-gradient-to-r from-coal via-coal/70 to-transparent"></div>
-  <header class="relative max-w-7xl mx-auto px-6 py-7 flex justify-between items-center">
-    <div class="font-display text-3xl tracking-wider">PULSE<span class="text-neon">.</span></div>
-    <nav class="hidden lg:flex gap-9 text-sm uppercase tracking-widest text-white/70"><a>Клуб</a><a>Тренеры</a><a>Расписание</a><a>Абонементы</a></nav>
-    <a class="px-6 py-3 bg-neon text-coal font-semibold uppercase text-sm tracking-wider">Пробная тренировка</a>
+  <header class="relative z-30 max-w-7xl mx-auto px-5 sm:px-6 py-6 sm:py-7 flex justify-between items-center">
+    <a href="#top" class="font-display text-3xl tracking-wider">PULSE<span class="text-neon">.</span></a>
+    <nav class="hidden lg:flex gap-9 text-sm uppercase tracking-widest text-white/70"><a href="#club" class="hover:text-neon transition">Клуб</a><a href="#trainers" class="hover:text-neon transition">Тренеры</a><a href="#schedule" class="hover:text-neon transition">Расписание</a><a href="#plans" class="hover:text-neon transition">Абонементы</a></nav>
+    <div class="flex items-center gap-2">
+      <a href="#trial" class="hidden sm:inline-block px-6 py-3 bg-neon text-coal font-semibold uppercase text-sm tracking-wider btn-neon">Пробная тренировка</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 border border-white/25 grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c6ff3d" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
   </header>
-  <div class="relative max-w-7xl mx-auto px-6 pt-20">
-    <p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Фитнес-клуб 24/7 · 2 400 м²</p>
-    <h1 class="font-display text-7xl md:text-8xl uppercase leading-[.95] mt-6">Сильнее,<br><span class="stroke">чем вчера</span></h1>
-    <p class="mt-7 text-lg text-white/70 max-w-lg">Тренажёрный зал, функциональная зона, бассейн 25 метров и 60 групповых программ. Первая тренировка с тренером бесплатно.</p>
-    <div class="mt-10 flex gap-4"><a class="px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider">Записаться бесплатно</a><a class="px-8 py-4 border border-white/30 font-bold uppercase tracking-wider">Смотреть клуб ▶</a></div>
+  <div data-menu class="hidden lg:hidden absolute z-20 inset-x-0 top-[84px] mx-4 bg-coal border border-white/10 p-6">
+    <nav class="flex flex-col font-display text-3xl uppercase gap-2"><a href="#club" class="py-1 hover:text-neon">Клуб</a><a href="#trainers" class="py-1 hover:text-neon">Тренеры</a><a href="#schedule" class="py-1 hover:text-neon">Расписание</a><a href="#plans" class="py-1 hover:text-neon">Абонементы</a></nav>
+    <a href="#trial" class="mt-6 block text-center py-4 bg-neon text-coal font-bold uppercase tracking-wider">Пробная тренировка</a>
+  </div>
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-6 pt-10 sm:pt-20 pb-16">
+    <p class="text-neon uppercase tracking-[.3em] text-xs sm:text-sm font-semibold">Фитнес-клуб 24/7 · 2 400 м²</p>
+    <h1 class="font-display text-6xl sm:text-7xl md:text-8xl uppercase leading-[.95] mt-6">Сильнее,<br><span class="stroke">чем вчера</span></h1>
+    <p class="mt-7 text-base sm:text-lg text-white/70 max-w-lg">Тренажёрный зал, функциональная зона, бассейн 25 метров и 60 групповых программ. Первая тренировка с тренером бесплатно.</p>
+    <div class="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4"><a href="#trial" class="text-center px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider btn-neon">Записаться бесплатно</a><a href="#club" class="text-center px-8 py-4 border border-white/30 font-bold uppercase tracking-wider hover:border-neon hover:text-neon transition">Смотреть клуб ▶</a></div>
   </div>
 </section>
 
 <section class="border-y border-white/10">
-  <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
-    <div><div class="font-display text-5xl text-neon">24/7</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">без выходных</div></div>
-    <div><div class="font-display text-5xl">32</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">тренера</div></div>
-    <div><div class="font-display text-5xl">60+</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">групповых программ</div></div>
-    <div><div class="font-display text-5xl">25 м</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">бассейн</div></div>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div><div class="font-display text-4xl sm:text-5xl text-neon">24/7</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">без выходных</div></div>
+    <div><div class="font-display text-4xl sm:text-5xl">32</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">тренера</div></div>
+    <div><div class="font-display text-4xl sm:text-5xl">60+</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">групповых программ</div></div>
+    <div><div class="font-display text-4xl sm:text-5xl">25 м</div><div class="text-sm text-white/60 mt-1 uppercase tracking-wider">бассейн</div></div>
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-6 py-24">
-  <h2 class="font-display text-5xl uppercase">Абонементы</h2>
+<section id="club" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <h2 class="font-display text-4xl sm:text-5xl uppercase">Клуб</h2>
+    <p class="text-white/60 max-w-md">Оборудование меняем каждые три года. Зоны не пересекаются, поэтому даже вечером не ждёте тренажёр.</p>
+  </div>
+  <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+    <figure data-reveal class="col-span-2 md:row-span-2 relative group overflow-hidden"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80&auto=format&fit=crop" alt="Тренажёрный зал" class="w-full h-64 md:h-full object-cover group-hover:scale-105 transition duration-700"><figcaption class="absolute left-4 bottom-4 px-3 py-1.5 bg-coal/80 text-sm uppercase tracking-wider">Тренажёрный зал · 900 м²</figcaption></figure>
+    <figure data-reveal class="relative group overflow-hidden"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=700&q=80&auto=format&fit=crop" alt="Кардиозона" class="w-full h-44 sm:h-56 object-cover group-hover:scale-105 transition duration-700"><figcaption class="absolute left-3 bottom-3 px-2.5 py-1 bg-coal/80 text-xs uppercase tracking-wider">Кардиозона</figcaption></figure>
+    <figure data-reveal class="relative group overflow-hidden"><img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=700&q=80&auto=format&fit=crop" alt="Функциональная зона" class="w-full h-44 sm:h-56 object-cover group-hover:scale-105 transition duration-700"><figcaption class="absolute left-3 bottom-3 px-2.5 py-1 bg-coal/80 text-xs uppercase tracking-wider">Функционал</figcaption></figure>
+    <figure data-reveal class="relative group overflow-hidden"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=700&q=80&auto=format&fit=crop" alt="Зона свободных весов" class="w-full h-44 sm:h-56 object-cover group-hover:scale-105 transition duration-700"><figcaption class="absolute left-3 bottom-3 px-2.5 py-1 bg-coal/80 text-xs uppercase tracking-wider">Свободные веса</figcaption></figure>
+    <figure data-reveal class="relative group overflow-hidden"><img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=700&q=80&auto=format&fit=crop" alt="Ряд гантелей" class="w-full h-44 sm:h-56 object-cover group-hover:scale-105 transition duration-700"><figcaption class="absolute left-3 bottom-3 px-2.5 py-1 bg-coal/80 text-xs uppercase tracking-wider">Гантели до 60 кг</figcaption></figure>
+  </div>
+</section>
+
+<!-- Schedule -->
+<section id="schedule" class="bg-white/[.03] border-y border-white/10">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div><p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Онлайн-расписание</p><h2 class="font-display text-4xl sm:text-5xl uppercase mt-3">Групповые тренировки</h2></div>
+      <div id="dirs" class="flex flex-wrap gap-2 text-sm"></div>
+    </div>
+    <div id="days" class="mt-8 grid grid-cols-7 gap-1 sm:gap-2"></div>
+    <div id="classes" class="mt-6 grid gap-2"></div>
+  </div>
+</section>
+
+<section id="plans" class="max-w-7xl mx-auto px-5 sm:px-6 py-20 sm:py-24">
+  <h2 class="font-display text-4xl sm:text-5xl uppercase">Абонементы</h2>
   <div class="mt-12 grid md:grid-cols-3 gap-5">
-    <div class="p-9 border border-white/10"><div class="uppercase tracking-widest text-sm text-white/60">Дневной</div><div class="font-display text-5xl mt-4">2 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Зал и групповые с 7:00 до 17:00</li><li>— Вводная тренировка</li><li>— Заморозка 14 дней</li></ul><a class="mt-10 block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider">Выбрать</a></div>
-    <div class="p-9 bg-neon text-coal relative"><span class="absolute top-6 right-6 text-xs font-bold uppercase bg-coal text-neon px-3 py-1">Хит</span><div class="uppercase tracking-widest text-sm">Безлимит</div><div class="font-display text-5xl mt-4">3 900 ₽<span class="text-lg font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-sm"><li>— Клуб 24/7, бассейн и сауна</li><li>— 2 тренировки с тренером</li><li>— Заморозка 30 дней</li></ul><a class="mt-10 block text-center py-4 bg-coal text-neon uppercase font-semibold tracking-wider">Выбрать</a></div>
-    <div class="p-9 border border-white/10"><div class="uppercase tracking-widest text-sm text-white/60">Персональный</div><div class="font-display text-5xl mt-4">12 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Всё из «Безлимита»</li><li>— 12 персональных тренировок</li><li>— План питания от нутрициолога</li></ul><a class="mt-10 block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider">Выбрать</a></div>
+    <div data-reveal class="p-7 sm:p-9 border border-white/10 hover:border-white/30 transition flex flex-col"><div class="uppercase tracking-widest text-sm text-white/60">Дневной</div><div class="font-display text-5xl mt-4">2 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Зал и групповые с 7:00 до 17:00</li><li>— Вводная тренировка</li><li>— Заморозка 14 дней</li></ul><a href="#trial" data-plan="Дневной" class="mt-auto pt-10"><span class="block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider hover:border-neon hover:text-neon transition">Выбрать</span></a></div>
+    <div data-reveal class="p-7 sm:p-9 bg-neon text-coal relative flex flex-col"><span class="absolute top-6 right-6 text-xs font-bold uppercase bg-coal text-neon px-3 py-1">Хит</span><div class="uppercase tracking-widest text-sm">Безлимит</div><div class="font-display text-5xl mt-4">3 900 ₽<span class="text-lg font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-sm"><li>— Клуб 24/7, бассейн и сауна</li><li>— 2 тренировки с тренером</li><li>— Заморозка 30 дней</li></ul><a href="#trial" data-plan="Безлимит" class="mt-auto pt-10"><span class="block text-center py-4 bg-coal text-neon uppercase font-semibold tracking-wider hover:bg-black transition">Выбрать</span></a></div>
+    <div data-reveal class="p-7 sm:p-9 border border-white/10 hover:border-white/30 transition flex flex-col"><div class="uppercase tracking-widest text-sm text-white/60">Персональный</div><div class="font-display text-5xl mt-4">12 900 ₽<span class="text-lg text-white/50 font-sans">/мес</span></div><ul class="mt-8 space-y-3 text-white/75 text-sm"><li>— Всё из «Безлимита»</li><li>— 12 персональных тренировок</li><li>— План питания от нутрициолога</li></ul><a href="#trial" data-plan="Персональный" class="mt-auto pt-10"><span class="block text-center py-4 border border-white/30 uppercase font-semibold tracking-wider hover:border-neon hover:text-neon transition">Выбрать</span></a></div>
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-5">
-  <img src="https://images.unsplash.com/photo-1518617840859-acd542e13a99?w=1100&q=80&auto=format&fit=crop" class="h-[440px] w-full object-cover" alt="">
-  <div class="bg-white/5 border border-white/10 p-12 flex flex-col justify-between">
-    <div><p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Персональные тренировки</p><h2 class="font-display text-5xl uppercase mt-5 leading-tight">Результат за 12 недель или вернём деньги</h2><p class="mt-5 text-white/65">Тренер составит программу под вашу цель: похудение, рельеф, сила или восстановление после травмы.</p></div>
-    <a class="mt-10 self-start px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider">Подобрать тренера</a>
+<section id="trainers" class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 sm:pb-24">
+  <h2 class="font-display text-4xl sm:text-5xl uppercase">Тренеры</h2>
+  <div class="mt-10 grid sm:grid-cols-3 gap-5">
+    <div data-reveal class="group relative overflow-hidden"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&q=80&auto=format&fit=crop" alt="Тренер Артём Волков" class="w-full h-80 sm:h-96 object-cover grayscale group-hover:grayscale-0 transition duration-500"><div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-coal to-transparent"><div class="font-display text-2xl uppercase">Артём Волков</div><div class="text-sm text-neon">Силовой тренинг · КМС по пауэрлифтингу</div></div></div>
+    <div data-reveal class="group relative overflow-hidden"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&auto=format&fit=crop" alt="Тренер Алина Зорина" class="w-full h-80 sm:h-96 object-cover grayscale group-hover:grayscale-0 transition duration-500"><div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-coal to-transparent"><div class="font-display text-2xl uppercase">Алина Зорина</div><div class="text-sm text-neon">Пилатес и стретчинг · 8 лет</div></div></div>
+    <div data-reveal class="group relative overflow-hidden"><img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80&auto=format&fit=crop" alt="Тренер Ксения Лунина" class="w-full h-80 sm:h-96 object-cover grayscale group-hover:grayscale-0 transition duration-500"><div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-coal to-transparent"><div class="font-display text-2xl uppercase">Ксения Лунина</div><div class="text-sm text-neon">Функциональный тренинг · 6 лет</div></div></div>
   </div>
 </section>
-<footer class="border-t border-white/10"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-white/45"><span class="font-display text-xl text-white">PULSE<span class="text-neon">.</span></span><span>Фитнес-клуб · открыт круглосуточно</span><span>© 2026</span></div></footer>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-6 pb-20 sm:pb-24 grid md:grid-cols-2 gap-5">
+  <img data-reveal src="https://images.unsplash.com/photo-1518617840859-acd542e13a99?w=1100&q=80&auto=format&fit=crop" class="h-72 md:h-[440px] w-full object-cover" alt="Персональная тренировка">
+  <div data-reveal class="bg-white/5 border border-white/10 p-7 sm:p-12 flex flex-col justify-between">
+    <div><p class="text-neon uppercase tracking-[.3em] text-sm font-semibold">Персональные тренировки</p><h2 class="font-display text-4xl sm:text-5xl uppercase mt-5 leading-tight">Результат за 12 недель или вернём деньги</h2><p class="mt-5 text-white/65">Тренер составит программу под вашу цель: похудение, рельеф, сила или восстановление после травмы.</p></div>
+    <a href="#trainers" class="mt-10 self-start px-8 py-4 bg-neon text-coal font-bold uppercase tracking-wider btn-neon">Подобрать тренера</a>
+  </div>
+</section>
+
+<section id="trial" class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 sm:pb-24">
+  <div data-reveal class="border-2 border-neon p-7 sm:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div><h2 class="font-display text-4xl sm:text-5xl uppercase leading-tight">Пробная тренировка <span class="text-neon">бесплатно</span></h2><p class="mt-4 text-white/65">Покажем клуб, проведём замеры и составим план на первый месяц. Займёт около часа.</p><p id="pickNote" class="mt-4 text-neon text-sm hidden"></p></div>
+    <form data-demo class="min-w-0 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <input required name="name" autocomplete="name" class="px-5 py-4 bg-white/5 border border-white/15 placeholder-white/40 outline-none focus:border-neon" placeholder="Имя">
+      <input required type="tel" name="phone" autocomplete="tel" class="px-5 py-4 bg-white/5 border border-white/15 placeholder-white/40 outline-none focus:border-neon" placeholder="Телефон">
+      <select name="goal" class="min-w-0 w-full sm:col-span-2 px-5 py-4 bg-white/5 border border-white/15 outline-none focus:border-neon [&>option]:text-coal"><option>Цель: похудеть</option><option>Цель: набрать мышечную массу</option><option>Цель: общая форма</option><option>Цель: восстановиться после травмы</option></select>
+      <button class="sm:col-span-2 py-4 bg-neon text-coal font-bold uppercase tracking-wider btn-neon">Записаться</button>
+      <p data-msg class="sm:col-span-2 text-sm text-neon" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 pb-12 sm:pb-0"><div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 flex flex-col md:flex-row justify-between gap-3 text-sm text-white/45"><span class="font-display text-xl text-white">PULSE<span class="text-neon">.</span></span><span>Фитнес-клуб · открыт круглосуточно</span><span><a href="tel:+79000000000" class="hover:text-neon">+7 (900) 000-00-00</a> · <a href="mailto:hello@example.ru" class="hover:text-neon">hello@example.ru</a></span><span>© 2026</span></div></footer>
+
+<!-- Class booking modal -->
+<div id="classModal" data-modal class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/75 backdrop-blur-sm sm:p-6">
+  <div class="bg-coal border border-white/15 w-full sm:max-w-md p-6 sm:p-8 relative">
+    <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 border border-white/20 grid place-items-center hover:border-neon">×</button>
+    <p class="text-neon uppercase tracking-[.25em] text-xs font-semibold">Запись на занятие</p>
+    <h3 id="cmTitle" class="font-display text-3xl uppercase mt-3 pr-10">Пилатес</h3>
+    <p id="cmInfo" class="text-white/60 text-sm mt-2"></p>
+    <form data-demo class="mt-6 space-y-3">
+      <input required name="name" class="w-full px-5 py-4 bg-white/5 border border-white/15 placeholder-white/40 outline-none focus:border-neon" placeholder="Имя">
+      <input required type="tel" name="phone" class="w-full px-5 py-4 bg-white/5 border border-white/15 placeholder-white/40 outline-none focus:border-neon" placeholder="Телефон">
+      <button class="w-full py-4 bg-neon text-coal font-bold uppercase tracking-wider">Забронировать место</button>
+      <p data-msg class="text-sm text-neon" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const DIRS = { all: 'Все', power: 'Сила', cardio: 'Кардио', mind: 'Mind & body', water: 'Бассейн' };
+  const BASE = [
+    ['07:00', 'Утренний HIIT', 'cardio', 'Ксения Лунина', 45], ['08:30', 'Аквааэробика', 'water', 'Ольга Ким', 50], ['10:00', 'Пилатес', 'mind', 'Алина Зорина', 55],
+    ['12:00', 'Кроссфит', 'power', 'Артём Волков', 60], ['17:30', 'Сайкл', 'cardio', 'Денис Ушаков', 45], ['18:30', 'Силовая выносливость', 'power', 'Артём Волков', 55],
+    ['19:30', 'Стретчинг', 'mind', 'Алина Зорина', 50], ['20:00', 'Плавание: техника', 'water', 'Ольга Ким', 45], ['21:00', 'Йога', 'mind', 'Алина Зорина', 60]
+  ];
+  const DAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  const today = (new Date().getDay() + 6) % 7;
+  let day = today, dir = 'all';
+  const hash = s => { let h = 7; for (const c of s) h = (h * 33 + c.charCodeAt(0)) >>> 0; return h; };
+  const forDay = d => BASE.filter((c, i) => (d >= 5 ? i % 3 !== 0 : (i + d) % 4 !== 3)).map(c => { const cap = 20, taken = 6 + hash(c[1] + d) % 15; return { t: c[0], n: c[1], dir: c[2], coach: c[3], dur: c[4], left: cap - taken }; });
+  const $ = id => document.getElementById(id);
+  function render() {
+    $('dirs').innerHTML = Object.entries(DIRS).map(([k, v]) => `<button data-dir="${k}" class="px-4 py-2 uppercase tracking-wider text-xs font-semibold transition ${k === dir ? 'bg-neon text-coal' : 'border border-white/20 hover:border-neon'}">${v}</button>`).join('');
+    const base = new Date(); base.setDate(base.getDate() - today);
+    $('days').innerHTML = DAYS.map((d, i) => { const dt = new Date(base); dt.setDate(base.getDate() + i); return `<button data-day="${i}" class="py-3 text-center transition ${i === day ? 'bg-white text-coal' : 'bg-white/5 hover:bg-white/10'}"><div class="text-xs uppercase tracking-wider ${i === day ? '' : 'text-white/50'}">${d}</div><div class="font-display text-xl sm:text-2xl">${dt.getDate()}</div></button>`; }).join('');
+    const list = forDay(day).filter(c => dir === 'all' || c.dir === dir);
+    $('classes').innerHTML = list.length ? list.map(c => `
+      <div class="flex items-center gap-3 sm:gap-6 p-4 sm:p-5 bg-coal border border-white/10 hover:border-white/30 transition">
+        <div class="font-display text-2xl sm:text-3xl text-neon w-16 sm:w-20 shrink-0">${c.t}</div>
+        <div class="flex-1 min-w-0"><div class="font-semibold sm:text-lg">${c.n}</div><div class="text-xs sm:text-sm text-white/50">${c.coach} · ${c.dur} мин</div></div>
+        <div class="hidden sm:block text-sm ${c.left <= 3 ? 'text-orange-400' : 'text-white/50'}">${c.left > 0 ? 'осталось ' + c.left + ' мест' : 'мест нет'}</div>
+        <button ${c.left > 0 ? '' : 'disabled'} data-book="${c.n}|${c.t}|${c.coach}" class="shrink-0 px-4 sm:px-5 py-2.5 text-xs sm:text-sm uppercase font-semibold tracking-wider ${c.left > 0 ? 'bg-neon text-coal hover:brightness-110' : 'border border-white/15 text-white/30 cursor-not-allowed'}">${c.left > 0 ? 'Записаться' : 'Лист ожидания'}</button>
+      </div>`).join('') : '<div class="p-8 text-center text-white/50 border border-white/10">В этот день занятий по направлению нет, выберите другой день.</div>';
+  }
+  $('dirs').onclick = e => { const b = e.target.closest('[data-dir]'); if (b) { dir = b.dataset.dir; render(); } };
+  $('days').onclick = e => { const b = e.target.closest('[data-day]'); if (b) { day = +b.dataset.day; render(); } };
+  $('classes').onclick = e => {
+    const b = e.target.closest('[data-book]'); if (!b || b.disabled) return;
+    const [n, t, coach] = b.dataset.book.split('|');
+    $('cmTitle').textContent = n; $('cmInfo').textContent = `${DAYS[day]}, ${t} · тренер ${coach}. Приходите за 10 минут до начала.`;
+    openModal('classModal');
+  };
+  render();
+  document.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => { const p = $('pickNote'); p.textContent = 'Абонемент «' + a.dataset.plan + '»: оформим после пробной тренировки, цена закрепится.'; p.classList.remove('hidden'); }));
+</script>
 </body>
 </html>

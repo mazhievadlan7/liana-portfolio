@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Окоём — авторские туры в малых группах</title>
+<meta name="description" content="Авторские путешествия «Окоём»: Япония, Доломиты, Непал, Алтай, Териберка и ещё 7 маршрутов. Малые группы до 12 человек, программа по дням, подбор тура за 1 день.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { serif:['Cormorant','Georgia','serif'], sans:['"Inter Tight"','system-ui','sans-serif'] },
+  colors: { forest:'#0F1C18', moss:'#1C2E28', sand:'#F1EBE1', dune:'#E3D8C7', ember:'#E8622C', emberdk:'#C94E1C' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#F1EBE1; color:#0F1C18; -webkit-font-smoothing:antialiased; }
+  .js .rv { opacity:0; transform:translateY(36px); transition:opacity 1s ease, transform 1s cubic-bezier(.16,1,.3,1); }
+  .js .rv.in { opacity:1; transform:none; }
+  .hero-img { animation: kb 22s ease-out forwards; transform-origin:60% 40%; }
+  @keyframes kb { from { transform:scale(1.12) } to { transform:scale(1) } }
+  .chip.on { background:#0F1C18; color:#F1EBE1; border-color:#0F1C18; }
+  .chip-s.on { background:#E8622C; color:#fff; border-color:#E8622C; }
+  .card img { transition:transform 1.2s cubic-bezier(.16,1,.3,1); }
+  .card:hover img { transform:scale(1.06); }
+  .modal { transition:opacity .35s ease; }
+  .modal.hidden-m { opacity:0; pointer-events:none; }
+  .modal .panel { transition:transform .45s cubic-bezier(.16,1,.3,1); }
+  .modal.hidden-m .panel { transform:translateY(40px); }
+  .no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+  select { -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; }
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<header id="hdr" class="fixed top-0 inset-x-0 z-40 transition duration-300">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between text-white" id="hdrIn">
+    <a href="#top" class="flex items-center gap-2.5">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="14"/><path d="M2 18c6-4 10-4 14 0s8 4 14 0"/></svg>
+      <span class="font-serif text-2xl font-semibold tracking-wide">Окоём</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-[15px]">
+      <a href="#tours" class="opacity-80 hover:opacity-100 transition">Туры</a>
+      <a href="#why" class="opacity-80 hover:opacity-100 transition">Как мы ездим</a>
+      <a href="#reviews" class="opacity-80 hover:opacity-100 transition">Отзывы</a>
+      <a href="#pick" class="opacity-80 hover:opacity-100 transition">Подбор тура</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#pick" class="hidden sm:inline-flex px-5 py-2.5 rounded-full bg-ember text-white text-sm font-semibold hover:bg-emberdk transition">Подобрать тур</a>
+      <button id="burger" aria-label="Открыть меню" class="md:hidden w-11 h-11 rounded-full border border-current/30 grid place-items-center" style="border-color:currentColor">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mmenu" class="fixed inset-0 z-50 bg-forest text-sand hidden flex-col">
+  <div class="px-5 h-[72px] flex items-center justify-between">
+    <span class="font-serif text-2xl font-semibold">Окоём</span>
+    <button id="mclose" aria-label="Закрыть меню" class="w-11 h-11 rounded-full border border-sand/30 grid place-items-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <nav class="flex-1 px-6 pt-10 flex flex-col gap-6 font-serif text-5xl">
+    <a href="#tours" class="mlink">Туры</a><a href="#why" class="mlink">Как мы ездим</a><a href="#reviews" class="mlink">Отзывы</a><a href="#pick" class="mlink italic text-ember">Подбор тура</a>
+  </nav>
+  <div class="p-6 text-sand/60 text-sm">+7 (900) 000-00-00 · hello@example.ru</div>
+</div>
+
+<main>
+<!-- Hero -->
+<section id="top" class="relative h-[min(100svh,900px)] min-h-[640px] overflow-hidden text-white">
+  <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=2400&q=80&auto=format&fit=crop 2400w" sizes="100vw" alt="Бирюзовое горное озеро с лодкой" class="hero-img absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-gradient-to-b from-forest/50 via-forest/10 to-forest/85"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-forest/75 via-forest/30 to-transparent"></div>
+  <div class="relative h-full max-w-7xl mx-auto px-5 md:px-8 flex flex-col justify-end pb-10 md:pb-14">
+    <p class="rv text-sm tracking-[.3em] uppercase text-white/80">Авторские туры · группы до 12 человек</p>
+    <h1 class="rv mt-4 font-serif font-medium text-[54px] leading-[.95] sm:text-[84px] lg:text-[120px] tracking-[-0.02em] max-w-5xl">Мир за линией <em class="italic text-[#FFB48A]">горизонта</em></h1>
+    <p class="rv mt-5 text-lg md:text-xl text-white/85 max-w-xl">Двенадцать маршрутов, которые мы сами прошли по нескольку раз. Без автобусов на 50 человек и очередей к открыткам.</p>
+
+    <form id="heroSearch" class="rv mt-8 md:mt-10 bg-white/95 text-forest rounded-[28px] p-2 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2 max-w-3xl shadow-2xl">
+      <label class="px-4 py-2 rounded-2xl hover:bg-sand transition">
+        <span class="block text-[11px] uppercase tracking-wider text-forest/50">Направление</span>
+        <select id="hsDir" class="w-full bg-transparent outline-none font-semibold pr-8 py-0.5"><option value="all">Все направления</option><option>Россия</option><option>Европа</option><option>Азия</option></select>
+      </label>
+      <label class="px-4 py-2 rounded-2xl hover:bg-sand transition">
+        <span class="block text-[11px] uppercase tracking-wider text-forest/50">Сезон</span>
+        <select id="hsSeason" class="w-full bg-transparent outline-none font-semibold pr-8 py-0.5"><option value="all">Любой</option><option>Весна</option><option>Лето</option><option>Осень</option><option>Зима</option></select>
+      </label>
+      <button class="px-7 py-4 rounded-[22px] bg-ember text-white font-semibold hover:bg-emberdk transition">Найти туры</button>
+    </form>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="bg-forest text-sand">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="rv"><div class="font-serif text-5xl">11 лет</div><div class="text-sm text-sand/60 mt-1">возим людей туда, где сами влюбились</div></div>
+    <div class="rv"><div class="font-serif text-5xl">4 600</div><div class="text-sm text-sand/60 mt-1">путешественников вернулись с нами</div></div>
+    <div class="rv"><div class="font-serif text-5xl">до 12</div><div class="text-sm text-sand/60 mt-1">человек в группе плюс 2 гида</div></div>
+    <div class="rv"><div class="font-serif text-5xl">38%</div><div class="text-sm text-sand/60 mt-1">едут с нами повторно</div></div>
+  </div>
+</section>
+
+<!-- Tours -->
+<section id="tours" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="grid lg:grid-cols-12 gap-6 items-end rv">
+      <div class="lg:col-span-7">
+        <p class="text-sm tracking-[.3em] uppercase text-ember font-semibold">Каталог · сезон 2026–2027</p>
+        <h2 class="mt-4 font-serif font-medium text-5xl md:text-7xl leading-[.95]">Куда поедем?</h2>
+      </div>
+      <p class="lg:col-span-5 text-forest/65 text-lg">Нажмите на тур, чтобы увидеть программу по дням, что входит в стоимость и ближайшие даты.</p>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 rv">
+      <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-5 px-5 md:mx-0 md:px-0" id="fDir">
+        <button data-v="all" class="chip on shrink-0 px-5 py-2.5 rounded-full border border-forest/20 text-sm font-semibold transition hover:border-forest">Все направления</button>
+        <button data-v="Россия" class="chip shrink-0 px-5 py-2.5 rounded-full border border-forest/20 text-sm font-semibold transition hover:border-forest">Россия</button>
+        <button data-v="Европа" class="chip shrink-0 px-5 py-2.5 rounded-full border border-forest/20 text-sm font-semibold transition hover:border-forest">Европа</button>
+        <button data-v="Азия" class="chip shrink-0 px-5 py-2.5 rounded-full border border-forest/20 text-sm font-semibold transition hover:border-forest">Азия</button>
+      </div>
+      <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 items-center" id="fSeason">
+        <span class="shrink-0 text-sm text-forest/50 mr-1">Сезон:</span>
+        <button data-v="all" class="chip-s on shrink-0 px-4 py-2 rounded-full border border-forest/15 text-sm transition hover:border-ember">Любой</button>
+        <button data-v="Весна" class="chip-s shrink-0 px-4 py-2 rounded-full border border-forest/15 text-sm transition hover:border-ember">🌸 Весна</button>
+        <button data-v="Лето" class="chip-s shrink-0 px-4 py-2 rounded-full border border-forest/15 text-sm transition hover:border-ember">☀️ Лето</button>
+        <button data-v="Осень" class="chip-s shrink-0 px-4 py-2 rounded-full border border-forest/15 text-sm transition hover:border-ember">🍂 Осень</button>
+        <button data-v="Зима" class="chip-s shrink-0 px-4 py-2 rounded-full border border-forest/15 text-sm transition hover:border-ember">❄️ Зима</button>
+      </div>
+      <div class="text-sm text-forest/50" id="count"></div>
+    </div>
+
+    <div id="grid" class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10"></div>
+    <div id="empty" class="hidden mt-10 p-10 rounded-[32px] bg-dune/60 text-center">
+      <p class="font-serif text-3xl">Под такие фильтры пока ничего нет</p>
+      <p class="mt-2 text-forest/60">Мы можем собрать индивидуальный маршрут под ваши даты.</p>
+      <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3"><button id="reset" class="px-6 py-3 rounded-full border border-forest/20 font-semibold hover:bg-white transition">Сбросить фильтры</button><a href="#pick" class="px-6 py-3 rounded-full bg-ember text-white font-semibold hover:bg-emberdk transition">Собрать свой тур</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- Why -->
+<section id="why" class="py-20 md:py-28 bg-forest text-sand scroll-mt-16 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <div class="relative h-[460px] sm:h-[560px] rv">
+      <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80&auto=format&fit=crop" alt="Путешественник с рюкзаком на горной тропе" class="absolute left-0 top-0 w-[72%] h-[78%] object-cover rounded-[28px]">
+      <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80&auto=format&fit=crop" alt="Карта, блокнот и фотоаппарат путешественника" class="absolute right-0 bottom-0 w-[52%] h-[48%] object-cover rounded-[28px] border-[6px] border-forest">
+      <div class="absolute left-4 bottom-6 sm:left-6 bg-ember text-white rounded-full w-28 h-28 grid place-items-center text-center rotate-[-10deg]"><span class="font-serif text-lg leading-tight italic">проверено<br>лично</span></div>
+    </div>
+    <div>
+      <p class="rv text-sm tracking-[.3em] uppercase text-[#FFB48A] font-semibold">Как мы путешествуем</p>
+      <h2 class="rv mt-4 font-serif font-medium text-5xl md:text-6xl leading-[1]">Медленно, глубоко и&nbsp;с&nbsp;местными</h2>
+      <div class="mt-10 space-y-7">
+        <div class="rv flex gap-5"><span class="font-serif text-3xl text-ember w-10 shrink-0">01</span><div><h3 class="text-xl font-semibold">Маршрут без спешки</h3><p class="mt-1 text-sand/65">Не больше 3 часов в дороге в день. Остаётся время просто сидеть на берегу и смотреть.</p></div></div>
+        <div class="rv flex gap-5"><span class="font-serif text-3xl text-ember w-10 shrink-0">02</span><div><h3 class="text-xl font-semibold">Гиды, которые там живут</h3><p class="mt-1 text-sand/65">Обед у хозяйки рёкана, рыбалка с поморами, вечер в доме шерпов.</p></div></div>
+        <div class="rv flex gap-5"><span class="font-serif text-3xl text-ember w-10 shrink-0">03</span><div><h3 class="text-xl font-semibold">Отели с характером</h3><p class="mt-1 text-sand/65">Гостевые дома, глэмпинги и бутик-отели. Никаких сетевых коробок у трассы.</p></div></div>
+        <div class="rv flex gap-5"><span class="font-serif text-3xl text-ember w-10 shrink-0">04</span><div><h3 class="text-xl font-semibold">Всё включено по-честному</h3><p class="mt-1 text-sand/65">Цена тура окончательная: проживание, трансферы, гиды и большая часть еды.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <h2 class="rv font-serif font-medium text-5xl md:text-6xl">Говорят вернувшиеся</h2>
+    <div class="mt-12 grid md:grid-cols-3 gap-6">
+      <figure class="rv bg-white rounded-[28px] p-8 flex flex-col"><div class="text-ember tracking-widest">★★★★★</div><blockquote class="mt-4 font-serif text-2xl leading-snug flex-1">«В Японии мы ели в местах, куда без нашего гида Кэйко нас бы просто не пустили. Лучшая поездка в моей жизни».</blockquote><figcaption class="mt-6 text-sm text-forest/60">Марина и Илья · Япония, апрель 2026</figcaption></figure>
+      <figure class="rv bg-white rounded-[28px] p-8 flex flex-col"><div class="text-ember tracking-widest">★★★★★</div><blockquote class="mt-4 font-serif text-2xl leading-snug flex-1">«Поехала одна, вернулась с десятью друзьями. Сияние увидели три ночи из четырёх, гид знал, где небо чистое».</blockquote><figcaption class="mt-6 text-sm text-forest/60">Ксения · Териберка, февраль 2026</figcaption></figure>
+      <figure class="rv bg-white rounded-[28px] p-8 flex flex-col"><div class="text-ember tracking-widest">★★★★★</div><blockquote class="mt-4 font-serif text-2xl leading-snug flex-1">«Боялся, что не дойду до базового лагеря. Темп был разумный, акклиматизация продумана, дошли все двенадцать».</blockquote><figcaption class="mt-6 text-sm text-forest/60">Андрей · Непал, октябрь 2025</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- Pick form -->
+<section id="pick" class="relative py-20 md:py-28 scroll-mt-16 overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80&auto=format&fit=crop" alt="Горные вершины над облаками на закате" class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-forest/70"></div>
+  <div class="relative max-w-6xl mx-auto px-5 md:px-8 grid lg:grid-cols-2 gap-10 items-center">
+    <div class="text-white rv">
+      <p class="text-sm tracking-[.3em] uppercase text-[#FFB48A] font-semibold">Подбор тура</p>
+      <h2 class="mt-4 font-serif font-medium text-5xl md:text-7xl leading-[.95]">Расскажите, о чём мечтаете</h2>
+      <p class="mt-6 text-white/80 text-lg max-w-md">Путешественник-консультант подберёт 2–3 варианта под ваши даты и бюджет и пришлёт их в течение рабочего дня. Бесплатно.</p>
+    </div>
+    <form id="pickForm" novalidate class="rv bg-sand rounded-[32px] p-6 sm:p-8 grid sm:grid-cols-2 gap-4">
+      <div class="sm:col-span-2" id="tourPicked" hidden><div class="flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-white"><span class="text-sm"><span class="text-forest/50">Тур:</span> <b id="tourPickedName"></b></span><button type="button" id="tourClear" class="text-sm text-ember font-semibold">убрать</button></div></div>
+      <div><label for="pName" class="block text-sm font-semibold mb-2">Имя</label><input id="pName" class="w-full px-4 py-3.5 rounded-2xl bg-white outline-none border border-transparent focus:border-ember" placeholder="Ваше имя"></div>
+      <div><label for="pPhone" class="block text-sm font-semibold mb-2">Телефон</label><input id="pPhone" type="tel" class="w-full px-4 py-3.5 rounded-2xl bg-white outline-none border border-transparent focus:border-ember" placeholder="+7 (900) 000-00-00"></div>
+      <div><label for="pDir" class="block text-sm font-semibold mb-2">Направление</label><select id="pDir" class="w-full px-4 py-3.5 rounded-2xl bg-white outline-none border border-transparent focus:border-ember"><option>Пока не знаю</option><option>Россия</option><option>Европа</option><option>Азия</option></select></div>
+      <div><label for="pMonth" class="block text-sm font-semibold mb-2">Когда</label><select id="pMonth" class="w-full px-4 py-3.5 rounded-2xl bg-white outline-none border border-transparent focus:border-ember"><option>Ноябрь 2026</option><option>Декабрь 2026</option><option>Январь 2027</option><option>Февраль 2027</option><option>Март 2027</option><option>Апрель 2027</option><option>Май 2027</option><option>Лето 2027</option></select></div>
+      <div class="sm:col-span-2">
+        <div class="flex justify-between"><label for="pBudget" class="text-sm font-semibold">Бюджет на человека</label><b id="pBudgetV" class="text-sm">до 150 000 ₽</b></div>
+        <input id="pBudget" type="range" min="50000" max="350000" step="10000" value="150000" class="w-full mt-3 accent-[#E8622C]">
+      </div>
+      <div class="sm:col-span-2"><label for="pWish" class="block text-sm font-semibold mb-2">Пожелания</label><textarea id="pWish" rows="2" class="w-full px-4 py-3.5 rounded-2xl bg-white outline-none border border-transparent focus:border-ember resize-none" placeholder="Едем вдвоём, хотим горы и хорошую еду, без долгих переходов"></textarea></div>
+      <p id="pErr" class="sm:col-span-2 text-sm text-emberdk hidden"></p>
+      <button class="sm:col-span-2 py-4 rounded-full bg-ember text-white font-semibold text-lg hover:bg-emberdk transition">Получить подборку</button>
+      <div id="pOk" class="sm:col-span-2 hidden p-4 rounded-2xl bg-white text-center font-medium">Спасибо! Это демо-версия сайта, заявка никуда не отправляется.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="bg-forest text-sand pb-20 md:pb-8">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-14 grid md:grid-cols-4 gap-8 text-sm">
+    <div class="md:col-span-2"><div class="font-serif text-3xl font-semibold">Окоём</div><p class="mt-3 text-sand/60 max-w-sm">Авторские туры в малых группах. Сами придумываем маршруты, сами в них ездим.</p></div>
+    <div><div class="font-semibold mb-3">Туры</div><a href="#tours" class="block text-sand/60 hover:text-sand">Каталог</a><a href="#pick" class="block text-sand/60 hover:text-sand mt-1">Индивидуальный тур</a><a href="#reviews" class="block text-sand/60 hover:text-sand mt-1">Отзывы</a></div>
+    <div><div class="font-semibold mb-3">Контакты</div><a href="tel:+79000000000" class="block text-sand/60 hover:text-sand">+7 (900) 000-00-00</a><a href="mailto:hello@example.ru" class="block text-sand/60 hover:text-sand mt-1">hello@example.ru</a></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 text-xs text-sand/40">© 2026 «Окоём». Демо-проект, цены и даты условные.</div>
+</footer>
+
+<!-- Modal -->
+<div id="modal" class="modal hidden-m fixed inset-0 z-[60] flex items-end md:items-center justify-center md:p-6" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="absolute inset-0 bg-forest/70 backdrop-blur-sm" data-close></div>
+  <div class="panel relative bg-sand w-full md:max-w-4xl max-h-[92vh] overflow-y-auto rounded-t-[32px] md:rounded-[32px]" id="mBody"></div>
+</div>
+
+<a href="../../" class="fixed left-3 bottom-3 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest/75 text-sand text-[11px] md:text-xs backdrop-blur opacity-80 hover:opacity-100 transition">
+  <span class="w-1.5 h-1.5 rounded-full bg-ember"></span>Демо-проект<span class="hidden sm:inline"> · портфолио Лианы</span>
+</a>
+
+<script>
+const HL = /HeadlessChrome/.test(navigator.userAgent); // скриншоты: показываем всё сразу
+if (!HL) document.documentElement.classList.add('js');
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.08 });
+const observe = () => document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el));
+
+// header on scroll
+const hdr = document.getElementById('hdr');
+const onScroll = () => { const s = window.scrollY > 40; hdr.classList.toggle('bg-sand/90', s); hdr.classList.toggle('backdrop-blur', s); hdr.classList.toggle('shadow-sm', s); document.getElementById('hdrIn').classList.toggle('text-white', !s); document.getElementById('hdrIn').classList.toggle('text-forest', s); };
+window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
+
+const mm = document.getElementById('mmenu');
+document.getElementById('burger').onclick = () => { mm.classList.remove('hidden'); mm.classList.add('flex'); document.body.style.overflow='hidden'; };
+const closeM = () => { mm.classList.add('hidden'); mm.classList.remove('flex'); document.body.style.overflow=''; };
+document.getElementById('mclose').onclick = closeM;
+document.querySelectorAll('.mlink').forEach(a => a.addEventListener('click', closeM));
+
+const U = id => `https://images.unsplash.com/photo-${id}?w=1200&q=80&auto=format&fit=crop`;
+const TOURS = [
+  { t:'Япония: сакура, Киото и онсэны', c:'Япония', dir:'Азия', s:['Весна','Осень'], days:12, price:289000, grp:10, lvl:'Лёгкий', img:'1493976040374-85c8e12f0c0e', dates:'28 марта, 4 апреля, 7 ноября',
+    lead:'Цветение сакуры в Токио и Киото, ночь в традиционном рёкане с горячими источниками и урок чайной церемонии у мастера.',
+    prog:[['День 1–2','Токио','Встреча в аэропорту, прогулка по Асакусе и Янаке, ужин в идзакае с гидом.'],['День 3','Никко','Храмы в кедровом лесу и водопад Кэгон. Возвращение на синкансэне.'],['День 4–5','Хаконэ','Рёкан с онсэном, вид на Фудзи, кайсэки-ужин из 9 блюд.'],['День 6–9','Киото','Фусими Инари на рассвете, Гион, бамбуковая роща Арасияма, чайная церемония.'],['День 10','Нара','Олени, храм Тодай-дзи и самый большой бронзовый Будда.'],['День 11–12','Осака','Гастротур по Дотонбори и вылет домой.']] },
+  { t:'Доломиты: озёра и перевалы', c:'Италия', dir:'Европа', s:['Лето','Осень'], days:9, price:189000, grp:12, lvl:'Средний', img:'1476514525535-07fb3b4ae5f1', dates:'14 июня, 5 июля, 13 сентября',
+    lead:'Треккинг по самым красивым тропам Южного Тироля с ночёвками в горных хижинах-рифуджио и дегустацией местных вин.',
+    prog:[['День 1','Больцано','Встреча, трансфер в долину Валь-ди-Фунес, ужин в семейном отеле.'],['День 2–3','Сечеда и Тре-Чиме','Два самых фотогеничных маршрута Доломит по 12–14 км.'],['День 4','Озеро Брайес','Прогулка вокруг озера и катание на деревянной лодке.'],['День 5–6','Рифуджио','Ночёвка в горной хижине на 2 300 м, рассвет над пиками.'],['День 7–8','Кортина-д’Ампеццо','Озеро Сорапис, отдых и прощальный ужин.'],['День 9','Венеция','Трансфер в аэропорт Венеции.']] },
+  { t:'Териберка: охота за сиянием', c:'Россия', dir:'Россия', s:['Зима'], days:5, price:74000, grp:12, lvl:'Лёгкий', img:'1531366936337-7c912a4589a7', dates:'9 января, 6 февраля, 6 марта',
+    lead:'Край земли на Баренцевом море: северное сияние, китовые позвонки на пляже, снегоходы и крабы прямо из моря.',
+    prog:[['День 1','Мурманск','Встреча, обед с северной кухней, дорога в Териберку по тундре.'],['День 2','Берег океана','Пляж с яйцами драконов, водопад, вечерний выезд «на сияние».'],['День 3','Снегоходы','Поездка к замёрзшим озёрам, обед у костра, баня с прорубью.'],['День 4','Посёлок','Кладбище кораблей, ужин с камчатским крабом, ночной фототур.'],['День 5','Мурманск','Ледокол «Ленин» и вылет домой.']] },
+  { t:'Вьетнам: Халонг и горы севера', c:'Вьетнам', dir:'Азия', s:['Зима','Весна'], days:11, price:168000, grp:10, lvl:'Лёгкий', img:'1528127269322-539801943592', dates:'21 ноября, 16 января, 13 марта',
+    lead:'Ночь на джонке в бухте Халонг, рисовые террасы Сапы и уличная еда Ханоя, которую не найти в путеводителях.',
+    prog:[['День 1–2','Ханой','Старый квартал, кофе с яйцом, вечерний стритфуд-тур на мопедах.'],['День 3–4','Бухта Халонг','Ночь на джонке, каяки между скал, рассвет на палубе.'],['День 5–7','Сапа','Трекинг по рисовым террасам, ночёвка в доме народа хмонг.'],['День 8–9','Ниньбинь','Лодки по рекам в карстовых пещерах, велопрогулка.'],['День 10–11','Ханой','Кулинарный мастер-класс и вылет.']] },
+  { t:'Бали: храмы и рисовые поля', c:'Индонезия', dir:'Азия', s:['Лето','Осень'], days:10, price:179000, grp:12, lvl:'Лёгкий', img:'1537996194471-e657df975ab4', dates:'1 августа, 19 сентября, 17 октября',
+    lead:'Неглянцевый Бали: храмы на воде, рассвет на вулкане Батур, Убуд без толп и неделя на тихом севере острова.',
+    prog:[['День 1–3','Убуд','Рисовые террасы Тегаллаланг, лес обезьян, балийская кухня.'],['День 4','Вулкан Батур','Ночной подъём и рассвет над кратером.'],['День 5–6','Храмы','Улун Дану Братан, Танах Лот, церемония очищения.'],['День 7–9','Север острова','Водопады, снорклинг с черепахами на Менджангане.'],['День 10','Денпасар','Вылет.']] },
+  { t:'Греция: Киклады под парусом', c:'Греция', dir:'Европа', s:['Лето','Осень'], days:8, price:215000, grp:8, lvl:'Лёгкий', img:'1570077188670-e3a8d69ac5ff', dates:'6 июня, 29 августа, 26 сентября',
+    lead:'Неделя на парусной яхте между островами: Санторини, Милос, Ios. Каждый день новая бухта и ужин в таверне у воды.',
+    prog:[['День 1','Санторини','Посадка на яхту, закат в Ии с палубы.'],['День 2–3','Ios и Sikinos','Пустые бухты, снорклинг, деревенские таверны.'],['День 4–5','Милос','Лунные скалы Саракинико и пещеры Клефтико.'],['День 6–7','Фолегандрос','Последние купания и рыбный ужин на берегу.'],['День 8','Санторини','Высадка и трансфер в аэропорт.']] },
+  { t:'Непал: тропа к Эвересту', c:'Непал', dir:'Азия', s:['Осень','Весна'], days:14, price:198000, grp:12, lvl:'Сложный', img:'1544735716-392fe2489ffa', dates:'4 апреля, 10 октября, 31 октября',
+    lead:'Классический трек к базовому лагерю Эвереста с продуманной акклиматизацией, шерпами-гидами и ночёвками в лоджах.',
+    prog:[['День 1–2','Катманду','Ступа Боднатх, сборы, перелёт в Луклу.'],['День 3–5','Намче-Базар','Подъём по долине Кхумбу, день акклиматизации.'],['День 6–8','Тенгбоче и Дингбоче','Монастырь, первый вид на Эверест и Ама-Даблам.'],['День 9–10','Базовый лагерь','Выход к лагерю на 5 364 м и рассвет на Кала-Паттар.'],['День 11–14','Спуск','Обратно в Луклу, отдых в Катманду, вылет.']] },
+  { t:'Чинкве-Терре и Тоскана', c:'Италия', dir:'Европа', s:['Весна','Осень'], days:8, price:176000, grp:12, lvl:'Средний', img:'1516483638261-f4dbaf036963', dates:'25 апреля, 16 мая, 3 октября',
+    lead:'Тропы над морем между пятью рыбацкими деревнями, винодельни Кьянти и ужин из трюфелей в тосканской усадьбе.',
+    prog:[['День 1','Генуя','Встреча и переезд в Монтероссо.'],['День 2–3','Чинкве-Терре','Тропа «Синяя», лодка вдоль скал, песто у бабушки Розы.'],['День 4','Пиза и Лукка','Велопрогулка по городским стенам Лукки.'],['День 5–7','Кьянти','Агротуризмо, две винодельни, охота на трюфели.'],['День 8','Флоренция','Прогулка и вылет.']] },
+  { t:'Алтай: Чуйский тракт и Мультинские озёра', c:'Россия', dir:'Россия', s:['Лето'], days:8, price:89000, grp:12, lvl:'Средний', img:'1464822759023-fed622ff2c3b', dates:'4 июля, 1 августа, 22 августа',
+    lead:'Одна из самых красивых дорог мира, марсианские пейзажи Кызыл-Чина и бирюзовые озёра, до которых доходят немногие.',
+    prog:[['День 1','Горно-Алтайск','Встреча, переезд в глэмпинг на берегу Катуни.'],['День 2–3','Чуйский тракт','Перевал Чике-Таман, слияние Чуи и Катуни, петроглифы.'],['День 4','Кызыл-Чин','Цветные горы и ночь под звёздами в юртах.'],['День 5–7','Мультинские озёра','Конный переход и ночёвки на кордоне.'],['День 8','Горно-Алтайск','Баня, прощальный ужин, вылет.']] },
+  { t:'Кавказ: над облаками', c:'Россия', dir:'Россия', s:['Лето','Осень'], days:6, price:69000, grp:12, lvl:'Средний', img:'1506905925346-21bda4d32df4', dates:'20 июня, 18 июля, 19 сентября',
+    lead:'Короткое, но яркое путешествие: каньоны, ночёвка в горном приюте и рассвет над морем облаков у подножия Эльбруса.',
+    prog:[['День 1','Минеральные Воды','Встреча и переезд в Приэльбрусье.'],['День 2','Чегет','Канатная дорога и обзорная тропа к Эльбрусу.'],['День 3–4','Приют','Подъём к горному приюту на 3 000 м, рассвет над облаками.'],['День 5','Чегемские водопады','Каньон и обед с хычинами.'],['День 6','Нальчик','Вылет домой.']] },
+  { t:'Париж и Нормандия', c:'Франция', dir:'Европа', s:['Весна','Осень'], days:7, price:164000, grp:12, lvl:'Лёгкий', img:'1502602898657-3e91760cbb34', dates:'18 апреля, 23 мая, 26 сентября',
+    lead:'Париж глазами местных: рынки, бистро и мастерские, а затем меловые скалы Этрета, Мон-Сен-Мишель и сидровые фермы.',
+    prog:[['День 1–3','Париж','Маре и Монмартр без толп, рынок Алиг, вечерняя прогулка на лодке по Сене.'],['День 4','Живерни и Руан','Сад Клода Моне и средневековый Руан.'],['День 5','Этрета','Тропа по меловым скалам и ужин из морепродуктов в Онфлёре.'],['День 6','Мон-Сен-Мишель','Аббатство на острове и прилив на закате.'],['День 7','Париж','Возвращение поездом и вылет.']] },
+  { t:'Таиланд: острова Андаманского моря', c:'Таиланд', dir:'Азия', s:['Зима'], days:10, price:156000, grp:10, lvl:'Лёгкий', img:'1520250497591-112f2f40a3f4', dates:'5 декабря, 9 января, 6 февраля',
+    lead:'Островное путешествие по Краби и Ко Ланте: лонгтейлы между скал, тихие пляжи, кулинарный класс и вилла у моря.',
+    prog:[['День 1–2','Краби','Встреча, пляж Рейли, закат на скалах.'],['День 3','Острова Пхи-Пхи','Ранний выход на лонгтейле, лагуны без туристов.'],['День 4–6','Ко Ланта','Вилла у моря, национальный парк, каяки в мангровах.'],['День 7–8','Ко Мук','Изумрудная пещера и снорклинг.'],['День 9–10','Краби','Тайская кухня своими руками и вылет.']] }
+];
+const fmt = n => n.toLocaleString('ru-RU').replace(/,/g,' ') + ' ₽';
+let fDir = 'all', fSeason = 'all';
+function render(){
+  const list = TOURS.map((t,i)=>({...t,i})).filter(t => (fDir==='all'||t.dir===fDir) && (fSeason==='all'||t.s.includes(fSeason)));
+  const g = document.getElementById('grid');
+  g.innerHTML = list.map((t,k) => `
+    <article class="card rv group cursor-pointer" data-i="${t.i}" tabindex="0" role="button" aria-label="Подробнее о туре ${t.t}" style="transition-delay:${(k%3)*80}ms">
+      <div class="relative overflow-hidden rounded-[28px] h-[340px] sm:h-[380px]">
+        <img src="${U(t.img)}" alt="${t.t}" class="w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-forest/70 via-transparent to-transparent"></div>
+        <div class="absolute top-4 left-4 flex gap-2 flex-wrap">${t.s.map(s=>`<span class="px-3 py-1 rounded-full bg-white/90 text-xs font-semibold">${s}</span>`).join('')}</div>
+        <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-forest/70 text-white text-xs backdrop-blur">${t.days} дней</span>
+        <div class="absolute left-5 right-5 bottom-5 text-white flex items-end justify-between gap-3">
+          <div><div class="text-xs uppercase tracking-[.2em] text-white/75">${t.c}</div><div class="font-serif text-2xl leading-tight mt-1">${t.t}</div></div>
+          <span class="shrink-0 w-12 h-12 rounded-full bg-white text-forest grid place-items-center group-hover:bg-ember group-hover:text-white transition">↗</span>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center justify-between text-sm"><span class="text-forest/60">Группа до ${t.grp} · ${t.lvl}</span><b class="text-base">от ${fmt(t.price)}</b></div>
+    </article>`).join('');
+  document.getElementById('empty').classList.toggle('hidden', list.length>0);
+  const n = list.length; document.getElementById('count').textContent = `Найдено ${n} ${n%10===1&&n%100!==11?'тур':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'тура':'туров')}`;
+  g.querySelectorAll('.card').forEach(c => { c.onclick = () => openTour(+c.dataset.i); c.onkeydown = e => { if (e.key==='Enter') openTour(+c.dataset.i); }; });
+  observe();
+}
+function setChips(){ document.querySelectorAll('#fDir .chip').forEach(b=>b.classList.toggle('on', b.dataset.v===fDir)); document.querySelectorAll('#fSeason .chip-s').forEach(b=>b.classList.toggle('on', b.dataset.v===fSeason)); }
+document.getElementById('fDir').onclick = e => { const b = e.target.closest('.chip'); if (b) { fDir = b.dataset.v; setChips(); render(); } };
+document.getElementById('fSeason').onclick = e => { const b = e.target.closest('.chip-s'); if (b) { fSeason = b.dataset.v; setChips(); render(); } };
+document.getElementById('reset').onclick = () => { fDir='all'; fSeason='all'; setChips(); render(); };
+document.getElementById('heroSearch').addEventListener('submit', e => { e.preventDefault(); fDir = document.getElementById('hsDir').value; fSeason = document.getElementById('hsSeason').value; setChips(); render(); document.getElementById('tours').scrollIntoView({behavior:'smooth'}); });
+
+// Modal
+const modal = document.getElementById('modal'), mBody = document.getElementById('mBody');
+let lastFocus = null;
+function openTour(i){
+  const t = TOURS[i]; lastFocus = document.activeElement;
+  mBody.innerHTML = `
+    <div class="relative h-64 sm:h-80">
+      <img src="${U(t.img)}" alt="${t.t}" class="w-full h-full object-cover md:rounded-t-[32px] rounded-t-[32px]">
+      <div class="absolute inset-0 bg-gradient-to-t from-forest/80 to-transparent rounded-t-[32px]"></div>
+      <button data-close aria-label="Закрыть" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 grid place-items-center text-xl hover:bg-white">✕</button>
+      <div class="absolute left-6 right-6 bottom-6 text-white"><div class="text-xs uppercase tracking-[.25em] text-white/75">${t.c} · ${t.days} дней</div><h3 id="mTitle" class="font-serif text-3xl sm:text-5xl leading-none mt-2">${t.t}</h3></div>
+    </div>
+    <div class="p-6 sm:p-8 grid md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <p class="text-lg text-forest/75">${t.lead}</p>
+        <h4 class="mt-8 font-serif text-3xl">Программа по дням</h4>
+        <ol class="mt-5 relative border-l-2 border-dune ml-2 space-y-6">
+          ${t.prog.map(p=>`<li class="pl-6 relative"><span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-ember ring-4 ring-sand"></span><div class="text-xs uppercase tracking-wider text-ember font-semibold">${p[0]}</div><div class="font-semibold text-lg mt-0.5">${p[1]}</div><p class="text-forest/65 mt-1">${p[2]}</p></li>`).join('')}
+        </ol>
+      </div>
+      <aside class="space-y-4">
+        <div class="bg-white rounded-3xl p-5"><div class="text-sm text-forest/50">Стоимость на человека</div><div class="font-serif text-4xl mt-1">${fmt(t.price)}</div><div class="text-sm text-forest/50 mt-1">предоплата 20%</div></div>
+        <div class="bg-white rounded-3xl p-5 text-sm space-y-2"><div class="flex justify-between"><span class="text-forest/50">Группа</span><b>до ${t.grp} чел.</b></div><div class="flex justify-between"><span class="text-forest/50">Сложность</span><b>${t.lvl}</b></div><div class="flex justify-between gap-3"><span class="text-forest/50">Сезон</span><b class="text-right">${t.s.join(', ')}</b></div><div class="pt-2 border-t border-dune"><span class="text-forest/50">Ближайшие даты</span><div class="font-semibold mt-1">${t.dates}</div></div></div>
+        <div class="bg-white rounded-3xl p-5 text-sm"><div class="font-semibold mb-2">Входит в стоимость</div><ul class="space-y-1 text-forest/70"><li>✓ Проживание и завтраки</li><li>✓ Все трансферы и входные билеты</li><li>✓ Два гида на всём маршруте</li><li class="text-forest/40">✕ Авиаперелёт и страховка</li></ul></div>
+        <button id="mBook" class="w-full py-4 rounded-full bg-ember text-white font-semibold hover:bg-emberdk transition">Забронировать место</button>
+      </aside>
+    </div>`;
+  modal.classList.remove('hidden-m'); document.body.style.overflow = 'hidden'; mBody.scrollTop = 0;
+  mBody.querySelector('[data-close]').focus();
+  document.getElementById('mBook').onclick = () => { closeTour(); pickTour(t); };
+}
+function closeTour(){ modal.classList.add('hidden-m'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus({preventScroll:true}); }
+modal.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeTour(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.classList.contains('hidden-m')) closeTour(); });
+
+// Pick form
+function pickTour(t){ document.getElementById('tourPicked').hidden = false; document.getElementById('tourPickedName').textContent = `${t.t}, ${t.days} дней`; document.getElementById('pDir').value = t.dir; document.getElementById('pick').scrollIntoView({behavior:'smooth'}); }
+document.getElementById('tourClear').onclick = () => { document.getElementById('tourPicked').hidden = true; };
+const pb = document.getElementById('pBudget'); pb.oninput = () => document.getElementById('pBudgetV').textContent = (+pb.value >= 350000 ? 'от ' : 'до ') + fmt(+pb.value);
+document.getElementById('pickForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = document.getElementById('pErr'), ok = document.getElementById('pOk');
+  const n = document.getElementById('pName').value.trim(), p = document.getElementById('pPhone').value.replace(/\D/g,'');
+  const m = n.length < 2 ? 'Пожалуйста, укажите имя.' : p.length < 10 ? 'Проверьте номер телефона: нужно минимум 10 цифр.' : '';
+  if (m) { err.textContent = m; err.classList.remove('hidden'); ok.classList.add('hidden'); return; }
+  err.classList.add('hidden'); ok.classList.remove('hidden'); ['pName','pPhone','pWish'].forEach(id => document.getElementById(id).value='');
+});
+
+render(); observe();
+</script>
+</body>
+</html>

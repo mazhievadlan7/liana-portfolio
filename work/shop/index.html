@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OVSA — уходовая косметика на овсе для чувствительной кожи</title>
+<meta name="description" content="OVSA: кремы, сыворотки и гели на коллоидном овсе для чувствительной кожи. Честный состав, дерматологические тесты, продаём на Wildberries и Ozon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { display:['Geologica','sans-serif'], sans:['"Golos Text"','system-ui','sans-serif'] },
+  colors: { milk:'#F5F2EC', oat:'#E9E1D3', ink:'#1E2420', euc:'#2F6B5A', eucdk:'#24564848', peach:'#F6D9C7', wb:'#A11CC4', oz:'#005BFF' }
+} } }
+</script>
+<style>
+  html { scroll-behavior:smooth; }
+  body { background:#F5F2EC; color:#1E2420; -webkit-font-smoothing:antialiased; }
+  .js .rv { opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
+  .js .rv.in { opacity:1; transform:none; }
+  /* product renders */
+  .p-wrap { position:relative; display:flex; align-items:flex-end; justify-content:center; }
+  .shine::after { content:''; position:absolute; top:8%; left:16%; width:14%; height:70%; border-radius:99px; background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0)); }
+  .jar-lid { border-radius:14px 14px 6px 6px; }
+  .jar-body { border-radius:10px 10px 22px 22px; }
+  .tube { border-radius: 10px 10px 34px 34px / 10px 10px 18px 18px; }
+  .drop-bottle { border-radius: 18px 18px 22px 22px; }
+  .p-shadow { position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); width:70%; height:14px; border-radius:50%; background:radial-gradient(ellipse, rgba(30,36,32,.22), transparent 70%); }
+  .vchip.on { border-color:#1E2420; background:#fff; box-shadow:0 0 0 1px #1E2420 inset; }
+  .drawer { transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+  .drawer.closed { transform: translateX(100%); }
+  .ov { transition: opacity .3s ease; }
+  .ov.closed { opacity:0; pointer-events:none; }
+  .rfilter.on { background:#1E2420; color:#fff; }
+  .thumb.on { outline:2px solid #1E2420; outline-offset:2px; }
+  @keyframes pop { 0%{ transform:scale(1) } 40%{ transform:scale(1.35) } 100%{ transform:scale(1) } }
+  .pop { animation: pop .4s ease; }
+  .no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+</style>
+</head>
+<body class="font-sans overflow-x-hidden">
+
+<div class="bg-euc text-white text-xs sm:text-sm text-center px-4 py-2">Новинка: мист «Овсяная вода» уже на маркетплейсах · <a href="#catalog" class="underline underline-offset-2">смотреть</a></div>
+
+<header id="top" class="sticky top-0 z-40 bg-milk/90 backdrop-blur border-b border-ink/5">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 md:h-[72px] flex items-center justify-between gap-4">
+    <a href="#top" class="font-display font-extrabold text-2xl tracking-[.18em]">OVSA</a>
+    <nav class="hidden md:flex items-center gap-8 text-[15px] text-ink/70">
+      <a href="#catalog" class="hover:text-ink transition">Каталог</a>
+      <a href="#ingredients" class="hover:text-ink transition">Состав</a>
+      <a href="#reviews" class="hover:text-ink transition">Отзывы</a>
+      <a href="#certs" class="hover:text-ink transition">Сертификаты</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="cartBtn" class="relative inline-flex items-center gap-2 h-11 px-4 rounded-full bg-ink text-white text-sm font-semibold hover:bg-euc transition" aria-label="Открыть корзину">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 016 0"/></svg>
+        <span class="hidden sm:inline">Корзина</span>
+        <span id="cartCount" class="min-w-[22px] h-[22px] px-1.5 rounded-full bg-peach text-ink text-xs font-bold grid place-items-center">0</span>
+      </button>
+      <button id="burger" aria-label="Открыть меню" class="md:hidden w-11 h-11 rounded-full border border-ink/15 grid place-items-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></button>
+    </div>
+  </div>
+  <div id="mmenu" class="md:hidden hidden border-t border-ink/5 bg-milk">
+    <nav class="px-5 py-4 flex flex-col text-lg font-display font-semibold">
+      <a href="#catalog" class="mlink py-3 border-b border-ink/5">Каталог</a><a href="#ingredients" class="mlink py-3 border-b border-ink/5">Состав</a><a href="#reviews" class="mlink py-3 border-b border-ink/5">Отзывы</a><a href="#certs" class="mlink py-3">Сертификаты</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- Hero -->
+<section class="relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 pt-10 md:pt-16 pb-16 md:pb-24 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-6 rv">
+      <div class="flex flex-wrap gap-2 text-sm">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white"><span class="w-2 h-2 rounded-full bg-wb"></span><b>4,9</b> на WB · 12 400 отзывов</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white"><span class="w-2 h-2 rounded-full bg-oz"></span><b>4,8</b> на Ozon · 5 100 отзывов</span>
+      </div>
+      <h1 class="mt-6 font-display font-semibold text-[40px] leading-[1.02] sm:text-6xl lg:text-[72px] tracking-[-0.035em]">Уход на овсе для кожи, которая <span class="text-euc">всё чувствует</span></h1>
+      <p class="mt-6 text-lg md:text-xl text-ink/65 max-w-xl">Коллоидный овёс, церамиды и пантенол в честных концентрациях. Без отдушек и спирта. Успокаивает покраснение и шелушение за 7 дней.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="#catalog" class="inline-flex justify-center items-center px-7 py-4 rounded-full bg-ink text-white font-semibold hover:bg-euc transition">Выбрать средство</a>
+        <a href="#ingredients" class="inline-flex justify-center items-center px-7 py-4 rounded-full border border-ink/15 font-semibold hover:bg-white transition">Что в составе</a>
+      </div>
+      <div class="mt-10 grid grid-cols-3 gap-3 max-w-md text-center">
+        <div class="rounded-2xl bg-white p-3"><div class="font-display font-bold text-2xl">97%</div><div class="text-xs text-ink/55">меньше сухости*</div></div>
+        <div class="rounded-2xl bg-white p-3"><div class="font-display font-bold text-2xl">pH 5,5</div><div class="text-xs text-ink/55">как у кожи</div></div>
+        <div class="rounded-2xl bg-white p-3"><div class="font-display font-bold text-2xl">0%</div><div class="text-xs text-ink/55">отдушек и спирта</div></div>
+      </div>
+      <p class="mt-3 text-xs text-ink/40">*по результатам тестирования на 32 добровольцах, 28 дней</p>
+    </div>
+    <div class="lg:col-span-6 relative rv">
+      <div class="relative rounded-[40px] overflow-hidden h-[420px] sm:h-[540px] bg-oat">
+        <img src="https://images.unsplash.com/photo-1617897903246-719242758050?w=1200&q=80&auto=format&fit=crop" alt="Флакон сыворотки на деревянной поверхности с листьями эвкалипта" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent"></div>
+        <div class="absolute left-4 right-4 bottom-4 sm:left-6 sm:right-auto sm:bottom-6 bg-white/95 backdrop-blur rounded-3xl p-4 flex items-center gap-4 sm:max-w-[340px]">
+          <div class="w-16 h-20 shrink-0 bg-milk rounded-2xl grid place-items-end pb-2" id="heroMini"></div>
+          <div class="min-w-0"><div class="text-xs text-ink/50">Бестселлер месяца</div><div class="font-semibold leading-tight">Крем-барьер «Овсяное молочко»</div><div class="mt-1 text-sm"><b>1 190 ₽</b> <s class="text-ink/40">1 590 ₽</s></div></div>
+          <button data-add="cream" class="addQuick shrink-0 w-11 h-11 rounded-full bg-ink text-white grid place-items-center hover:bg-euc transition" aria-label="Добавить крем в корзину">+</button>
+        </div>
+        <span class="absolute top-5 right-5 px-3 py-1.5 rounded-full bg-peach text-sm font-semibold">−25% до 31 октября</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Catalog -->
+<section id="catalog" class="py-16 md:py-24 bg-white scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 rv">
+      <div><p class="text-sm font-semibold text-euc uppercase tracking-[.2em]">Каталог</p><h2 class="mt-3 font-display font-semibold text-4xl md:text-6xl tracking-[-0.03em]">Шесть средств. Всё, что нужно</h2></div>
+      <p class="text-ink/60 max-w-sm">Выберите вариант, добавьте в корзину, чтобы собрать свой набор, или сразу переходите на маркетплейс.</p>
+    </div>
+    <div id="grid" class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12"></div>
+  </div>
+</section>
+
+<!-- Ingredients -->
+<section id="ingredients" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5 rv">
+        <p class="text-sm font-semibold text-euc uppercase tracking-[.2em]">Состав</p>
+        <h2 class="mt-3 font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.05]">Мы пишем проценты на лицевой стороне</h2>
+        <p class="mt-5 text-ink/65 text-lg">Активные компоненты в концентрациях, которые реально работают. Формулы разработаны в лаборатории в Санкт-Петербурге и протестированы дерматологами.</p>
+        <div class="mt-8 rounded-[32px] overflow-hidden h-64 relative">
+          <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=1200&q=80&auto=format&fit=crop" alt="Девушка с маской для лица" class="w-full h-full object-cover">
+        </div>
+        <div class="mt-6 flex flex-wrap gap-2 text-sm">
+          <span class="px-3 py-1.5 rounded-full bg-white">✕ парабены</span><span class="px-3 py-1.5 rounded-full bg-white">✕ силиконы</span><span class="px-3 py-1.5 rounded-full bg-white">✕ отдушки</span><span class="px-3 py-1.5 rounded-full bg-white">✕ спирт</span><span class="px-3 py-1.5 rounded-full bg-white">✕ эфирные масла</span>
+        </div>
+      </div>
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4 content-start">
+        <div class="rv rounded-[28px] bg-white p-6"><div class="flex items-baseline justify-between"><h3 class="font-display font-semibold text-xl">Коллоидный овёс</h3><span class="font-display font-bold text-2xl text-euc">3%</span></div><div class="mt-3 h-1.5 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:60%"></div></div><p class="mt-3 text-sm text-ink/60">Снимает зуд и покраснение, образует на коже дышащую защитную плёнку.</p></div>
+        <div class="rv rounded-[28px] bg-white p-6"><div class="flex items-baseline justify-between"><h3 class="font-display font-semibold text-xl">Ниацинамид</h3><span class="font-display font-bold text-2xl text-euc">4%</span></div><div class="mt-3 h-1.5 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:80%"></div></div><p class="mt-3 text-sm text-ink/60">Выравнивает тон, сужает поры и укрепляет барьер без раздражения.</p></div>
+        <div class="rv rounded-[28px] bg-white p-6"><div class="flex items-baseline justify-between"><h3 class="font-display font-semibold text-xl">Церамиды NP, AP, EOP</h3><span class="font-display font-bold text-2xl text-euc">1%</span></div><div class="mt-3 h-1.5 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:25%"></div></div><p class="mt-3 text-sm text-ink/60">«Кирпичики» кожного барьера. Удерживают влагу и защищают от сухого воздуха.</p></div>
+        <div class="rv rounded-[28px] bg-white p-6"><div class="flex items-baseline justify-between"><h3 class="font-display font-semibold text-xl">Сквалан</h3><span class="font-display font-bold text-2xl text-euc">5%</span></div><div class="mt-3 h-1.5 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:100%"></div></div><p class="mt-3 text-sm text-ink/60">Лёгкое растительное масло из оливы. Питает, не оставляя жирного блеска.</p></div>
+        <div class="rv rounded-[28px] bg-white p-6"><div class="flex items-baseline justify-between"><h3 class="font-display font-semibold text-xl">D-пантенол</h3><span class="font-display font-bold text-2xl text-euc">2%</span></div><div class="mt-3 h-1.5 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:45%"></div></div><p class="mt-3 text-sm text-ink/60">Ускоряет восстановление после ретиноидов, солнца и мороза.</p></div>
+        <div class="rv rounded-[28px] bg-euc text-white p-6 flex flex-col"><h3 class="font-display font-semibold text-xl">Полный состав (INCI)</h3><p class="mt-2 text-sm text-white/75 flex-1">Каждый ингредиент с пояснением, зачем он в формуле.</p><button id="inciBtn" class="mt-5 self-start px-5 py-2.5 rounded-full bg-white text-ink text-sm font-semibold hover:bg-peach transition">Показать состав крема</button></div>
+        <div id="inci" class="hidden sm:col-span-2 rounded-[28px] bg-white p-6 text-sm text-ink/70 leading-relaxed"><b class="text-ink">Крем-барьер «Овсяное молочко»:</b> Aqua, Squalane, Glycerin, Caprylic/Capric Triglyceride, Niacinamide, Avena Sativa Kernel Flour (коллоидный овёс), Cetearyl Alcohol (жирный спирт, не сушит), Butyrospermum Parkii Butter, Panthenol, Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Cholesterol, Sodium Hyaluronate, Allantoin, Xanthan Gum, Carbomer, Sodium Lauroyl Lactylate, Tocopherol, Ethylhexylglycerin, Phenoxyethanol.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-20 md:py-28 bg-white scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-4 rv">
+      <p class="text-sm font-semibold text-euc uppercase tracking-[.2em]">Отзывы</p>
+      <h2 class="mt-3 font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em]">17 500 отзывов с двух площадок</h2>
+      <div class="mt-8 flex items-end gap-4"><span class="font-display font-bold text-7xl leading-none">4,9</span><span class="pb-2"><span class="text-amber-500 text-xl tracking-wider">★★★★★</span><br><span class="text-sm text-ink/50">средняя оценка</span></span></div>
+      <div class="mt-6 space-y-2 text-sm">
+        <div class="flex items-center gap-3"><span class="w-3">5</span><div class="flex-1 h-2 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:91%"></div></div><span class="w-10 text-right text-ink/50">91%</span></div>
+        <div class="flex items-center gap-3"><span class="w-3">4</span><div class="flex-1 h-2 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:6%"></div></div><span class="w-10 text-right text-ink/50">6%</span></div>
+        <div class="flex items-center gap-3"><span class="w-3">3</span><div class="flex-1 h-2 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:2%"></div></div><span class="w-10 text-right text-ink/50">2%</span></div>
+        <div class="flex items-center gap-3"><span class="w-3">2</span><div class="flex-1 h-2 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:1%"></div></div><span class="w-10 text-right text-ink/50">&lt;1%</span></div>
+        <div class="flex items-center gap-3"><span class="w-3">1</span><div class="flex-1 h-2 rounded-full bg-oat"><div class="h-full rounded-full bg-euc" style="width:1%"></div></div><span class="w-10 text-right text-ink/50">&lt;1%</span></div>
+      </div>
+    </div>
+    <div class="lg:col-span-8">
+      <div class="flex gap-2 overflow-x-auto no-scrollbar rv" id="rFilters">
+        <button data-f="all" class="rfilter on shrink-0 px-4 py-2 rounded-full bg-milk text-sm font-semibold">Все</button>
+        <button data-f="WB" class="rfilter shrink-0 px-4 py-2 rounded-full bg-milk text-sm font-semibold">С Wildberries</button>
+        <button data-f="Ozon" class="rfilter shrink-0 px-4 py-2 rounded-full bg-milk text-sm font-semibold">С Ozon</button>
+        <button data-f="photo" class="rfilter shrink-0 px-4 py-2 rounded-full bg-milk text-sm font-semibold">С фото</button>
+      </div>
+      <div id="rList" class="mt-6 grid sm:grid-cols-2 gap-4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Certificates -->
+<section id="certs" class="py-20 md:py-28 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto rv">
+      <p class="text-sm font-semibold text-euc uppercase tracking-[.2em]">Сертификаты</p>
+      <h2 class="mt-3 font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em]">Документы, которые можно открыть</h2>
+      <p class="mt-4 text-ink/60">Все средства прошли обязательную сертификацию и добровольные дерматологические тесты.</p>
+    </div>
+    <div class="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <button data-cert="0" class="cert rv group text-left rounded-[28px] bg-white p-5 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 transition">
+        <div class="aspect-[3/4] rounded-2xl bg-milk border border-ink/5 p-4 flex flex-col"><div class="h-2 w-1/2 bg-ink/20 rounded"></div><div class="mt-2 h-1.5 w-3/4 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-2/3 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-4/5 bg-ink/10 rounded"></div><div class="mt-auto self-end w-12 h-12 rounded-full border-2 border-euc/60 grid place-items-center text-euc text-[9px] font-bold">ЕАЭС</div></div>
+        <div class="mt-4 font-semibold text-sm sm:text-base hyphens-auto [overflow-wrap:anywhere]">Декларация ЕАЭС</div><div class="text-sm text-ink/50">на всю линейку · 2026</div>
+      </button>
+      <button data-cert="1" class="cert rv group text-left rounded-[28px] bg-white p-5 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 transition">
+        <div class="aspect-[3/4] rounded-2xl bg-milk border border-ink/5 p-4 flex flex-col"><div class="h-2 w-1/2 bg-ink/20 rounded"></div><div class="mt-2 h-1.5 w-3/4 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-2/3 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-4/5 bg-ink/10 rounded"></div><div class="mt-auto self-end w-12 h-12 rounded-full border-2 border-euc/60 grid place-items-center text-euc text-[9px] font-bold text-center leading-none">DERMA<br>TEST</div></div>
+        <div class="mt-4 font-semibold text-sm sm:text-base hyphens-auto [overflow-wrap:anywhere]">Дерматологический тест</div><div class="text-sm text-ink/50">32 добровольца, 28 дней</div>
+      </button>
+      <button data-cert="2" class="cert rv group text-left rounded-[28px] bg-white p-5 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 transition">
+        <div class="aspect-[3/4] rounded-2xl bg-milk border border-ink/5 p-4 flex flex-col"><div class="h-2 w-1/2 bg-ink/20 rounded"></div><div class="mt-2 h-1.5 w-3/4 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-2/3 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-4/5 bg-ink/10 rounded"></div><div class="mt-auto self-end w-12 h-12 rounded-full border-2 border-euc/60 grid place-items-center text-euc text-lg">🌱</div></div>
+        <div class="mt-4 font-semibold text-sm sm:text-base hyphens-auto [overflow-wrap:anywhere]">Vegan & cruelty free</div><div class="text-sm text-ink/50">без тестов на животных</div>
+      </button>
+      <button data-cert="3" class="cert rv group text-left rounded-[28px] bg-white p-5 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 transition">
+        <div class="aspect-[3/4] rounded-2xl bg-milk border border-ink/5 p-4 flex flex-col"><div class="h-2 w-1/2 bg-ink/20 rounded"></div><div class="mt-2 h-1.5 w-3/4 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-2/3 bg-ink/10 rounded"></div><div class="mt-1.5 h-1.5 w-4/5 bg-ink/10 rounded"></div><div class="mt-auto self-end w-12 h-12 rounded-full border-2 border-euc/60 grid place-items-center text-euc text-[9px] font-bold">ГИПО</div></div>
+        <div class="mt-4 font-semibold text-sm sm:text-base hyphens-auto [overflow-wrap:anywhere]">Гипоаллергенность</div><div class="text-sm text-ink/50">протокол испытаний</div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Wholesale / contact strip -->
+<section class="pb-20 md:pb-28">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="rounded-[40px] bg-ink text-white p-8 sm:p-12 md:p-16 grid md:grid-cols-2 gap-8 items-center rv">
+      <div><h2 class="font-display font-semibold text-3xl md:text-5xl tracking-[-0.03em]">Получите −15% на первый заказ</h2><p class="mt-4 text-white/65">Оставьте почту: пришлём промокод для Wildberries и Ozon и короткий гид по уходу за чувствительной кожей.</p></div>
+      <form id="subForm" novalidate class="flex flex-col sm:flex-row gap-3">
+        <label for="subEmail" class="sr-only">Email</label>
+        <input id="subEmail" type="email" placeholder="hello@example.ru" class="flex-1 px-5 py-4 rounded-full bg-white/10 border border-white/15 outline-none focus:border-white text-white placeholder-white/40">
+        <button class="px-7 py-4 rounded-full bg-peach text-ink font-semibold hover:bg-white transition">Получить промокод</button>
+        <p id="subMsg" class="hidden sm:basis-full text-sm"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-ink/10 pb-20 md:pb-8">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-12 grid md:grid-cols-4 gap-8 text-sm">
+    <div class="md:col-span-2"><div class="font-display font-extrabold text-2xl tracking-[.18em]">OVSA</div><p class="mt-3 text-ink/60 max-w-sm">Уходовая косметика на овсе. Производство в России, продаём на маркетплейсах.</p></div>
+    <div><div class="font-semibold mb-3">Покупателям</div><a href="#catalog" class="block text-ink/60 hover:text-ink">Каталог</a><a href="#ingredients" class="block text-ink/60 hover:text-ink mt-1">Состав</a><a href="#certs" class="block text-ink/60 hover:text-ink mt-1">Сертификаты</a></div>
+    <div><div class="font-semibold mb-3">Связь</div><a href="tel:+79000000000" class="block text-ink/60 hover:text-ink">+7 (900) 000-00-00</a><a href="mailto:hello@example.ru" class="block text-ink/60 hover:text-ink mt-1">hello@example.ru</a></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-5 md:px-8 text-xs text-ink/40">© 2026 OVSA. Демо-проект: бренд, товары и отзывы вымышленные.</div>
+</footer>
+
+<!-- Cart drawer -->
+<div id="ov" class="ov closed fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm"></div>
+<aside id="drawer" class="drawer closed fixed top-0 right-0 bottom-0 z-[55] w-full sm:w-[420px] bg-milk flex flex-col" aria-label="Корзина">
+  <div class="px-6 h-16 flex items-center justify-between border-b border-ink/10"><h3 class="font-display font-semibold text-xl">Корзина</h3><button id="cartClose" aria-label="Закрыть корзину" class="w-10 h-10 rounded-full hover:bg-white grid place-items-center text-xl">✕</button></div>
+  <div class="px-6 pt-4">
+    <div class="text-sm" id="shipTxt"></div>
+    <div class="mt-2 h-1.5 rounded-full bg-oat overflow-hidden"><div id="shipBar" class="h-full bg-euc rounded-full transition-all duration-500" style="width:0"></div></div>
+  </div>
+  <div id="cartList" class="flex-1 overflow-y-auto px-6 py-4 space-y-3"></div>
+  <div class="p-6 border-t border-ink/10 bg-white">
+    <div class="flex justify-between items-baseline"><span class="text-ink/60">Итого</span><b id="cartTotal" class="font-display text-2xl">0 ₽</b></div>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <button class="mp px-4 py-3.5 rounded-2xl bg-wb text-white font-semibold hover:opacity-90 transition" data-mp="Wildberries">Купить на WB</button>
+      <button class="mp px-4 py-3.5 rounded-2xl bg-oz text-white font-semibold hover:opacity-90 transition" data-mp="Ozon">Купить на Ozon</button>
+    </div>
+    <p class="mt-3 text-xs text-ink/45 text-center">Корзину перенесём на маркетплейс одной ссылкой</p>
+  </div>
+</aside>
+
+<!-- Modal -->
+<div id="modal" class="ov closed fixed inset-0 z-[60] flex items-center justify-center p-5" role="dialog" aria-modal="true">
+  <div class="absolute inset-0 bg-ink/50 backdrop-blur-sm" data-mclose></div>
+  <div class="relative bg-white rounded-[32px] p-7 sm:p-9 max-w-md w-full text-center">
+    <button data-mclose aria-label="Закрыть" class="absolute top-4 right-4 w-10 h-10 rounded-full hover:bg-milk grid place-items-center">✕</button>
+    <div id="mIcon" class="mx-auto w-16 h-16 rounded-2xl grid place-items-center text-white font-display font-bold text-xl">WB</div>
+    <h3 id="mTitle" class="mt-5 font-display font-semibold text-2xl"></h3>
+    <p id="mText" class="mt-3 text-ink/65"></p>
+    <button data-mclose class="mt-7 w-full py-3.5 rounded-full bg-ink text-white font-semibold hover:bg-euc transition">Понятно</button>
+  </div>
+</div>
+
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-16 z-[70] px-5 py-3 rounded-full bg-ink text-white text-sm font-medium shadow-xl opacity-0 pointer-events-none transition duration-300"></div>
+
+<a href="../../" class="fixed left-3 bottom-3 z-40 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/70 text-white text-[11px] md:text-xs backdrop-blur opacity-80 hover:opacity-100 transition">
+  <span class="w-1.5 h-1.5 rounded-full bg-peach"></span>Демо-проект<span class="hidden sm:inline"> · портфолио Лианы</span>
+</a>
+
+<script>
+const HL = /HeadlessChrome/.test(navigator.userAgent); // скриншоты: показываем всё сразу
+if (!HL) document.documentElement.classList.add('js');
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
+const observe = () => document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el));
+
+document.getElementById('burger').onclick = () => document.getElementById('mmenu').classList.toggle('hidden');
+document.querySelectorAll('.mlink').forEach(a => a.addEventListener('click', () => document.getElementById('mmenu').classList.add('hidden')));
+
+const fmt = n => n.toLocaleString('ru-RU').replace(/,/g,' ') + ' ₽';
+
+// ---- product renders (pure CSS) ----
+function render(type, c, s = 1){
+  const label = (w) => `<div class="absolute inset-x-0 top-[34%] text-center"><div style="font:800 ${10*s*w}px Geologica;letter-spacing:.2em;color:${c.ink}">OVSA</div><div style="font:500 ${5.5*s*w}px 'Golos Text';color:${c.ink};opacity:.7;margin-top:${2*s}px">${c.sub||''}</div></div>`;
+  if (type === 'jar') return `<div class="p-wrap" style="width:${150*s}px;height:${130*s}px"><div class="p-shadow"></div><div class="relative flex flex-col items-center">
+      <div class="jar-lid relative shine" style="width:${138*s}px;height:${34*s}px;background:linear-gradient(180deg,${c.lid},${c.lid2||c.lid})"></div>
+      <div class="jar-body relative shine" style="width:${132*s}px;height:${78*s}px;background:linear-gradient(180deg,${c.body},${c.body2||c.body})">${label(1.1)}</div></div></div>`;
+  if (type === 'drop') return `<div class="p-wrap" style="width:${90*s}px;height:${210*s}px"><div class="p-shadow"></div><div class="relative flex flex-col items-center">
+      <div style="width:${26*s}px;height:${40*s}px;border-radius:${12*s}px ${12*s}px 4px 4px;background:${c.lid}"></div>
+      <div style="width:${40*s}px;height:${14*s}px;background:${c.lid2||c.lid};border-radius:3px"></div>
+      <div class="drop-bottle relative shine" style="width:${82*s}px;height:${140*s}px;background:linear-gradient(180deg,${c.body},${c.body2||c.body})">${label(.9)}</div></div></div>`;
+  if (type === 'tube') return `<div class="p-wrap" style="width:${100*s}px;height:${230*s}px"><div class="p-shadow"></div><div class="relative flex flex-col items-center">
+      <div style="width:${92*s}px;height:${10*s}px;background:repeating-linear-gradient(90deg,${c.body2||c.body} 0 3px,${c.body} 3px 6px);border-radius:3px"></div>
+      <div class="tube relative shine" style="width:${86*s}px;height:${170*s}px;background:linear-gradient(180deg,${c.body2||c.body},${c.body})">${label(.85)}</div>
+      <div style="width:${50*s}px;height:${36*s}px;border-radius:0 0 ${10*s}px ${10*s}px;background:${c.lid}"></div></div></div>`;
+  if (type === 'mist') return `<div class="p-wrap" style="width:${90*s}px;height:${240*s}px"><div class="p-shadow"></div><div class="relative flex flex-col items-center">
+      <div style="width:${30*s}px;height:${30*s}px;border-radius:${8*s}px ${8*s}px 2px 2px;background:${c.lid}"></div>
+      <div style="width:${18*s}px;height:${10*s}px;background:${c.lid2||c.lid}"></div>
+      <div class="relative shine" style="width:${76*s}px;height:${180*s}px;border-radius:${16*s}px ${16*s}px ${20*s}px ${20*s}px;background:linear-gradient(180deg,${c.body},${c.body2||c.body})">${label(.85)}</div></div></div>`;
+  if (type === 'balm') return `<div class="p-wrap gap-2" style="width:${170*s}px;height:${150*s}px"><div class="p-shadow"></div>${[0,1,2].map(i=>`<div class="relative flex flex-col items-center" style="transform:translateY(${i===1?-10*s:0}px)">
+      <div style="width:${34*s}px;height:${26*s}px;border-radius:${8*s}px ${8*s}px 2px 2px;background:${c.lid}"></div>
+      <div class="relative shine" style="width:${36*s}px;height:${92*s}px;border-radius:4px 4px ${8*s}px ${8*s}px;background:linear-gradient(180deg,${c.body},${c.body2||c.body})"><div class="absolute inset-x-0 top-[40%] text-center" style="font:800 ${7*s}px Geologica;letter-spacing:.1em;color:${c.ink};writing-mode:vertical-rl;transform:rotate(180deg);left:35%">OVSA</div></div></div>`).join('')}</div>`;
+  if (type === 'set') return `<div class="p-wrap items-end" style="width:${220*s}px;height:${210*s}px"><div class="p-shadow" style="width:90%"></div><div class="relative -mr-4">${render('tube',c,s*.72)}</div><div class="relative z-10">${render('drop',{...c,body:'#F1E4D6',body2:'#E7D3BF'},s*.8)}</div><div class="relative -ml-4">${render('jar',c,s*.62)}</div></div>`;
+}
+
+const P = [
+  { id:'cream', short:'Крем-барьер', type:'jar', name:'Крем-барьер «Овсяное молочко»', cat:'Крем для лица', bg:'#EFE6D8', hit:'Хит продаж', rating:4.9, rev:6820,
+    feats:['24 ч увлажнения','Церамиды и овёс','Для сухой кожи'],
+    vars:[{l:'50 мл', price:1190, old:1590, sku:'184 772 301', c:{lid:'#2F6B5A',lid2:'#24564A',body:'#FBF7F0',body2:'#EFE6D8',ink:'#2F6B5A',sub:'крем-барьер'}},
+          {l:'30 мл', price:790, old:990, sku:'184 772 298', c:{lid:'#2F6B5A',lid2:'#24564A',body:'#FBF7F0',body2:'#EFE6D8',ink:'#2F6B5A',sub:'крем-барьер'}},
+          {l:'Ночной 50 мл', price:1290, old:1690, sku:'184 772 315', c:{lid:'#2A2F3D',lid2:'#1D212B',body:'#E9E5F2',body2:'#D8D2E8',ink:'#2A2F3D',sub:'ночной крем'}}] },
+  { id:'serum', short:'Сыворотка', type:'drop', name:'Сыворотка «Ниацинамид 4% + овёс»', cat:'Сыворотка', bg:'#F6D9C7', hit:'−30%', rating:4.8, rev:3410,
+    feats:['Ровный тон','Сужает поры','Без жжения'],
+    vars:[{l:'30 мл', price:990, old:1390, sku:'184 772 402', c:{lid:'#1E2420',lid2:'#3A403C',body:'#F7E9DF',body2:'#EDD2C0',ink:'#B0583A',sub:'niacinamide 4%'}},
+          {l:'15 мл', price:590, old:790, sku:'184 772 399', c:{lid:'#1E2420',lid2:'#3A403C',body:'#F7E9DF',body2:'#EDD2C0',ink:'#B0583A',sub:'niacinamide 4%'}}] },
+  { id:'gel', short:'Гель для умывания', type:'tube', name:'Гель для умывания «Мягкая пена»', cat:'Очищение', bg:'#DCE9E2', hit:'Новинка', rating:4.9, rev:2150,
+    feats:['pH 5,5','Не стягивает кожу','Снимает SPF'],
+    vars:[{l:'Без отдушки', price:690, old:890, sku:'184 772 510', c:{lid:'#2F6B5A',body:'#FFFFFF',body2:'#C9DFD3',ink:'#2F6B5A',sub:'гель · 200 мл'}},
+          {l:'Груша и липа', price:690, old:890, sku:'184 772 512', c:{lid:'#9A7B2F',body:'#FBF6E6',body2:'#F1E6C4',ink:'#8A6A1F',sub:'груша и липа'}}] },
+  { id:'mist', short:'Мист для лица', type:'mist', name:'Мист «Овсяная вода»', cat:'Тонизирование', bg:'#E3E7F1', hit:'Новинка', rating:4.8, rev:640,
+    feats:['От покраснений','Поверх макияжа','Мелкий спрей'],
+    vars:[{l:'100 мл', price:740, old:940, sku:'184 772 620', c:{lid:'#2A3A66',lid2:'#5A6890',body:'#D3DCF0',body2:'#AEBCDD',ink:'#2A3A66',sub:'мист · 100 мл'}},
+          {l:'50 мл дорожный', price:490, old:590, sku:'184 772 618', c:{lid:'#2A3A66',lid2:'#5A6890',body:'#D3DCF0',body2:'#AEBCDD',ink:'#2A3A66',sub:'мист · 50 мл'}}] },
+  { id:'balm', short:'Бальзам для губ', type:'balm', name:'Бальзам для губ, набор 3 шт', cat:'Губы', bg:'#F3DDE0', hit:'−20%', rating:4.9, rev:4980,
+    feats:['Масло ши','Не липнет','Тинт или без цвета'],
+    vars:[{l:'Прозрачный', price:590, old:740, sku:'184 772 701', c:{lid:'#FBF7F0',body:'#FFFFFF',body2:'#DCCFB9',ink:'#2F6B5A'}},
+          {l:'Ягодный', price:640, old:790, sku:'184 772 703', c:{lid:'#B2384E',body:'#E7A3AF',body2:'#D07F8E',ink:'#6E1B2A'}},
+          {l:'Персик', price:640, old:790, sku:'184 772 705', c:{lid:'#E58E6B',body:'#F6C9B2',body2:'#EEB094',ink:'#8A4027'}}] },
+  { id:'set', short:'Базовый уход', type:'set', name:'Набор «Базовый уход»: гель, сыворотка, крем', cat:'Набор', bg:'#E7E2D2', hit:'Выгода 990 ₽', rating:5.0, rev:1270,
+    feats:['Курс на 2 месяца','Подарочная коробка','Экономия 990 ₽'],
+    vars:[{l:'Стандарт', price:1880, old:2870, sku:'184 772 900', c:{lid:'#2F6B5A',lid2:'#24564A',body:'#FBF7F0',body2:'#EFE6D8',ink:'#2F6B5A',sub:''}},
+          {l:'С ночным кремом', price:1980, old:2970, sku:'184 772 905', c:{lid:'#2A2F3D',lid2:'#1D212B',body:'#E9E5F2',body2:'#D8D2E8',ink:'#2A2F3D',sub:''}}] }
+];
+const sel = {}; P.forEach(p => sel[p.id] = 0);
+
+function card(p){
+  const v = p.vars[sel[p.id]]; const disc = Math.round((1 - v.price/v.old)*100);
+  return `
+  <article class="rv flex flex-col" data-card="${p.id}">
+    <div class="relative aspect-square rounded-[28px] overflow-hidden" style="background:${p.bg}">
+      <div class="absolute inset-0" style="background:radial-gradient(circle at 70% 60%, rgba(255,255,255,.75), transparent 55%)"></div>
+      <div class="absolute left-4 top-4 right-4 flex items-start justify-between gap-2">
+        <div><div class="text-[11px] uppercase tracking-[.18em] font-semibold text-ink/50">${p.cat}</div><div class="mt-1 font-display font-bold text-lg sm:text-xl leading-tight max-w-[190px]">${p.short}</div></div>
+        <span class="shrink-0 px-2.5 py-1 rounded-full bg-ink text-white text-xs font-semibold">${p.hit}</span>
+      </div>
+      <ul class="absolute left-4 bottom-4 space-y-1.5 z-10">${p.feats.map((f,i)=>`<li class="flex items-center gap-2 text-[12px] sm:text-[13px] font-semibold bg-white/85 backdrop-blur rounded-full pl-1 pr-3 py-1 w-max max-w-[190px]"><span class="w-5 h-5 shrink-0 rounded-full bg-euc text-white grid place-items-center text-[10px]">${['✓','★','◆'][i]}</span><span class="truncate">${f}</span></li>`).join('')}</ul>
+      <div class="absolute right-2 bottom-5 sm:right-4 w-[58%] flex justify-center max-[420px]:scale-[.78] origin-bottom-right" data-render>${render(p.type, v.c, ({jar:1.25,drop:1.15,tube:1.05,mist:1.05,balm:1.1,set:.95})[p.type])}</div>
+      <div class="absolute left-4 top-[30%] w-16 h-16 rounded-full bg-peach border-2 border-white grid place-items-center text-center font-display font-extrabold text-base leading-none rotate-[-10deg] shadow">−${disc}%</div>
+    </div>
+    <div class="mt-4 flex items-center gap-2 text-sm"><span class="text-amber-500">★</span><b>${p.rating.toFixed(1).replace('.',',')}</b><span class="text-ink/45">· ${p.rev.toLocaleString('ru-RU')} оценок</span><span class="ml-auto text-ink/40 text-xs">арт. ${v.sku}</span></div>
+    <h3 class="mt-1.5 font-semibold text-[17px] leading-snug">${p.name}</h3>
+    <div class="mt-3 flex flex-wrap gap-2">${p.vars.map((x,i)=>`<button data-p="${p.id}" data-v="${i}" class="vchip px-3 py-1.5 rounded-xl border border-ink/15 text-sm ${i===sel[p.id]?'on':''} hover:border-ink transition">${x.l}</button>`).join('')}</div>
+    <div class="mt-4 flex items-baseline gap-2"><b class="font-display text-2xl">${fmt(v.price)}</b><s class="text-ink/40">${fmt(v.old)}</s></div>
+    <div class="mt-4 grid grid-cols-[1fr_1fr_auto] gap-2">
+      <button class="mp px-3 py-3 rounded-2xl bg-wb text-white text-sm font-semibold hover:opacity-90 transition" data-mp="Wildberries" data-name="${p.name}">Купить на WB</button>
+      <button class="mp px-3 py-3 rounded-2xl bg-oz text-white text-sm font-semibold hover:opacity-90 transition" data-mp="Ozon" data-name="${p.name}">Купить на Ozon</button>
+      <button data-add="${p.id}" class="add w-12 rounded-2xl border border-ink/15 grid place-items-center hover:bg-ink hover:text-white transition" aria-label="Добавить в корзину"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 016 0M12 11v5M9.5 13.5h5"/></svg></button>
+    </div>
+  </article>`;
+}
+const grid = document.getElementById('grid');
+function renderGrid(){ grid.innerHTML = P.map(card).join(''); observe(); }
+grid.addEventListener('click', e => {
+  const vc = e.target.closest('.vchip'); if (vc) { sel[vc.dataset.p] = +vc.dataset.v; const p = P.find(x=>x.id===vc.dataset.p); const el = grid.querySelector(`[data-card="${p.id}"]`); const tmp = document.createElement('div'); tmp.innerHTML = card(p); const n = tmp.firstElementChild; n.classList.add('in'); el.replaceWith(n); return; }
+});
+document.getElementById('heroMini').innerHTML = render('jar', P[0].vars[0].c, .42);
+
+// ---- cart ----
+const cart = new Map(); // key id|v -> qty
+const ov = document.getElementById('ov'), drawer = document.getElementById('drawer');
+const openCart = () => { ov.classList.remove('closed'); drawer.classList.remove('closed'); document.body.style.overflow='hidden'; };
+const closeCart = () => { ov.classList.add('closed'); drawer.classList.add('closed'); document.body.style.overflow=''; };
+document.getElementById('cartBtn').onclick = openCart; document.getElementById('cartClose').onclick = closeCart; ov.onclick = closeCart;
+function toast(t){ const el = document.getElementById('toast'); el.textContent = t; el.classList.remove('opacity-0'); clearTimeout(el._t); el._t = setTimeout(()=>el.classList.add('opacity-0'), 1800); }
+function add(id){ const k = id+'|'+sel[id]; cart.set(k, (cart.get(k)||0)+1); renderCart(); const c = document.getElementById('cartCount'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); const p = P.find(x=>x.id===id); toast(`Добавлено: ${p.short}, ${p.vars[sel[id]].l}`); }
+document.addEventListener('click', e => { const a = e.target.closest('[data-add]'); if (a) add(a.dataset.add); });
+function renderCart(){
+  let total = 0, count = 0;
+  const rows = [...cart.entries()].map(([k,q]) => { const [id,vi] = k.split('|'); const p = P.find(x=>x.id===id); const v = p.vars[+vi]; total += v.price*q; count += q;
+    return `<div class="flex gap-3 p-3 rounded-2xl bg-white"><div class="w-16 h-16 shrink-0 rounded-xl grid place-items-end justify-center pb-1 overflow-hidden" style="background:${p.bg}">${render(p.type, v.c, p.type==='set'?.26:p.type==='jar'||p.type==='balm'?.36:.26)}</div>
+      <div class="flex-1 min-w-0"><div class="text-sm font-semibold leading-snug">${p.name}</div><div class="text-xs text-ink/50">${v.l}</div>
+      <div class="mt-2 flex items-center justify-between"><div class="inline-flex items-center rounded-full bg-milk"><button data-dec="${k}" class="w-8 h-8 grid place-items-center" aria-label="Меньше">−</button><span class="w-6 text-center text-sm font-semibold">${q}</span><button data-inc="${k}" class="w-8 h-8 grid place-items-center" aria-label="Больше">+</button></div><b class="text-sm">${fmt(v.price*q)}</b></div></div></div>`; }).join('');
+  document.getElementById('cartList').innerHTML = rows || `<div class="text-center py-16"><div class="text-5xl">🌾</div><p class="mt-4 font-semibold">Корзина пока пустая</p><p class="text-sm text-ink/50 mt-1">Добавьте средства из каталога</p><a href="#catalog" id="toCat" class="inline-block mt-5 px-5 py-2.5 rounded-full bg-ink text-white text-sm font-semibold">В каталог</a></div>`;
+  const tc = document.getElementById('toCat'); if (tc) tc.onclick = closeCart;
+  document.getElementById('cartTotal').textContent = fmt(total);
+  document.getElementById('cartCount').textContent = count;
+  const FREE = 2000; const left = FREE - total;
+  document.getElementById('shipTxt').innerHTML = total === 0 ? 'Бесплатная доставка от 2 000 ₽' : left > 0 ? `До бесплатной доставки <b>${fmt(left)}</b>` : '<b class="text-euc">Доставка бесплатная 🎉</b>';
+  document.getElementById('shipBar').style.width = Math.min(100, total/FREE*100) + '%';
+}
+document.getElementById('cartList').addEventListener('click', e => {
+  const i = e.target.closest('[data-inc]'), d = e.target.closest('[data-dec]');
+  if (i) cart.set(i.dataset.inc, cart.get(i.dataset.inc)+1);
+  if (d) { const q = cart.get(d.dataset.dec)-1; q <= 0 ? cart.delete(d.dataset.dec) : cart.set(d.dataset.dec, q); }
+  if (i || d) renderCart();
+});
+
+// ---- modal ----
+const modal = document.getElementById('modal');
+function openModal(icon, bg, title, text){ const ic = document.getElementById('mIcon'); ic.textContent = icon; ic.style.background = bg; document.getElementById('mTitle').textContent = title; document.getElementById('mText').textContent = text; modal.classList.remove('closed'); }
+modal.addEventListener('click', e => { if (e.target.closest('[data-mclose]')) modal.classList.add('closed'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.classList.add('closed'); closeCart(); } });
+document.addEventListener('click', e => { const b = e.target.closest('.mp'); if (!b) return;
+  const wb = b.dataset.mp === 'Wildberries';
+  openModal(wb ? 'WB' : 'OZ', wb ? '#A11CC4' : '#005BFF', `Переход на ${b.dataset.mp}`, `Это демо-версия сайта. В рабочей версии кнопка откроет ${b.dataset.name ? 'карточку «' + b.dataset.name + '»' : 'вашу корзину'} в магазине бренда на ${b.dataset.mp}.`); });
+const CERTS = [['ЕАЭС','Декларация о соответствии ЕАЭС','Демо-версия: здесь откроется PDF декларации на всю линейку OVSA с номером и сроком действия.'],['DT','Дерматологическое тестирование','Демо-версия: здесь будет протокол испытаний на 32 добровольцах с чувствительной кожей, 28 дней.'],['🌱','Vegan & cruelty free','Демо-версия: здесь будет документ о том, что продукция и сырьё не тестируются на животных.'],['ГИПО','Гипоаллергенность','Демо-версия: здесь будет протокол испытаний на гипоаллергенность.']];
+document.querySelectorAll('.cert').forEach(b => b.onclick = () => { const c = CERTS[+b.dataset.cert]; openModal(c[0], '#2F6B5A', c[1], c[2]); });
+
+// ---- INCI ----
+document.getElementById('inciBtn').onclick = function(){ const el = document.getElementById('inci'); el.classList.toggle('hidden'); this.textContent = el.classList.contains('hidden') ? 'Показать состав крема' : 'Скрыть состав'; };
+
+// ---- reviews ----
+const REV = [
+  { n:'Алина', src:'WB', p:'Крем-барьер, 50 мл', r:5, t:'Зимой кожа на щеках шелушилась так, что тональный ложился хлопьями. Через неделю с этим кремом шелушения нет. Запаха никакого, банки хватает месяца на два.', ph:'1556228578-8c89e6adf883' },
+  { n:'Мария', src:'Ozon', p:'Сыворотка с ниацинамидом', r:5, t:'Пробовала ниацинамид 10% у других брендов, и он меня обсыпал. Здесь 4%, и это идеально: тон ровнее, поры меньше, никакого раздражения.' },
+  { n:'Екатерина', src:'WB', p:'Гель для умывания, без отдушки', r:5, t:'Наконец-то гель, после которого не хочется сразу мазаться кремом. Смывает даже стойкий санскрин. Беру уже третий тюбик.', ph:'1620916566398-39f1143ab7be' },
+  { n:'Ольга', src:'Ozon', p:'Набор «Базовый уход»', r:5, t:'Брала в подарок сестре, в итоге купила и себе. Коробка красивая, всё упаковано в пупырку, дошло за два дня.' },
+  { n:'Дарья', src:'WB', p:'Бальзам для губ, ягодный', r:4, t:'Оттенок лёгкий, губы не сушит. Минус звезда за то, что быстро заканчивается, но за набор из трёх штук цена честная.' },
+  { n:'Светлана', src:'Ozon', p:'Мист «Овсяная вода»', r:5, t:'Пользуюсь в офисе, где кондиционер сушит всё. Пшикаю поверх макияжа, ничего не плывёт. Распылитель очень мелкий.', ph:'1611930022073-b7a4ba5fcccd' }
+];
+let rf = 'all';
+function renderRev(){
+  const list = REV.filter(r => rf==='all' || (rf==='photo' ? r.ph : r.src===rf));
+  document.getElementById('rList').innerHTML = list.map(r => `
+    <article class="rounded-[24px] bg-milk p-6 flex flex-col">
+      <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-oat grid place-items-center font-semibold">${r.n[0]}</span><div><b>${r.n}</b><div class="text-xs text-ink/50">${r.p}</div></div></div><span class="px-2.5 py-1 rounded-full text-xs font-semibold text-white" style="background:${r.src==='WB'?'#A11CC4':'#005BFF'}">${r.src}</span></div>
+      <div class="mt-3 text-amber-500 tracking-wider">${'★'.repeat(r.r)}<span class="text-ink/15">${'★'.repeat(5-r.r)}</span></div>
+      <p class="mt-2 text-ink/75 leading-relaxed flex-1">${r.t}</p>
+      ${r.ph ? `<img src="https://images.unsplash.com/photo-${r.ph}?w=1200&q=80&auto=format&fit=crop" alt="Фото из отзыва: ${r.p}" class="mt-4 w-24 h-24 object-cover rounded-2xl" loading="lazy">` : ''}
+    </article>`).join('');
+  document.querySelectorAll('.rfilter').forEach(b => b.classList.toggle('on', b.dataset.f === rf));
+}
+document.getElementById('rFilters').onclick = e => { const b = e.target.closest('.rfilter'); if (b) { rf = b.dataset.f; renderRev(); } };
+
+// ---- subscribe ----
+document.getElementById('subForm').addEventListener('submit', e => {
+  e.preventDefault(); const v = document.getElementById('subEmail').value.trim(); const m = document.getElementById('subMsg');
+  m.classList.remove('hidden');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { m.textContent = 'Проверьте адрес почты.'; m.className = 'sm:basis-full text-sm text-peach'; return; }
+  m.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; m.className = 'sm:basis-full text-sm text-white'; document.getElementById('subEmail').value = '';
+});
+
+renderGrid(); renderCart(); renderRev(); observe();
+</script>
+</body>
+</html>

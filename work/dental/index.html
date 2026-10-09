@@ -2,60 +2,94 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Белая линия — стоматология</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Белая линия — стоматология без боли</title>
+<meta name="description" content="Стоматологическая клиника «Белая линия»: лечение под микроскопом, отбеливание, имплантация и элайнеры. Калькулятор стоимости лечения и бесплатная консультация.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Manrope','sans-serif']},colors:{teal:{50:'#effcfa',100:'#d6f5f0',400:'#2fc4b2',500:'#14a897',700:'#0d6f65',900:'#0b3b37'}}}}}</script>
-<style>body{-webkit-font-smoothing:antialiased}</style>
+<style>
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  section[id], footer[id] { scroll-margin-top: 80px; }
+  .reveal { transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal-pre { opacity: 0; transform: translateY(28px); }
+  .field-err { outline: 2px solid #e5484d !important; outline-offset: 1px; }
+  [data-msg] { min-height: 1.25rem; font-weight: 600; }
+  [data-msg][data-state="err"] { color: #e5484d; }
+  .demo-badge { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(18,18,22,.66); color: #fff; font: 500 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: .78; transition: opacity .2s, transform .2s; box-shadow: 0 6px 20px -8px rgba(0,0,0,.4); }
+  .demo-badge:hover { opacity: 1; transform: translateY(-2px); }
+  .demo-badge::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: #7CF29A; }
+  @media (max-width: 640px) { .demo-badge { left: 8px; bottom: 8px; padding: 6px 9px; font-size: 10px; } }
+  .modal-open { overflow: hidden; }
+
+  .svc-row input:checked + .box { background:#14a897; border-color:#14a897; }
+  .svc-row input:checked + .box svg { opacity:1; }
+</style>
 </head>
 <body class="bg-white text-teal-900 font-sans">
-<header class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-  <div class="flex items-center gap-3 font-extrabold text-xl"><span class="w-10 h-10 rounded-2xl bg-teal-500 grid place-items-center text-white">◡</span>Белая линия</div>
-  <nav class="hidden lg:flex gap-9 text-sm text-teal-900/70"><a>Услуги</a><a>Врачи</a><a>Цены</a><a>Отзывы</a><a>Контакты</a></nav>
-  <div class="flex items-center gap-5"><span class="text-sm font-semibold">+7 (900) 000-00-00</span><a class="px-5 py-3 rounded-full bg-teal-500 text-white text-sm font-semibold">Записаться</a></div>
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-teal-50">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-3 font-extrabold text-xl"><span class="w-10 h-10 rounded-2xl bg-teal-500 grid place-items-center text-white">◡</span>Белая линия</a>
+    <nav class="hidden lg:flex gap-9 text-sm text-teal-900/70"><a href="#services" class="hover:text-teal-500 transition">Услуги</a><a href="#doctors" class="hover:text-teal-500 transition">Врачи</a><a href="#prices" class="hover:text-teal-500 transition">Цены</a><a href="#reviews" class="hover:text-teal-500 transition">Отзывы</a><a href="#contacts" class="hover:text-teal-500 transition">Контакты</a></nav>
+    <div class="flex items-center gap-3 sm:gap-5">
+      <a href="tel:+79000000000" class="hidden md:inline text-sm font-semibold hover:text-teal-500">+7 (900) 000-00-00</a>
+      <a href="#appointment" class="hidden sm:inline-block px-5 py-3 rounded-full bg-teal-500 text-white text-sm font-semibold hover:bg-teal-700 transition">Записаться</a>
+      <button data-burger aria-expanded="false" aria-label="Меню" class="lg:hidden w-11 h-11 rounded-2xl bg-teal-50 grid place-items-center">
+        <svg data-ico="open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg data-ico="close" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div data-menu class="hidden lg:hidden px-5 pb-6">
+    <nav class="flex flex-col text-lg font-bold divide-y divide-teal-50"><a href="#services" class="py-3">Услуги</a><a href="#doctors" class="py-3">Врачи</a><a href="#prices" class="py-3">Цены и калькулятор</a><a href="#reviews" class="py-3">Отзывы</a><a href="#contacts" class="py-3">Контакты</a></nav>
+    <a href="#appointment" class="mt-4 block text-center py-4 rounded-full bg-teal-500 text-white font-bold">Записаться на консультацию</a>
+    <a href="tel:+79000000000" class="mt-3 block text-center text-sm font-semibold">+7 (900) 000-00-00</a>
+  </div>
 </header>
 
-<section class="max-w-7xl mx-auto px-6 pt-6 pb-20 grid lg:grid-cols-2 gap-12 items-center">
+<section id="top" class="max-w-7xl mx-auto px-5 sm:px-6 pt-8 sm:pt-10 pb-20 grid lg:grid-cols-2 gap-12 items-center">
   <div>
     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-700 text-sm font-semibold">✓ Лечение без боли под микроскопом</span>
-    <h1 class="mt-6 text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">Улыбка, которой<br>хочется делиться</h1>
-    <p class="mt-6 text-lg text-teal-900/65 max-w-lg">Лечим, восстанавливаем и отбеливаем зубы в одной клинике. План лечения и смета до начала работы — без сюрпризов в чеке.</p>
-    <div class="mt-9 flex flex-wrap gap-3">
-      <a class="px-7 py-4 rounded-full bg-teal-500 text-white font-bold shadow-lg shadow-teal-500/30">Бесплатная консультация</a>
-      <a class="px-7 py-4 rounded-full border-2 border-teal-100 font-bold">Цены на услуги</a>
+    <h1 class="mt-6 text-[40px] sm:text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">Улыбка, которой<br>хочется делиться</h1>
+    <p class="mt-6 text-base sm:text-lg text-teal-900/65 max-w-lg">Лечим, восстанавливаем и отбеливаем зубы в одной клинике. План лечения и смета до начала работы, без сюрпризов в чеке.</p>
+    <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
+      <a href="#appointment" class="text-center px-7 py-4 rounded-full bg-teal-500 text-white font-bold shadow-lg shadow-teal-500/30 hover:bg-teal-700 transition">Бесплатная консультация</a>
+      <a href="#prices" class="text-center px-7 py-4 rounded-full border-2 border-teal-100 font-bold hover:border-teal-400 transition">Рассчитать стоимость</a>
     </div>
-    <div class="mt-12 grid grid-cols-3 gap-6 max-w-md">
-      <div><div class="text-3xl font-extrabold">15 лет</div><div class="text-sm text-teal-900/55">работаем в городе</div></div>
-      <div><div class="text-3xl font-extrabold">4,9★</div><div class="text-sm text-teal-900/55">на Яндекс Картах</div></div>
-      <div><div class="text-3xl font-extrabold">0 ₽</div><div class="text-sm text-teal-900/55">консультация</div></div>
+    <div class="mt-12 grid grid-cols-3 gap-4 sm:gap-6 max-w-md">
+      <div><div class="text-2xl sm:text-3xl font-extrabold">15 лет</div><div class="text-sm text-teal-900/55">работаем в городе</div></div>
+      <div><div class="text-2xl sm:text-3xl font-extrabold">4,9★</div><div class="text-sm text-teal-900/55">на картах</div></div>
+      <div><div class="text-2xl sm:text-3xl font-extrabold">0 ₽</div><div class="text-sm text-teal-900/55">консультация</div></div>
     </div>
   </div>
   <div class="relative">
-    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop" class="rounded-[40px] h-[520px] w-full object-cover" alt="">
-    <div class="absolute -left-8 bottom-12 bg-white rounded-3xl shadow-2xl p-5 w-72">
+    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop" class="rounded-[32px] sm:rounded-[40px] h-[360px] sm:h-[520px] w-full object-cover" alt="Кабинет стоматологии">
+    <div class="absolute left-3 sm:-left-8 bottom-4 sm:bottom-12 bg-white rounded-3xl shadow-2xl p-4 sm:p-5 w-64 sm:w-72">
       <div class="text-sm text-teal-900/55">Ближайшая запись</div>
-      <div class="mt-1 font-bold text-lg">Сегодня, 17:30</div>
-      <div class="mt-3 flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-teal-100 grid place-items-center font-bold text-teal-700">АМ</span><div class="text-sm"><b>Анна Миронова</b><br><span class="text-teal-900/55">терапевт, 12 лет опыта</span></div></div>
+      <div class="mt-1 font-bold text-lg" id="nearest">Сегодня, 17:30</div>
+      <div class="mt-3 flex items-center gap-3"><span class="w-10 h-10 shrink-0 rounded-full bg-teal-100 grid place-items-center font-bold text-teal-700">АМ</span><div class="text-sm"><b>Анна Миронова</b><br><span class="text-teal-900/55">терапевт, 12 лет опыта</span></div></div>
     </div>
   </div>
 </section>
 
-<section class="bg-teal-50">
-  <div class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-4xl font-extrabold">Направления</h2>
-    <div class="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">🦷</div><h3 class="mt-4 font-bold text-lg">Лечение кариеса</h3><p class="mt-2 text-sm text-teal-900/60">Пломба за один визит, светоотверждаемые материалы</p><p class="mt-5 font-extrabold text-teal-700">от 3 500 ₽</p></div>
-      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">✨</div><h3 class="mt-4 font-bold text-lg">Отбеливание</h3><p class="mt-2 text-sm text-teal-900/60">Система ZOOM 4, до 8 тонов за 1,5 часа</p><p class="mt-5 font-extrabold text-teal-700">от 19 000 ₽</p></div>
-      <div class="bg-white rounded-3xl p-7"><div class="text-3xl">🔩</div><h3 class="mt-4 font-bold text-lg">Имплантация</h3><p class="mt-2 text-sm text-teal-900/60">Импланты с пожизненной гарантией производителя</p><p class="mt-5 font-extrabold text-teal-700">от 32 000 ₽</p></div>
-      <div class="bg-teal-500 text-white rounded-3xl p-7"><div class="text-3xl">😁</div><h3 class="mt-4 font-bold text-lg">Элайнеры</h3><p class="mt-2 text-sm text-white/80">Ровные зубы без брекетов, 3D-план лечения</p><p class="mt-5 font-extrabold">от 120 000 ₽</p></div>
+<section id="services" class="bg-teal-50">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+    <h2 class="text-3xl sm:text-4xl font-extrabold">Направления</h2>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <a href="#prices" data-tabgo="ther" data-reveal class="block bg-white rounded-3xl p-7 hover:-translate-y-1 hover:shadow-xl transition"><div class="text-3xl">🦷</div><h3 class="mt-4 font-bold text-lg">Лечение кариеса</h3><p class="mt-2 text-sm text-teal-900/60">Пломба за один визит, светоотверждаемые материалы</p><p class="mt-5 font-extrabold text-teal-700">от 3 500 ₽</p></a>
+      <a href="#prices" data-tabgo="white" data-reveal class="block bg-white rounded-3xl p-7 hover:-translate-y-1 hover:shadow-xl transition"><div class="text-3xl">✨</div><h3 class="mt-4 font-bold text-lg">Отбеливание</h3><p class="mt-2 text-sm text-teal-900/60">Профессиональная система, до 8 тонов за 1,5 часа</p><p class="mt-5 font-extrabold text-teal-700">от 19 000 ₽</p></a>
+      <a href="#prices" data-tabgo="impl" data-reveal class="block bg-white rounded-3xl p-7 hover:-translate-y-1 hover:shadow-xl transition"><div class="text-3xl">🔩</div><h3 class="mt-4 font-bold text-lg">Имплантация</h3><p class="mt-2 text-sm text-teal-900/60">Импланты с пожизненной гарантией производителя</p><p class="mt-5 font-extrabold text-teal-700">от 32 000 ₽</p></a>
+      <a href="#prices" data-tabgo="orto" data-reveal class="block bg-teal-500 text-white rounded-3xl p-7 hover:-translate-y-1 hover:shadow-xl transition"><div class="text-3xl">😁</div><h3 class="mt-4 font-bold text-lg">Элайнеры</h3><p class="mt-2 text-sm text-white/80">Ровные зубы без брекетов, 3D-план лечения</p><p class="mt-5 font-extrabold">от 120 000 ₽</p></a>
     </div>
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
-  <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=1100&q=80&auto=format&fit=crop" class="rounded-[40px] h-[420px] w-full object-cover" alt="">
-  <div>
-    <h2 class="text-4xl font-extrabold leading-tight">Как проходит первый визит</h2>
+<section class="max-w-7xl mx-auto px-5 sm:px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+  <img data-reveal src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=1100&q=80&auto=format&fit=crop" class="rounded-[32px] sm:rounded-[40px] h-72 sm:h-[420px] w-full object-cover" alt="Врач осматривает пациента">
+  <div data-reveal>
+    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">Как проходит первый визит</h2>
     <div class="mt-8 space-y-5">
       <div class="flex gap-5"><span class="w-11 h-11 shrink-0 rounded-full bg-teal-500 text-white grid place-items-center font-bold">1</span><div><b>Осмотр и 3D-снимок</b><p class="text-sm text-teal-900/60 mt-1">Видим все зубы и корни, ничего не пропускаем</p></div></div>
       <div class="flex gap-5"><span class="w-11 h-11 shrink-0 rounded-full bg-teal-500 text-white grid place-items-center font-bold">2</span><div><b>План лечения в двух вариантах</b><p class="text-sm text-teal-900/60 mt-1">Оптимальный и бюджетный, с точной стоимостью</p></div></div>
@@ -64,12 +98,207 @@
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-6 pb-20">
-  <div class="rounded-[40px] bg-teal-900 text-white p-12 grid lg:grid-cols-2 gap-10 items-center">
-    <div><h2 class="text-4xl font-extrabold">Запишитесь на бесплатную консультацию</h2><p class="mt-4 text-white/70">Перезвоним в течение 10 минут и подберём удобное время.</p></div>
-    <div class="flex flex-col sm:flex-row gap-3"><input class="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 placeholder-white/50" placeholder="Ваш телефон"><button class="px-8 py-4 rounded-full bg-teal-400 text-teal-900 font-bold">Записаться</button></div>
+<!-- Price calculator -->
+<section id="prices" class="bg-teal-900 text-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div>
+        <div class="text-teal-400 font-bold text-sm uppercase tracking-widest">Цены и калькулятор</div>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold">Соберите примерный план лечения</h2>
+        <p class="mt-3 text-white/60 max-w-xl">Отметьте нужные услуги, и мы посчитаем ориентировочную стоимость. Точный план врач составит на бесплатной консультации.</p>
+      </div>
+      <div id="ptabs" class="flex gap-2 overflow-x-auto -mx-5 px-5 sm:mx-0 sm:px-0 text-sm font-semibold"></div>
+    </div>
+    <div class="mt-10 grid lg:grid-cols-3 gap-6 items-start">
+      <div id="plist" class="lg:col-span-2 grid gap-2"></div>
+      <div class="lg:sticky lg:top-24 rounded-3xl bg-white text-teal-900 p-6 sm:p-7">
+        <div class="text-sm text-teal-900/55">Ваш план</div>
+        <ul id="plan" class="mt-3 space-y-2 text-sm max-h-56 overflow-y-auto"></ul>
+        <div class="mt-5 pt-5 border-t border-teal-100 flex items-end justify-between">
+          <div><div class="text-sm text-teal-900/55">Итого ориентировочно</div><div id="ptotal" class="text-3xl font-extrabold">0 ₽</div></div>
+          <div class="text-right text-sm text-teal-900/55">визитов<br><b id="pvisits" class="text-teal-900 text-lg">0</b></div>
+        </div>
+        <label class="mt-4 flex items-center gap-2 text-sm cursor-pointer"><input id="installment" type="checkbox" class="w-4 h-4 accent-[#14a897]">Рассрочка 0% на 12 месяцев</label>
+        <div id="pmonth" class="text-sm text-teal-700 font-semibold mt-1 hidden"></div>
+        <a href="#appointment" id="planGo" class="mt-5 block text-center py-4 rounded-full bg-teal-500 text-white font-bold hover:bg-teal-700 transition">Записаться с этим планом</a>
+      </div>
+    </div>
   </div>
 </section>
-<footer class="border-t border-teal-100"><div class="max-w-7xl mx-auto px-6 py-8 flex justify-between text-sm text-teal-900/50"><b class="text-teal-900">Белая линия</b><span>Стоматологическая клиника · Лицензия № ЛО-00-00-000000</span><span>© 2026</span></div></footer>
+
+<section id="doctors" class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+  <h2 class="text-3xl sm:text-4xl font-extrabold">Врачи клиники</h2>
+  <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div data-reveal class="group rounded-3xl border border-teal-100 overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden bg-teal-50"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80&auto=format&fit=crop" alt="Врач-терапевт Анна Миронова" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Анна Миронова</h3><p class="text-sm text-teal-700 font-semibold">Терапевт, эндодонтист · 12 лет</p><p class="text-sm text-teal-900/60 mt-2">Лечит каналы под микроскопом, сохраняет зубы, которые другим проще удалить.</p><a href="#appointment" data-doc="Анна Миронова" class="inline-block mt-4 text-sm font-bold text-teal-500 hover:text-teal-700">Записаться →</a></div></div>
+    <div data-reveal class="group rounded-3xl border border-teal-100 overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden bg-teal-50"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80&auto=format&fit=crop" alt="Хирург-имплантолог Игорь Лебедев" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Игорь Лебедев</h3><p class="text-sm text-teal-700 font-semibold">Хирург-имплантолог · 15 лет</p><p class="text-sm text-teal-900/60 mt-2">Больше 3 000 установленных имплантов, в том числе одномоментная имплантация.</p><a href="#appointment" data-doc="Игорь Лебедев" class="inline-block mt-4 text-sm font-bold text-teal-500 hover:text-teal-700">Записаться →</a></div></div>
+    <div data-reveal class="group rounded-3xl border border-teal-100 overflow-hidden hover:shadow-xl transition"><div class="h-72 overflow-hidden bg-teal-50"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80&auto=format&fit=crop" alt="Ортодонт Павел Орлов" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-6"><h3 class="text-xl font-bold">Павел Орлов</h3><p class="text-sm text-teal-700 font-semibold">Ортодонт · 9 лет</p><p class="text-sm text-teal-900/60 mt-2">Выравнивает зубы элайнерами и брекетами, показывает результат в 3D до начала лечения.</p><a href="#appointment" data-doc="Павел Орлов" class="inline-block mt-4 text-sm font-bold text-teal-500 hover:text-teal-700">Записаться →</a></div></div>
+  </div>
+</section>
+
+<section id="reviews" class="bg-teal-50">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20">
+    <h2 class="text-3xl sm:text-4xl font-extrabold">Отзывы пациентов</h2>
+    <div class="mt-10 grid md:grid-cols-3 gap-5">
+      <div data-reveal class="bg-white rounded-3xl p-7"><div class="text-amber-400">★★★★★</div><p class="mt-4">Боялась стоматологов с детства. Анна Сергеевна всё объясняла на каждом шаге, лечение канала прошло вообще без боли.</p><p class="mt-5 text-sm text-teal-900/55"><b class="text-teal-900">Елена К.</b> · лечение каналов</p></div>
+      <div data-reveal class="bg-white rounded-3xl p-7"><div class="text-amber-400">★★★★★</div><p class="mt-4">Поставили имплант за один визит, через три месяца коронку. Цена совпала со сметой до рубля, это редкость.</p><p class="mt-5 text-sm text-teal-900/55"><b class="text-teal-900">Сергей П.</b> · имплантация</p></div>
+      <div data-reveal class="bg-white rounded-3xl p-7"><div class="text-amber-400">★★★★★</div><p class="mt-4">Носила элайнеры 11 месяцев. Удобно, никто не замечал. Врач на связи в мессенджере, приёмы раз в 6 недель.</p><p class="mt-5 text-sm text-teal-900/55"><b class="text-teal-900">Мария Д.</b> · элайнеры</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="appointment" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+  <div data-reveal class="rounded-[32px] sm:rounded-[40px] bg-teal-900 text-white p-7 sm:p-12 grid lg:grid-cols-2 gap-10 items-center">
+    <div><h2 class="text-3xl sm:text-4xl font-extrabold">Запишитесь на бесплатную консультацию</h2><p class="mt-4 text-white/70">Перезвоним в течение 10 минут и подберём удобное время.</p><p id="planNote" class="mt-4 text-teal-400 text-sm font-semibold hidden"></p></div>
+    <form data-demo class="grid sm:grid-cols-2 gap-3">
+      <input required name="name" autocomplete="name" class="px-6 py-4 rounded-full bg-white/10 border border-white/20 placeholder-white/50 outline-none focus:border-teal-400" placeholder="Ваше имя">
+      <input required type="tel" name="phone" autocomplete="tel" class="px-6 py-4 rounded-full bg-white/10 border border-white/20 placeholder-white/50 outline-none focus:border-teal-400" placeholder="Ваш телефон">
+      <select id="docSel" name="doctor" class="sm:col-span-2 px-6 py-4 rounded-full bg-white/10 border border-white/20 outline-none focus:border-teal-400 [&>option]:text-teal-900">
+        <option value="">Любой свободный врач</option><option>Анна Миронова</option><option>Игорь Лебедев</option><option>Павел Орлов</option>
+      </select>
+      <button class="sm:col-span-2 px-8 py-4 rounded-full bg-teal-400 text-teal-900 font-bold hover:bg-white transition">Записаться</button>
+      <p data-msg class="sm:col-span-2 text-sm text-teal-100 text-center" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<footer id="contacts" class="border-t border-teal-100 pb-12 sm:pb-0">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-teal-900/60">
+    <div><b class="text-teal-900 text-lg">Белая линия</b><p class="mt-2">Стоматологическая клиника<br>Лицензия № ЛО-00-00-000000</p></div>
+    <div><div class="font-bold text-teal-900">Адрес</div><p class="mt-2">ул. Центральная, 10<br>вход с торца, 1 этаж</p></div>
+    <div><div class="font-bold text-teal-900">Часы работы</div><p class="mt-2">Ежедневно 8:00–22:00</p></div>
+    <div><div class="font-bold text-teal-900">Связаться</div><p class="mt-2"><a href="tel:+79000000000" class="hover:text-teal-500">+7 (900) 000-00-00</a><br><a href="mailto:hello@example.ru" class="hover:text-teal-500">hello@example.ru</a></p></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 pb-8 text-xs text-teal-900/40">© 2026 · Имеются противопоказания, необходима консультация специалиста</div>
+</footer>
+
+<a href="../../" class="demo-badge" title="Вернуться в портфолио">Демо-проект · портфолио Лианы</a>
+
+<script>
+/* --- общий слой: меню, модалки, формы, появления --- */
+(function () {
+  // Бургер-меню
+  const burger = document.querySelector('[data-burger]');
+  const menu = document.querySelector('[data-menu]');
+  if (burger && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle('hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.querySelectorAll('[data-ico]').forEach(i => i.classList.toggle('hidden', i.dataset.ico !== (open ? 'close' : 'open')));
+    };
+    burger.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
+  }
+
+  // Модальные окна
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.classList.add('modal-open');
+  };
+  const closeModal = (m) => {
+    m.classList.add('hidden'); m.classList.remove('flex');
+    if (!document.querySelector('[data-modal].flex')) document.body.classList.remove('modal-open');
+  };
+  window.openModal = openModal;
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-open]');
+    if (opener) { e.preventDefault(); openModal(opener.dataset.open); return; }
+    const closer = e.target.closest('[data-close]');
+    if (closer) { if (!(closer.getAttribute('href') || '').startsWith('#')) e.preventDefault(); closeModal(closer.closest('[data-modal]')); return; }
+    if (e.target.matches('[data-modal]')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll('[data-modal].flex').forEach(closeModal);
+  });
+
+  // Формы: проверка и демо-ответ
+  document.querySelectorAll('form[data-demo]').forEach((f) => {
+    f.setAttribute('novalidate', '');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let ok = true;
+      f.querySelectorAll('[required]').forEach((i) => {
+        const v = (i.value || '').trim();
+        let good = v.length > 1;
+        if (i.type === 'tel') good = v.replace(/\D/g, '').length >= 10;
+        if (i.type === 'email') good = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if (i.type === 'checkbox') good = i.checked;
+        if (i.tagName === 'SELECT') good = v !== '';
+        i.classList.toggle('field-err', !good);
+        if (!good) ok = false;
+      });
+      const msg = f.querySelector('[data-msg]');
+      if (!ok) {
+        if (msg) { msg.dataset.state = 'err'; msg.textContent = 'Проверьте, пожалуйста, выделенные поля.'; }
+        return;
+      }
+      if (msg) { msg.dataset.state = 'ok'; msg.textContent = 'Спасибо! Это демо-версия сайта, заявка никуда не отправляется.'; }
+      f.reset();
+      f.dispatchEvent(new CustomEvent('demo:sent'));
+    });
+    f.addEventListener('input', (e) => e.target.classList.remove('field-err'));
+  });
+
+  // Появление при прокрутке (то, что уже на экране, не прячем)
+  const els = [...document.querySelectorAll('[data-reveal]')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.remove('reveal-pre'); io.unobserve(en.target); }
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('reveal-pre'); io.observe(el); }
+    });
+  }
+})();
+
+</script>
+<script>
+  const CAT = { ther: 'Терапия', hyg: 'Гигиена', white: 'Отбеливание', impl: 'Имплантация', orto: 'Ортодонтия' };
+  const SV = [
+    ['ther', 'Лечение кариеса, пломба', 3500, 1], ['ther', 'Лечение каналов под микроскопом', 12000, 2], ['ther', 'Реставрация зуба', 8500, 1], ['ther', 'Анестезия', 0, 0, 'бесплатно'],
+    ['hyg', 'Профессиональная чистка AirFlow', 5900, 1], ['hyg', 'Фторирование', 1500, 0], ['hyg', 'Чистка + отбеливающая паста', 7200, 1],
+    ['white', 'Кабинетное отбеливание', 19000, 1], ['white', 'Домашнее отбеливание (капы)', 14000, 1],
+    ['impl', 'Имплант под ключ (с коронкой)', 32000, 3], ['impl', 'Синус-лифтинг', 25000, 1], ['impl', 'Костная пластика', 18000, 1],
+    ['orto', 'Элайнеры, полный курс', 120000, 8], ['orto', 'Брекеты металлические', 65000, 10], ['orto', '3D-план лечения', 0, 1, 'бесплатно']
+  ].map((s, i) => ({ id: i, c: s[0], t: s[1], p: s[2], v: s[3], label: s[4] }));
+  const fmt = n => n.toLocaleString('ru-RU');
+  const sel = new Set([0, 4]);
+  let tab = 'ther';
+  const $ = id => document.getElementById(id);
+  function render() {
+    $('ptabs').innerHTML = Object.entries(CAT).map(([k, v]) => `<button data-t="${k}" class="shrink-0 px-4 py-2.5 rounded-full transition ${k === tab ? 'bg-teal-400 text-teal-900' : 'bg-white/10 hover:bg-white/20'}">${v}</button>`).join('');
+    $('plist').innerHTML = SV.filter(s => s.c === tab).map(s => `
+      <label class="svc-row flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-teal-400/60 cursor-pointer transition">
+        <input type="checkbox" class="sr-only" data-id="${s.id}" ${sel.has(s.id) ? 'checked' : ''}>
+        <span class="box w-6 h-6 shrink-0 rounded-lg border-2 border-white/30 grid place-items-center transition"><svg class="opacity-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>
+        <span class="flex-1">${s.t}</span><b class="whitespace-nowrap">${s.label || 'от ' + fmt(s.p) + ' ₽'}</b>
+      </label>`).join('');
+    const items = SV.filter(s => sel.has(s.id));
+    $('plan').innerHTML = items.length ? items.map(s => `<li class="flex justify-between gap-3"><span>${s.t}</span><span class="whitespace-nowrap font-semibold">${s.label || fmt(s.p) + ' ₽'}</span></li>`).join('') : '<li class="text-teal-900/50">Пока ничего не выбрано</li>';
+    const total = items.reduce((a, s) => a + s.p, 0);
+    $('ptotal').textContent = fmt(total) + ' ₽';
+    $('pvisits').textContent = Math.max(items.length ? 1 : 0, items.reduce((a, s) => a + s.v, 0));
+    const inst = $('installment').checked;
+    $('pmonth').classList.toggle('hidden', !inst || !total);
+    $('pmonth').textContent = `≈ ${fmt(Math.ceil(total / 12 / 10) * 10)} ₽ в месяц без переплат`;
+  }
+  $('ptabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; render(); } };
+  $('plist').onchange = e => { const id = +e.target.dataset.id; e.target.checked ? sel.add(id) : sel.delete(id); render(); };
+  $('installment').onchange = render;
+  document.querySelectorAll('[data-tabgo]').forEach(a => a.addEventListener('click', () => { tab = a.dataset.tabgo; render(); }));
+  $('planGo').addEventListener('click', () => {
+    const items = SV.filter(s => sel.has(s.id));
+    const n = $('planNote'); n.textContent = items.length ? `Ваш план: ${items.map(s => s.t.toLowerCase()).join(', ')} · около ${$('ptotal').textContent}` : ''; n.classList.toggle('hidden', !items.length);
+  });
+  document.querySelectorAll('[data-doc]').forEach(a => a.addEventListener('click', () => { $('docSel').value = a.dataset.doc; }));
+  render();
+
+  // Ближайшая запись — правдоподобное время
+  const h = new Date().getHours();
+  $('nearest').textContent = h < 20 ? `Сегодня, ${Math.max(h + 2, 9)}:30` : 'Завтра, 9:00';
+</script>
 </body>
 </html>

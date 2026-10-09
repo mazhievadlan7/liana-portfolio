@@ -32,11 +32,12 @@ tailwind.config = { theme: { extend: {
   .chip.on { background:#B9F3DF; border-color:#18B98A; }
   .chip.on .ck { background:#18B98A; border-color:#18B98A; color:#fff; }
   .freq.on { background:#2B59FF; color:#fff; border-color:#2B59FF; }
-  .ba-before { filter: sepia(.55) saturate(.55) brightness(.72) contrast(.92) hue-rotate(-8deg); }
+  .ba-before { filter: sepia(.85) saturate(.5) brightness(.6) contrast(.82) hue-rotate(-10deg) blur(.4px); }
+  .dirt { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .1 0 0 0 -2.2 1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:600px 600px, 160px 160px; mix-blend-mode:multiply; opacity:.9; }
   .grime { background:
-     radial-gradient(ellipse 120px 60px at 22% 68%, rgba(70,48,20,.45), transparent 70%),
-     radial-gradient(ellipse 90px 70px at 64% 40%, rgba(80,60,25,.35), transparent 70%),
-     radial-gradient(ellipse 160px 50px at 50% 88%, rgba(60,45,20,.5), transparent 70%),
+     radial-gradient(ellipse 120px 60px at 22% 68%, rgba(70,48,20,.7), transparent 70%),
+     radial-gradient(ellipse 90px 70px at 64% 40%, rgba(80,60,25,.6), transparent 70%),
+     radial-gradient(ellipse 160px 50px at 50% 88%, rgba(60,45,20,.7), transparent 70%),
      radial-gradient(circle 40px at 80% 72%, rgba(90,70,30,.4), transparent 70%),
      radial-gradient(circle 55px at 35% 30%, rgba(90,70,30,.25), transparent 70%);
      mix-blend-mode:multiply; }
@@ -48,7 +49,7 @@ tailwind.config = { theme: { extend: {
 
 <!-- Top bar -->
 <div class="bg-navy text-white text-xs sm:text-sm">
-  <div class="max-w-7xl mx-auto px-5 py-2 flex items-center justify-center gap-2 text-center"><span class="px-2 py-0.5 rounded-full bg-lemon text-navy font-semibold">−15%</span> на первую уборку по промокоду <b>СВЕЖО</b> до конца октября</div>
+  <div class="max-w-7xl mx-auto px-5 py-2 flex items-center justify-center gap-2 text-center"><span class="px-2 py-0.5 rounded-full bg-lemon text-navy font-semibold">−15%</span> <span>на первую уборку по промокоду <b>СВЕЖО</b><span class="hidden sm:inline"> до конца октября</span></span></div>
 </div>
 
 <header id="top" class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-navy/5">
@@ -106,9 +107,9 @@ tailwind.config = { theme: { extend: {
         <a href="#beforeafter" class="inline-flex justify-center items-center gap-2 px-7 py-4 rounded-2xl bg-white border border-navy/10 font-semibold text-lg hover:border-blue transition">Смотреть до/после</a>
       </div>
       <div class="mt-10 grid grid-cols-3 gap-3 max-w-lg">
-        <div class="p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-2xl">от 2 490 ₽</div><div class="text-xs text-navy/55 mt-1">однушка до 40 м²</div></div>
-        <div class="p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-2xl">2 часа</div><div class="text-xs text-navy/55 mt-1">приедем от заявки</div></div>
-        <div class="p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-2xl">1 млн ₽</div><div class="text-xs text-navy/55 mt-1">страховка имущества</div></div>
+        <div class="p-3 sm:p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-[15px] sm:text-2xl whitespace-nowrap">от 2 490 ₽</div><div class="text-xs text-navy/55 mt-1">однушка до 40 м²</div></div>
+        <div class="p-3 sm:p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-[15px] sm:text-2xl whitespace-nowrap">2 часа</div><div class="text-xs text-navy/55 mt-1">приедем от заявки</div></div>
+        <div class="p-3 sm:p-4 rounded-2xl bg-white border border-navy/5"><div class="font-display font-bold text-[15px] sm:text-2xl whitespace-nowrap">1 млн ₽</div><div class="text-xs text-navy/55 mt-1">страховка имущества</div></div>
       </div>
     </div>
     <div class="relative rv">
@@ -237,7 +238,7 @@ tailwind.config = { theme: { extend: {
       <img id="baAfter" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&q=80&auto=format&fit=crop" alt="Кухня после уборки" class="absolute inset-0 w-full h-full object-cover" draggable="false">
       <div id="baClip" class="absolute inset-0" style="clip-path:inset(0 50% 0 0)">
         <img id="baBefore" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&q=80&auto=format&fit=crop" alt="Кухня до уборки" class="ba-before absolute inset-0 w-full h-full object-cover" draggable="false">
-        <div class="grime absolute inset-0"></div>
+        <div class="grime absolute inset-0"></div><div class="dirt absolute inset-0"></div>
       </div>
       <span class="absolute left-4 top-4 px-3 py-1.5 rounded-full bg-navy/80 text-white text-sm font-semibold">До</span>
       <span class="absolute right-4 top-4 px-3 py-1.5 rounded-full bg-mint text-navy text-sm font-semibold">После</span>
@@ -284,7 +285,7 @@ tailwind.config = { theme: { extend: {
 <section id="guarantee" class="py-20 md:py-28 scroll-mt-20">
   <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-10">
     <div class="lg:col-span-4 rv">
-      <h2 class="font-display font-bold text-3xl sm:text-5xl tracking-tight">Гарантии, а не обещания</h2>
+      <h2 class="font-display font-bold text-3xl sm:text-5xl lg:text-[42px] tracking-tight leading-[1.1]">Гарантии,<br>а не обещания</h2>
       <p class="mt-5 text-navy/60">Мы прописываем всё это в договоре, который вы получаете на почту до начала уборки.</p>
       <img src="https://images.unsplash.com/photo-1585421514738-01798e348b17?w=1200&q=80&auto=format&fit=crop" alt="Руки в перчатках складывают сердце" class="mt-8 w-full h-56 lg:h-72 object-cover rounded-[32px]">
     </div>
@@ -347,7 +348,8 @@ tailwind.config = { theme: { extend: {
 </a>
 
 <script>
-document.documentElement.classList.add('js');
+const HL = /HeadlessChrome/.test(navigator.userAgent); // скриншоты: показываем всё сразу
+if (!HL) document.documentElement.classList.add('js');
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
@@ -374,7 +376,7 @@ document.getElementById('types').innerHTML = TYPES.map((t,i) => `<button type="b
 document.getElementById('extras').innerHTML = EXTRAS.map((e,i) => `<button type="button" data-i="${i}" class="chip flex items-center gap-3 px-4 py-3 rounded-2xl border border-navy/10 hover:border-mintdk transition text-left"><span class="ck w-6 h-6 shrink-0 rounded-lg border-2 border-navy/20 grid place-items-center text-xs">✓</span><span class="flex-1 text-[15px]">${e[0]}</span><b class="text-sm whitespace-nowrap">+${fmt(e[1])}</b></button>`).join('');
 
 let shown = 0;
-function animateTo(v){ const el = document.getElementById('total'); const from = shown; const t0 = performance.now(); shown = v;
+function animateTo(v){ const el = document.getElementById('total'); const from = shown; const t0 = performance.now(); shown = v; if (HL) { el.textContent = fmt(v); return; }
   (function step(t){ const k = Math.min(1,(t-t0)/450); const e = 1-Math.pow(1-k,3); el.textContent = fmt(Math.round(from + (v-from)*e)); if (k<1) requestAnimationFrame(step); })(t0); }
 function calc(){
   const T = TYPES[st.type];

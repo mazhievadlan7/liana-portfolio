@@ -37,7 +37,8 @@ tailwind.config = { theme: { extend: {
   .lb { opacity:0; pointer-events:none; transition:opacity .35s; }
   .lb.open { opacity:1; pointer-events:auto; }
   .rev { display:none; }
-  .rev.on { display:block; animation:fadeIn .7s ease; }
+  .rev.on { display:block; }
+  [data-reviews].anim .rev.on { animation:fadeIn .7s ease; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
   .menu { transform:translateY(-100%); transition:transform .45s cubic-bezier(.2,.7,.2,1); }
   .menu.open { transform:none; }
@@ -321,7 +322,7 @@ tailwind.config = { theme: { extend: {
 <section id="contact" class="pb-24 md:pb-32 scroll-mt-16">
   <div class="max-w-7xl mx-auto px-5 md:px-8">
     <div class="grid lg:grid-cols-12 rounded-[28px] overflow-hidden bg-sand">
-      <div class="lg:col-span-5 relative min-h-[280px] md:min-h-[360px]">
+      <div class="lg:col-span-5 relative min-h-[400px] md:min-h-[420px]">
         <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80&auto=format&fit=crop" alt="Руки жениха и невесты с обручальными кольцами">
         <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
         <div class="absolute bottom-0 p-8 md:p-10 text-ivory">
@@ -399,11 +400,11 @@ const W = [
   {id:'1510076857177-7470076d4098', t:'Лиза и Никита', loc:'Подмосковье', st:'Минимализм', d:'Лофт-амбар · 100 гостей', a:'Банкетный зал с тканевыми драпировками и гирляндами'},
 ];
 const grid = document.querySelector('[data-grid]'), empty = document.querySelector('[data-empty]');
-const f = {style:'all', loc:'all'}; let list = [];
+const f = {style:'all', loc:'all'}; let list = [], animOn = false;
 function render(){
   list = W.filter(w => (f.style==='all'||w.st===f.style) && (f.loc==='all'||w.loc===f.loc));
   grid.innerHTML = list.map((w,i)=>`
-    <button class="g-item group relative overflow-hidden rounded-[14px] md:rounded-[18px] text-left ${w.tall&&list.length>3?'row-span-2':''}" data-i="${i}" style="animation:fadeIn .6s ease ${i*.05}s both">
+    <button class="g-item group relative overflow-hidden rounded-[14px] md:rounded-[18px] text-left ${w.tall&&list.length>3?'row-span-2':''}" data-i="${i}" style="${animOn?`animation:fadeIn .6s ease ${i*.05}s both`:''}">
       <img class="w-full ${w.tall&&list.length>3?'h-full min-h-[300px] md:min-h-[560px]':'h-[150px] sm:h-[220px] md:h-[270px]'} object-cover" src="${U(w.id)}" alt="${w.a}" loading="lazy">
       <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent"></div>
       <div class="cap absolute bottom-0 p-3 md:p-5 text-ivory">
@@ -418,7 +419,7 @@ document.querySelectorAll('[data-filter]').forEach(g=>{
   g.addEventListener('click', e=>{
     const b = e.target.closest('button'); if(!b) return;
     g.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
-    f[g.dataset.filter] = b.dataset.v; render();
+    f[g.dataset.filter] = b.dataset.v; animOn = true; render();
   });
 });
 render();
@@ -442,13 +443,13 @@ document.addEventListener('keydown', e=>{ if(!lb.classList.contains('open')) ret
 // Reviews carousel
 const revs = [...document.querySelectorAll('.rev')], dots = document.querySelector('[data-dots]'); let ri = 0, timer;
 dots.innerHTML = revs.map((_,i)=>`<button class="w-2.5 h-2.5 rounded-full bg-ink/20 transition" aria-label="Отзыв ${i+1}" data-d="${i}"></button>`).join('');
-function rev(i){ ri=(i+revs.length)%revs.length; revs.forEach((r,k)=>r.classList.toggle('on',k===ri));
+function rev(i, a=true){ if(a) document.querySelector('[data-reviews]').classList.add('anim'); ri=(i+revs.length)%revs.length; revs.forEach((r,k)=>r.classList.toggle('on',k===ri));
   dots.querySelectorAll('button').forEach((d,k)=>{ d.style.background = k===ri?'#A9746E':''; d.style.width = k===ri?'28px':''; });
-  clearInterval(timer); timer=setInterval(()=>rev(ri+1), 8000); }
+  clearInterval(timer); timer=setInterval(()=>rev(ri+1), 11000); }
 dots.onclick = e=>{ const d=e.target.closest('[data-d]'); if(d) rev(+d.dataset.d); };
 document.querySelector('[data-prev]').onclick=()=>rev(ri-1);
 document.querySelector('[data-next]').onclick=()=>rev(ri+1);
-rev(0);
+rev(0,false);
 
 // Package -> form
 document.querySelectorAll('[data-pack]').forEach(a=>a.addEventListener('click',()=>{ document.querySelector('[data-pack-select]').value = a.dataset.pack; }));
