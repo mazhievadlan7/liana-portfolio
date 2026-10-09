@@ -1,1 +1,1 @@
-window.READY=["wedding","domgran","lumiere","sigma-school","psychologist","cleaning","travel","kids","shop"];
+window.READY=["wedding","ai-agent","domgran","lumiere","coffee-app","sigma-school","dental","fitness","law","autoservice","food","psychologist","cleaning","travel","kids","shop"];
