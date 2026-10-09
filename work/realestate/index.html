@@ -347,8 +347,8 @@ grid.addEventListener('click',e=>{ const c=e.target.closest('[data-o]'); if(c) o
 $('[data-mthumbs]').addEventListener('click',e=>{ const t=e.target.closest('[data-k]'); if(!t) return; $('[data-mimg]').src=U(cur.img[+t.dataset.k]); $$('[data-mthumbs] .thumb').forEach(x=>x.classList.toggle('on',x===t)); });
 $('[data-mclose]').onclick=closeO; modal.addEventListener('click',e=>{ if(e.target===modal) closeO(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeO(); });
-$('[data-mview]').onclick=()=>{ $('[data-obj]').value=`${cur.t}, ${cur.a} (${mln(cur.p)})`; closeO(); $('#contact').scrollIntoView({behavior:'smooth'}); };
-$('[data-mcalc]').onclick=()=>{ $('#mp').value=Math.min(800,cur.p); mort(); closeO(); $('#mortgage').scrollIntoView({behavior:'smooth'}); };
+$('[data-mview]').onclick=()=>{ if(!cur) return; $('[data-obj]').value=`${cur.t}, ${cur.a} (${mln(cur.p)})`; closeO(); $('#contact').scrollIntoView({behavior:'smooth'}); };
+$('[data-mcalc]').onclick=()=>{ if(!cur) return; $('#mp').value=Math.min(800,cur.p); mort(); closeO(); $('#mortgage').scrollIntoView({behavior:'smooth'}); };
 
 // Mortgage
 let rate=17.9;

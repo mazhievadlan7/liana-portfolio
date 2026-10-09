@@ -324,7 +324,7 @@ tailwind.config = { theme: { extend: {
     <div class="grid lg:grid-cols-12 rounded-[28px] overflow-hidden bg-sand">
       <div class="lg:col-span-5 relative min-h-[400px] md:min-h-[420px]">
         <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80&auto=format&fit=crop" alt="Руки жениха и невесты с обручальными кольцами">
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/10"></div>
         <div class="absolute bottom-0 p-8 md:p-10 text-ivory">
           <div class="font-serif text-3xl md:text-4xl leading-tight">Первая встреча<br>бесплатно и ни к чему не обязывает</div>
           <div class="mt-6 text-sm space-y-1 text-ivory/80">
@@ -427,7 +427,7 @@ render();
 // Lightbox
 const lb = document.querySelector('[data-lb]'), lbImg = lb.querySelector('[data-lb-img]');
 let cur = 0;
-function show(i){ cur = (i+list.length)%list.length; const w = list[cur];
+function show(i){ if(!list.length) return; cur = (i+list.length)%list.length; const w = list[cur];
   lbImg.src = U(w.id); lbImg.alt = w.a;
   lb.querySelector('[data-lb-title]').textContent = w.t;
   lb.querySelector('[data-lb-meta]').textContent = `${w.d} · ${cur+1} / ${list.length}`; }
